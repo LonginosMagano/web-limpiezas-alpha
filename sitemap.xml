@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://limpiezadeincendiosalpha.es/</loc><priority>1.0</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/</loc><priority>1.0</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/servicios/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/madrid/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/alcobendas/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/getafe/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/leganes/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/mostoles/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/servicios/limpieza-tras-incendio/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/servicios/limpieza-hollin/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/servicios/eliminacion-olor-humo/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/servicios/limpieza-casas-quemadas/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/madrid/limpieza-tras-incendio/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/madrid/limpieza-hollin/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/madrid/eliminacion-olor-humo/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/madrid/limpieza-casas-quemadas/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/alcobendas/limpieza-tras-incendio/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/alcobendas/limpieza-hollin/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/alcobendas/eliminacion-olor-humo/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/alcobendas/limpieza-casas-quemadas/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/getafe/limpieza-tras-incendio/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/getafe/limpieza-hollin/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/getafe/eliminacion-olor-humo/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/getafe/limpieza-casas-quemadas/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/leganes/limpieza-tras-incendio/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/leganes/limpieza-hollin/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/leganes/eliminacion-olor-humo/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/leganes/limpieza-casas-quemadas/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/mostoles/limpieza-tras-incendio/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/mostoles/limpieza-hollin/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/mostoles/eliminacion-olor-humo/</loc><priority>0.75</priority></url>
+  <url><loc>https://longinosmagano.github.io/web-limpiezas-alpha/ciudades/mostoles/limpieza-casas-quemadas/</loc><priority>0.75</priority></url>
 </urlset>
