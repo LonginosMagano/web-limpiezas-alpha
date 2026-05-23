@@ -74,3 +74,9 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
 .gallery-card .before-after-mini{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
 .gallery-card .before-after-mini img{border-radius:6px;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
 .gallery-card h3{margin-top:6px}
+
+/* === Logo nuevo (imagen) === */
+.logo-img{height:48px;width:auto;display:block}
+.logo-mark{display:none!important} /* sustituido por .logo-img */
+.brand-row{align-items:center;gap:12px}
+@media (max-width:900px){.logo-img{height:40px}.logo-text{font-size:18px}}

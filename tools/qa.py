@@ -220,10 +220,13 @@ for fp in HTMLS:
         existing.add(rel[:-len("index.html")])
 # añadir robots, sitemap, llms
 for f in ["/robots.txt", "/sitemap.xml", "/llms.txt", "/assets/styles.css",
-          "/assets/favicon.svg", "/assets/logo.svg", "/assets/hero.jpg",
+          "/assets/favicon.ico", "/assets/logo.png", "/assets/hero.jpg",
           "/assets/wa.svg"]:
     if (ROOT / f.lstrip("/")).exists():
         existing.add(f)
+# SVGs por landing
+for svg in (ROOT / "assets" / "landings").glob("*.svg"):
+    existing.add("/assets/landings/" + svg.name)
 
 broken = []
 for p in pages:

@@ -133,7 +133,7 @@ def head_block(title: str, description: str, canonical: str,
                extra_jsonld: list | None = None) -> str:
     """`<head>` común: meta, OG, Twitter, favicon, CSS preload, JSON-LD."""
     css = "/assets/styles.css"
-    favicon = "/assets/favicon.svg"
+    favicon = "/assets/favicon.ico"
     canonical_abs = DOMAIN + canonical
     og_image_abs = DOMAIN + og_image
     jsonld = json.dumps(extra_jsonld or [], ensure_ascii=False, separators=(",", ":"))
@@ -156,7 +156,7 @@ def head_block(title: str, description: str, canonical: str,
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{description}">
 <meta name="twitter:image" content="{og_image_abs}">
-<link rel="icon" type="image/svg+xml" href="{favicon}">
+<link rel="icon" type="image/x-icon" href="{favicon}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap">
@@ -171,7 +171,7 @@ def header_html(active: str = "") -> str:
     return f"""<body class="alpha">
 <div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:{PHONE}">Urgencias y valoración: {PHONE}</a></div></div>
 <header class="main-nav"><div class="wrap">
-  <a class="brand-row" href="/"><span class="logo-mark">A</span><span class="logo-text">{BRAND}</span></a>
+  <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.png" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
   <nav class="nav">
     <a href="/servicios/limpieza-tras-incendio/">Servicio</a>
     <a href="/ubicaciones/">Ubicaciones</a>
@@ -191,7 +191,7 @@ def footer_html() -> str:
 </div>
 <footer class="site-foot"><div class="wrap">
   <div>
-    <a class="brand-row" href="/"><span class="logo-mark">A</span><span class="logo-text">{BRAND}</span></a>
+    <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.png" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
     <p>Servicio profesional de {KEYWORD.lower()}: hollín, humo, olor a quemado y apoyo en la documentación del seguro.</p>
     <p class="small">"{BRAND}" forma parte del Grupo <a href="/">Limpiezas de Incendios Alpha</a>.</p>
   </div>
@@ -261,7 +261,7 @@ def organization_ld() -> dict:
     return {
         "@context": "https://schema.org", "@type": "Organization",
         "name": BRAND, "url": DOMAIN + "/",
-        "logo": DOMAIN + "/assets/logo.svg",
+        "logo": DOMAIN + "/assets/logo.png",
         "telephone": "+" + PHONE_INTL,
         "email": EMAIL,
         "description": f"Empresa especializada en {KEYWORD.lower()}: hollín, humo, olor y descontaminación tras incendio.",
@@ -1110,7 +1110,7 @@ def article_ld(post: dict, url: str) -> dict:
         "author": {"@type": "Organization", "name": BRAND},
         "publisher": {
             "@type": "Organization", "name": BRAND,
-            "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.svg"},
+            "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.png"},
         },
         "datePublished": NOW, "dateModified": NOW,
         "mainEntityOfPage": DOMAIN + url,
