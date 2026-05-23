@@ -220,7 +220,7 @@ def header_html(active: str = "") -> str:
     return f"""<body class="alpha">
 <div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:{PHONE}">Urgencias y valoración: {PHONE}</a></div></div>
 <header class="main-nav"><div class="wrap">
-  <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.png" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
+  <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.webp" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
   <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
     <span></span><span></span><span></span>
   </button>
@@ -244,7 +244,7 @@ def footer_html() -> str:
 </div>
 <footer class="site-foot"><div class="wrap">
   <div>
-    <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.png" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
+    <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.webp" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
     <p>Servicio profesional de {KEYWORD.lower()}: hollín, humo, olor a quemado y apoyo en la documentación del seguro.</p>
     <p class="small">"{BRAND}" forma parte del Grupo <a href="/">Limpiezas de Incendios Alpha</a>.</p>
   </div>
@@ -332,7 +332,7 @@ def organization_ld() -> dict:
     return {
         "@context": "https://schema.org", "@type": "Organization",
         "name": BRAND, "url": DOMAIN + "/",
-        "logo": DOMAIN + "/assets/logo.png",
+        "logo": DOMAIN + "/assets/logo.webp",
         "telephone": "+" + PHONE_INTL,
         "email": EMAIL,
         "description": f"Empresa especializada en {KEYWORD.lower()}: hollín, humo, olor y descontaminación tras incendio.",
@@ -1409,7 +1409,7 @@ def article_ld(post: dict, url: str) -> dict:
         "author": {"@type": "Organization", "name": BRAND},
         "publisher": {
             "@type": "Organization", "name": BRAND,
-            "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.png"},
+            "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.webp"},
         },
         "datePublished": NOW, "dateModified": NOW,
         "mainEntityOfPage": DOMAIN + url,
