@@ -228,6 +228,11 @@ for f in ["/robots.txt", "/sitemap.xml", "/llms.txt", "/assets/styles.css",
 # SVGs por landing
 for svg in (ROOT / "assets" / "landings").glob("*.svg"):
     existing.add("/assets/landings/" + svg.name)
+# Otros assets de /assets/ (fotos, vídeos, audios)
+for ext in ("*.webp", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.mp4",
+            "*.webm", "*.svg", "*.pdf"):
+    for f in (ROOT / "assets").glob(ext):
+        existing.add("/assets/" + f.name)
 
 broken = []
 for p in pages:

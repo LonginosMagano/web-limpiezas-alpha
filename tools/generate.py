@@ -1012,6 +1012,19 @@ def render_home() -> str:
   <p style="margin-top:18px"><a class="btn alt" href="/blog/">Ver las 21 guías del blog →</a></p>
 </div></section>
 
+<section class="section video-teaser"><div class="wrap">
+  <p class="eyebrow">En movimiento</p>
+  <h2>Mira a nuestro equipo trabajando</h2>
+  <p>50 segundos de intervención real en una vivienda particular: hollín y olor a humo fuera, sin trucos de cámara.</p>
+  <a class="video-teaser-thumb" href="/galeria/#video" aria-label="Ver vídeo de intervención real">
+    <img src="/assets/intervencion-limpieza-poster.webp"
+      alt="Fotograma del vídeo de intervención: equipo de Limpiezas de Incendios Alpha retirando hollín en una vivienda particular"
+      width="720" height="1280" loading="lazy">
+    <span class="play-icon" aria-hidden="true">▶</span>
+    <span class="video-duration">0:50</span>
+  </a>
+</div></section>
+
 <section class="section"><div class="wrap" style="text-align:center">
   <p class="eyebrow">Reseñas reales</p>
   <h2>Lo que dicen nuestros clientes</h2>
@@ -1779,7 +1792,16 @@ def render_galeria() -> str:
     crumbs = [("Inicio", "/"), ("Galería", url)]
     jsonld = [organization_ld(), breadcrumb_ld(crumbs),
               {"@context": "https://schema.org", "@type": "ImageGallery",
-               "name": f"Galería {BRAND}", "url": DOMAIN + url}]
+               "name": f"Galería {BRAND}", "url": DOMAIN + url},
+              {"@context": "https://schema.org", "@type": "VideoObject",
+               "name": f"Intervención real de {KEYWORD.lower()}",
+               "description": (f"Vídeo de una intervención real de "
+                               f"{KEYWORD.lower()} en una vivienda particular: "
+                               f"limpieza profesional de hollín, humo y olor."),
+               "thumbnailUrl": DOMAIN + "/assets/intervencion-limpieza-poster.webp",
+               "contentUrl": DOMAIN + "/assets/intervencion-limpieza-tras-incendio-720.mp4",
+               "uploadDate": "2026-05-23",
+               "duration": "PT50S"}]
     head = head_block(title, desc, url, extra_jsonld=jsonld)
 
     cards = []
@@ -1810,6 +1832,23 @@ def render_galeria() -> str:
 <section class="section"><div class="wrap">
   <div class="grid gallery-grid">{"".join(cards)}</div>
   <p class="small">* Imágenes reales de intervenciones propias.</p>
+</div></section>
+
+<section class="section video-section" id="video"><div class="wrap">
+  <p class="eyebrow">En movimiento</p>
+  <h2>Mira cómo trabajamos</h2>
+  <p>Fragmento real de una intervención de limpieza tras incendio: hollín y restos de combustión retirados de paredes, suelos y mobiliario con el equipo en marcha. Sin escenografía. Sin truco de montaje.</p>
+  <figure class="intervention-video">
+    <video controls preload="none" playsinline
+      poster="/assets/intervencion-limpieza-poster.webp"
+      width="720" height="1280"
+      aria-label="Vídeo de intervención real de limpieza tras incendio">
+      <source src="/assets/intervencion-limpieza-tras-incendio.webm" type="video/webm">
+      <source src="/assets/intervencion-limpieza-tras-incendio-720.mp4" type="video/mp4">
+      Tu navegador no soporta vídeo HTML5. <a href="/assets/intervencion-limpieza-tras-incendio-720.mp4">Descarga el archivo</a>.
+    </video>
+    <figcaption>Intervención real de {KEYWORD.lower()} grabada en una vivienda particular.</figcaption>
+  </figure>
 </div></section>
 </main>
 {footer_html()}"""
