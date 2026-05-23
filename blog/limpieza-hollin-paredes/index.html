@@ -29,14 +29,18 @@
 <div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:681811301">Urgencias y valoración: 681811301</a></div></div>
 <header class="main-nav"><div class="wrap">
   <a class="brand-row" href="/web-limpiezas-alpha/"><img class="logo-img" src="/web-limpiezas-alpha/assets/logo.png" alt="Limpiezas de Incendios Alpha" width="140" height="70" loading="eager"><span class="logo-text">Limpiezas de Incendios Alpha</span></a>
-  <nav class="nav">
+  <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav" id="primary-nav">
     <a href="/web-limpiezas-alpha/servicios/limpieza-tras-incendio/">Servicio</a>
     <a href="/web-limpiezas-alpha/ubicaciones/">Ubicaciones</a>
     <a href="/web-limpiezas-alpha/blog/">Blog</a>
     <a href="/web-limpiezas-alpha/testimonios/">Testimonios</a>
     <a href="/web-limpiezas-alpha/faq/">FAQ</a>
+    <a class="btn nav-cta" href="tel:681811301">Llamar 681811301</a>
   </nav>
-  <a class="btn" href="tel:681811301">Llamar 681811301</a>
+  <a class="btn nav-desktop-cta" href="tel:681811301">Llamar 681811301</a>
 </div></header>
 <nav class="crumbs"><div class="wrap"><a href="/web-limpiezas-alpha/">Inicio</a> › <a href="/web-limpiezas-alpha/blog/">Blog</a> › <span>Cómo limpiar el hollín de paredes y techos sin fijar la mancha</span></div></nav>
 <main>
@@ -109,6 +113,24 @@
   <button type="button">Aceptar</button>
 </div>
 <script>
+  // Hamburger mobile menu
+  (function(){
+    var t = document.querySelector(".nav-toggle"),
+        n = document.getElementById("primary-nav");
+    if (!t || !n) return;
+    t.addEventListener("click", function(){
+      var open = n.classList.toggle("open");
+      t.setAttribute("aria-expanded", open ? "true" : "false");
+      t.classList.toggle("open", open);
+    });
+    n.querySelectorAll("a").forEach(function(a){
+      a.addEventListener("click", function(){
+        n.classList.remove("open");
+        t.classList.remove("open");
+        t.setAttribute("aria-expanded", "false");
+      });
+    });
+  })();
   // Banner cookies
   (function(){
     var k="lda_cookies_v1", b=document.getElementById("cookies");

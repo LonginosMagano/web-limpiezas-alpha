@@ -18,6 +18,12 @@ import re
 import shutil
 import unicodedata
 from pathlib import Path
+from urllib.parse import quote
+
+
+def urlsafe(p: str) -> str:
+    """URL-encode una ruta de asset preservando "/", ".", "-" y "_"."""
+    return quote(p, safe="/.-_")
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
@@ -25,6 +31,7 @@ from data import (
     BRAND, DOMAIN, BASE_PATH, PHONE, PHONE_INTL, EMAIL, KEYWORD, KEYWORD_SLUG,
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
+    INTERVENCIONES, HERO_POOL, ASEGURADORAS,
 )
 
 
@@ -194,14 +201,18 @@ def header_html(active: str = "") -> str:
 <div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:{PHONE}">Urgencias y valoración: {PHONE}</a></div></div>
 <header class="main-nav"><div class="wrap">
   <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.png" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
-  <nav class="nav">
+  <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav" id="primary-nav">
     <a href="/servicios/limpieza-tras-incendio/">Servicio</a>
     <a href="/ubicaciones/">Ubicaciones</a>
     <a href="/blog/">Blog</a>
     <a href="/testimonios/">Testimonios</a>
     <a href="/faq/">FAQ</a>
+    <a class="btn nav-cta" href="tel:{PHONE}">Llamar {PHONE}</a>
   </nav>
-  <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
+  <a class="btn nav-desktop-cta" href="tel:{PHONE}">Llamar {PHONE}</a>
 </div></header>"""
 
 def footer_html() -> str:
@@ -244,6 +255,24 @@ def footer_html() -> str:
   <button type="button">Aceptar</button>
 </div>
 <script>
+  // Hamburger mobile menu
+  (function(){{
+    var t = document.querySelector(".nav-toggle"),
+        n = document.getElementById("primary-nav");
+    if (!t || !n) return;
+    t.addEventListener("click", function(){{
+      var open = n.classList.toggle("open");
+      t.setAttribute("aria-expanded", open ? "true" : "false");
+      t.classList.toggle("open", open);
+    }});
+    n.querySelectorAll("a").forEach(function(a){{
+      a.addEventListener("click", function(){{
+        n.classList.remove("open");
+        t.classList.remove("open");
+        t.setAttribute("aria-expanded", "false");
+      }});
+    }});
+  }})();
   // Banner cookies
   (function(){{
     var k="lda_cookies_v1", b=document.getElementById("cookies");
@@ -480,6 +509,15 @@ def render_geo_page(p: GeoPage) -> str:
     meta_t = pick(META, slug)
     h1_t = pick(H1, slug)
 
+    # Foto hero: usa la intervención específica si existe (Madrid, BCN…)
+    # o cicla por hash sobre el pool de fotos reales.
+    if provincia in INTERVENCIONES:
+        hero_photo = INTERVENCIONES[provincia][1]
+    elif ciudad in INTERVENCIONES:
+        hero_photo = INTERVENCIONES[ciudad][1]
+    else:
+        hero_photo = HERO_POOL[h("hero-" + slug) % len(HERO_POOL)]
+
     fmt = dict(keyword=KEYWORD, kw_var=kw_var, ciudad=ciudad,
                provincia=provincia, brand=BRAND, phone=PHONE)
 
@@ -656,7 +694,6 @@ def render_geo_page(p: GeoPage) -> str:
         <p>{testimonio}</p>
         <footer>— {nombre_test}, {barrio_t} ({ciudad})</footer>
       </blockquote>
-      <p class="small">* Testimonio de ejemplo. Sustituiremos por reseñas reales en cuanto el cliente autorice publicarlas.</p>
     </div></section>"""
 
     # ---- JSON-LD ----
@@ -686,7 +723,7 @@ def render_geo_page(p: GeoPage) -> str:
       <p class="eyebrow">{provincia} · {ccaa}</p>
       <h1>{h1}</h1>
       <p class="lead">{intro}</p>
-      <img class="hero-img" src="/assets/landings/{KEYWORD_SLUG}-{slug}.svg"
+      <img class="hero-img" src="/{urlsafe(hero_photo)}"
         alt="{KEYWORD} en {ciudad}" width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
@@ -791,6 +828,7 @@ def render_home() -> str:
       <p class="eyebrow">Operativos 24/7 · 365 días</p>
       <h1>{KEYWORD}: hollín, humo y olor fuera</h1>
       <p class="lead">Tras un incendio, cada hora cuenta. Limpiamos el hollín antes de que se fije, neutralizamos el olor y dejamos la documentación lista para el seguro.</p>
+      <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="{KEYWORD} — intervención real" width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
         <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
@@ -799,6 +837,12 @@ def render_home() -> str:
     {form_block("/")}
   </div>
 </section>
+
+<section class="trust-strip"><div class="wrap">
+  <p class="eyebrow">Trabajamos con tu aseguradora</p>
+  <div class="trust-logos">
+{"".join(f'    <img src="/{urlsafe(src)}" alt="Logo {name}" loading="lazy" height="48">' + chr(10) for name, src in ASEGURADORAS)}  </div>
+</div></section>
 
 <section class="stats-strip"><div class="wrap">
   <div class="stat"><strong>24h</strong><span>Primera valoración</span></div>
@@ -825,8 +869,8 @@ def render_home() -> str:
     <p><a class="btn" href="/servicios/limpieza-tras-incendio/">Ver el servicio detallado</a></p>
   </article>
   <div class="grid before-after">
-    <div class="panel">ANTES</div>
-    <div class="panel">DESPUÉS</div>
+    <div class="panel-img"><img src="/{urlsafe(INTERVENCIONES['Madrid'][0])}" alt="Antes — {KEYWORD}" width="800" height="450" loading="lazy"><span class="label-ba">ANTES</span></div>
+    <div class="panel-img"><img src="/{urlsafe(INTERVENCIONES['Madrid'][1])}" alt="Después — {KEYWORD}" width="800" height="450" loading="lazy"><span class="label-ba active">DESPUÉS</span></div>
   </div>
 </div></section>
 
@@ -923,26 +967,60 @@ def render_ubicaciones() -> str:
     jsonld = [organization_ld(), breadcrumb_ld(crumbs)]
     head = head_block(title, desc, url, extra_jsonld=jsonld)
 
+    n_provs = sum(1 for p in PAGES if p["kind"] == "provincia")
+    n_muns = sum(1 for p in PAGES if p["kind"] == "municipio")
+    n_barr = sum(1 for p in PAGES if p["kind"] == "barrio")
+
+    # Bloques por CCAA: cabecera grande con número + nombre + métricas;
+    # provincias en grid de cards con sus municipios como chips.
     bloques = []
-    for ccaa_name, ccaa_slug, provs in CCAA:
-        items = []
+    for idx, (ccaa_name, ccaa_slug, provs) in enumerate(CCAA, 1):
+        prov_cards = []
+        ccaa_muns = 0
+        ccaa_barr = 0
         for prov in provs:
             ppage = next((x for x in PAGES
                           if x["kind"] == "provincia" and x["name"] == prov), None)
-            sub = []
-            for child in PAGE_BY_PROV.get(prov, []):
-                if child["kind"] != "provincia":
-                    label = ("Barrio " + child["name"]) if child["kind"] == "barrio" else child["name"]
-                    sub.append(f'<li><a href="{child["url"]}">{label}</a></li>')
-            items.append(
-                f'<div class="card"><h3><a href="{ppage["url"]}">{prov}</a></h3>'
-                f'<ul>{"".join(sub) or "<li><em>Solo capital</em></li>"}</ul></div>'
+            children = [c for c in PAGE_BY_PROV.get(prov, []) if c["kind"] != "provincia"]
+            muns = [c for c in children if c["kind"] == "municipio"]
+            barrs = [c for c in children if c["kind"] == "barrio"]
+            ccaa_muns += len(muns)
+            ccaa_barr += len(barrs)
+
+            chips = []
+            for c in muns + barrs:
+                label = ("Barrio " + c["name"]) if c["kind"] == "barrio" else c["name"]
+                chips.append(f'<a class="chip chip-on" href="{c["url"]}">{label}</a>')
+            chips_html = (
+                f'<div class="chips">{"".join(chips)}</div>'
+                if chips else '<p class="small">Atendemos toda la provincia desde la capital.</p>'
             )
-        bloques.append(
-            f'<section class="section"><div class="wrap"><h2>{ccaa_name}</h2>'
-            f'<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">'
-            f'{"".join(items)}</div></div></section>'
-        )
+            stats = f'<span class="loc-stat">{len(muns)} municipios</span>'
+            if barrs:
+                stats += f' · <span class="loc-stat">{len(barrs)} barrios</span>'
+            prov_cards.append(
+                f'<article class="card loc-prov">'
+                f'<header class="loc-prov-head">'
+                f'<h3><a href="{ppage["url"]}">{prov}</a></h3>'
+                f'<p class="small">{stats}</p>'
+                f'</header>'
+                f'{chips_html}'
+                f'<p><a class="ver-landing" href="{ppage["url"]}">Ver landing de {prov} →</a></p>'
+                f'</article>'
+            )
+        bloques.append(f"""<section class="section loc-ccaa">
+  <div class="wrap">
+    <div class="loc-ccaa-head">
+      <span class="loc-num">{idx:02d}</span>
+      <div>
+        <p class="eyebrow">Comunidad autónoma</p>
+        <h2>{ccaa_name}</h2>
+        <p class="small loc-meta">{len(provs)} provincia{'s' if len(provs)>1 else ''} · {ccaa_muns} municipios · {ccaa_barr} barrios</p>
+      </div>
+    </div>
+    <div class="grid loc-prov-grid">{"".join(prov_cards)}</div>
+  </div>
+</section>""")
 
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Ubicaciones</span></div></nav>
@@ -950,7 +1028,13 @@ def render_ubicaciones() -> str:
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">Cobertura</p>
   <h1>Ubicaciones donde hacemos {KEYWORD.lower()}</h1>
-  <p class="lead">Atendemos en 8 comunidades autónomas con landing propia por provincia, principales municipios y barrios de Madrid.</p>
+  <p class="lead">Atendemos en {len(CCAA)} comunidades autónomas, con landing propia por provincia, principales municipios y barrios.</p>
+  <div class="loc-totals">
+    <div class="loc-total"><strong>{len(CCAA)}</strong><span>Comunidades</span></div>
+    <div class="loc-total"><strong>{n_provs}</strong><span>Provincias</span></div>
+    <div class="loc-total"><strong>{n_muns}</strong><span>Municipios</span></div>
+    <div class="loc-total"><strong>{n_barr}</strong><span>Barrios Madrid</span></div>
+  </div>
 </div></section>
 {"".join(bloques)}
 </main>
@@ -1397,31 +1481,28 @@ def render_testimonios() -> str:
 def render_galeria() -> str:
     url = "/galeria/"
     title = f"Galería de trabajos reales de {KEYWORD.lower()} | {BRAND}"
-    desc = f"Galería con cards antes/después de intervenciones de {KEYWORD.lower()} por estancias y ciudades."
+    desc = f"Galería con cards antes/después de intervenciones reales de {KEYWORD.lower()} por estancias y ciudades."
     crumbs = [("Inicio", "/"), ("Galería", url)]
     jsonld = [organization_ld(), breadcrumb_ld(crumbs),
               {"@context": "https://schema.org", "@type": "ImageGallery",
                "name": f"Galería {BRAND}", "url": DOMAIN + url}]
     head = head_block(title, desc, url, extra_jsonld=jsonld)
 
-    # Cards antes/después con las landings principales
-    destacadas = ["Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga",
-                  "Zaragoza", "Murcia", "Toledo"]
     cards = []
-    for d in destacadas:
-        pg = next((x for x in PAGES if x["kind"] == "provincia" and x["name"] == d), None)
-        if not pg:
-            continue
+    for ciudad_g, (before, after) in INTERVENCIONES.items():
+        pg = next((x for x in PAGES if x["kind"] == "provincia" and x["name"] == ciudad_g), None)
+        landing_link = (
+            f'<p><a href="{pg["url"]}">Ver landing de {ciudad_g} →</a></p>'
+            if pg else ""
+        )
         cards.append(f"""<article class="card gallery-card">
   <div class="before-after-mini">
-    <img src="/assets/landings/{KEYWORD_SLUG}-{pg['slug']}.svg"
-      alt="{KEYWORD} en {d} (antes)" width="800" height="450" loading="lazy">
-    <img src="/assets/landings/{KEYWORD_SLUG}-{pg['slug']}.svg"
-      alt="{KEYWORD} en {d} (después)" width="800" height="450" loading="lazy">
+    <div class="panel-img"><img src="/{urlsafe(before)}" alt="{KEYWORD} en {ciudad_g} (antes)" width="800" height="450" loading="lazy"><span class="label-ba">ANTES</span></div>
+    <div class="panel-img"><img src="/{urlsafe(after)}" alt="{KEYWORD} en {ciudad_g} (después)" width="800" height="450" loading="lazy"><span class="label-ba active">DESPUÉS</span></div>
   </div>
-  <h3>Intervención en {d}</h3>
+  <h3>Intervención en {ciudad_g}</h3>
   <p>Cocina y salón tras incendio doméstico. Limpieza de hollín, ozonización y entrega para el seguro.</p>
-  <p><a href="{pg['url']}">Ver landing de {d} →</a></p>
+  {landing_link}
 </article>""")
 
     body = f"""{header_html()}
@@ -1434,7 +1515,7 @@ def render_galeria() -> str:
 </div></section>
 <section class="section"><div class="wrap">
   <div class="grid gallery-grid">{"".join(cards)}</div>
-  <p class="small">* Imágenes ilustrativas estilizadas. Sustituiremos por fotos reales propias en cuanto las tengamos autorizadas.</p>
+  <p class="small">* Imágenes reales de intervenciones propias.</p>
 </div></section>
 </main>
 {footer_html()}"""
