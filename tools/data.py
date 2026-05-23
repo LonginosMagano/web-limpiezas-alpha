@@ -115,16 +115,51 @@ SLUG_ALIAS = {
 # --- Fotos reales ----------------------------------------------------------
 # Cards antes/después por ciudad para /galeria/ y para el hero de la landing.
 # Las claves coinciden con el nombre exacto de la provincia/ciudad.
+# Octubre 2025: incorporadas las fotos propias del cliente (cuadro
+# eléctrico calcinado, TV derretida, escaleras de comunidad, etc.).
 INTERVENCIONES = {
-    "Madrid":    ("assets/Limpieza de incendios madrid (1).webp",    "assets/1759851918028.webp"),
-    "Barcelona": ("assets/1759851783934.webp",                       "assets/1759852290735.webp"),
-    "Valencia":  ("assets/1759851834214.webp",                       "assets/1759851918028.webp"),
-    "Sevilla":   ("assets/1759851974041.webp",                       "assets/1759852290735.webp"),
-    "Málaga":    ("assets/1759852160572.webp",                       "assets/1759851918028.webp"),
-    "Zaragoza":  ("assets/Limpieza Incendioss Comunidades.webp",     "assets/1759852290735.webp"),
-    "Murcia":    ("assets/Limpieza de incendios en Oficina.webp",    "assets/1759851918028.webp"),
-    "Toledo":    ("assets/limpieza post incendios.webp",             "assets/1759852290735.webp"),
+    "Madrid":    ("assets/television-derretida-pared-vivienda-incendio.webp",
+                  "assets/operario-limpieza-hollin-tras-incendio.webp"),
+    "Barcelona": ("assets/cuadro-electrico-calcinado-tras-incendio.webp",
+                  "assets/1759852290735.webp"),
+    "Valencia":  ("assets/azulejos-hollin-cocina-incendiada.webp",
+                  "assets/1759851918028.webp"),
+    "Sevilla":   ("assets/escalera-comunidad-hollin-tras-incendio.webp",
+                  "assets/1759852290735.webp"),
+    "Málaga":    ("assets/pared-escalera-vecinos-hollin-incendio.webp",
+                  "assets/1759851918028.webp"),
+    "Zaragoza":  ("assets/Limpieza Incendioss Comunidades.webp",
+                  "assets/1759852290735.webp"),
+    "Murcia":    ("assets/Limpieza de incendios en Oficina.webp",
+                  "assets/1759851918028.webp"),
+    "Toledo":    ("assets/limpieza post incendios.webp",
+                  "assets/1759852290735.webp"),
 }
+
+# Pool de fotos sueltas para cyclar como hero en landings que no están
+# en INTERVENCIONES. Se selecciona por hash(slug).
+HERO_POOL = [
+    # Foto humana de operario trabajando — la que mejor convierte
+    "assets/operario-limpieza-hollin-tras-incendio.webp",
+    # Daños tangibles
+    "assets/television-derretida-pared-vivienda-incendio.webp",
+    "assets/cuadro-electrico-calcinado-tras-incendio.webp",
+    "assets/azulejos-hollin-cocina-incendiada.webp",
+    "assets/escalera-comunidad-hollin-tras-incendio.webp",
+    "assets/pared-escalera-vecinos-hollin-incendio.webp",
+    # Pool antiguo (genérico) — se mantiene como respaldo
+    "assets/1759851783934.webp",
+    "assets/1759851834214.webp",
+    "assets/1759851918028.webp",
+    "assets/1759851974041.webp",
+    "assets/1759851980235.webp",
+    "assets/1759852160572.webp",
+    "assets/1759852290735.webp",
+    "assets/Limpieza Incendioss Comunidades.webp",
+    "assets/Limpieza de incendios en Oficina.webp",
+    "assets/Limpieza de incendios madrid (1).webp",
+    "assets/limpieza post incendios.webp",
+]
 
 # Descripciones naturales de escena para los alts (rota por hash → cada
 # landing recibe un alt único pero descriptivo, no keyword-stuffed).
@@ -141,22 +176,6 @@ ALT_SCENES = [
     "Resultado final del tratamiento integral de descontaminación",
     "Cocina recuperada tras retirar el hollín de campana y muebles",
     "Estancia tras ozonización completa: olor a humo neutralizado",
-]
-
-# Pool de fotos sueltas para cyclar como hero en landings que no están
-# en INTERVENCIONES. Se selecciona por hash(slug).
-HERO_POOL = [
-    "assets/1759851783934.webp",
-    "assets/1759851834214.webp",
-    "assets/1759851918028.webp",
-    "assets/1759851974041.webp",
-    "assets/1759851980235.webp",
-    "assets/1759852160572.webp",
-    "assets/1759852290735.webp",
-    "assets/Limpieza Incendioss Comunidades.webp",
-    "assets/Limpieza de incendios en Oficina.webp",
-    "assets/Limpieza de incendios madrid (1).webp",
-    "assets/limpieza post incendios.webp",
 ]
 
 # Logos de aseguradoras con las que trabajamos (trust strip en home).
