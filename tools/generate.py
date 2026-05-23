@@ -465,29 +465,29 @@ TESTIMONIOS = [
 # FAQ global
 FAQ_GLOBAL = [
     ("¿Cuánto tarda una limpieza tras incendio?",
-     "Depende del tamaño y del tipo de incendio. Una cocina pequeña suele estar lista en 2-3 días; un piso completo, entre 5 y 10 días; un local o nave, según superficie. Damos plazo cerrado tras la primera visita."),
+     "Depende del tamaño y del tipo de fuego. Una cocina pequeña suele estar lista en dos o tres días. Un piso completo, entre cinco y diez. Un local o nave, según la superficie y lo que ardiera dentro. Tras la primera visita le damos un plazo firme, no “depende”."),
     ("¿Trabajáis con todas las compañías de seguros?",
-     "Sí. Preparamos la documentación en el formato que pide el perito (memoria, fotos antes/después, desglose por estancias). Si la aseguradora lo pide, hablamos directamente con ellos."),
+     "Con todas. Preparamos la documentación en el formato que pide cada perito: memoria, fotos antes y después, desglose por estancias y, si lo solicita, certificado de descontaminación. Las grandes (Mapfre, Mutua Madrileña, AXA, Aegon) la han aceptado sin pegas."),
     ("¿Cuánto cuesta?",
-     "Hacemos una visita previa gratuita y entregamos presupuesto cerrado antes de empezar. Rangos orientativos: 800-1.500 € una cocina, 2.500-8.000 € un piso completo, según superficie y tipo de hollín. Si lo cubre tu seguro, tramitamos con la aseguradora."),
+     "Lo decimos en cifras orientativas, porque el precio real lo damos tras la visita. Una cocina pequeña suele estar entre 800 y 1.500 euros. Un piso completo, entre 2.500 y 8.000. Locales y naves van por superficie. Si lo cubre su seguro, gestionamos el cobro con la compañía."),
     ("¿Hace falta sacar las cosas antes de que vengáis?",
-     "No. Llegamos, fotografiamos, protegemos y empezamos a trabajar. Lo que haya que retirar lo inventariamos para el seguro."),
+     "No, mejor no toque nada. Cuanto menos se mueva antes de la primera valoración, mejor para el seguro. Subimos, fotografiamos, protegemos lo que no va a tocarse y empezamos. Lo que haya que retirar lo inventariamos pieza a pieza."),
     ("¿Eliminar el olor a humo está incluido?",
-     "Sí. Tras la limpieza física hacemos ozonización o tratamiento con hidroxilo en las estancias afectadas. Si pasadas 48 horas detectas olor residual, volvemos a tratar sin coste."),
+     "Sí. Tras la limpieza física hacemos ozonización o tratamiento con hidroxilo en cada estancia. Y si pasadas 48 horas detecta cualquier olor residual, volvemos sin cobrar. Forma parte del trato."),
     ("¿Limpiáis ropa, cortinas y sofás?",
-     "Sí, pero por separado del trabajo de obra: inventariamos, retiramos y enviamos a tratamiento especializado. La limpieza en seco normal fija el olor para siempre, así que nunca se hace así."),
+     "Sí, pero por separado del trabajo de obra. Lo recogemos, lo inventariamos y lo enviamos a un proceso especializado. La tintorería normal no vale: usa percloroetileno y fija el olor para siempre. Lo que se recupera vuelve sin olor; lo que no, queda documentado para el seguro."),
     ("¿Trabajáis solo en grandes siniestros?",
-     "No. La mayoría de avisos son cocinas, fritadoras y pequeños incendios eléctricos. Trabajamos a cualquier escala con el mismo proceso técnico."),
+     "No. La mitad de los avisos que recibimos son cocinas pequeñas: una freidora, un cargador que se quemó por la noche. El proceso técnico es exactamente el mismo, solo cambia el tiempo de trabajo. No descartamos a nadie por tamaño."),
     ("¿En cuánto tiempo podéis estar en mi vivienda?",
-     "Si nos llamas antes de las 18h, normalmente el mismo día o al día siguiente. Las primeras 72 horas son críticas para que el hollín no se fije."),
+     "Si nos llama antes de las seis de la tarde, normalmente vamos al día siguiente. Muchas veces, si la cosa es seria, la misma tarde. Las primeras 72 horas son las críticas para que el hollín no se fije, así que cuanto antes nos avise, mejor para usted."),
     ("¿Qué pasa si el seguro no cubre la limpieza?",
-     "Lo planificamos por fases: priorizamos cocina, baño y zona habitable y dejamos lo estético para una segunda fase. Si la denegación es injusta, te orientamos para reclamar al SAC de la aseguradora."),
+     "Lo planificamos por fases. Primero lo crítico (cocina, baño, zona habitable) para que pueda volver a vivir. Lo estético, en una segunda etapa. Si la denegación nos parece injusta, le orientamos para presentar reclamación al servicio de atención al cliente de la aseguradora."),
     ("¿Puedo dormir en la vivienda mientras se limpia?",
-     "Mejor no. El hollín suelto y los productos de limpieza no son compatibles con permanencia continua, y la ozonización exige espacio cerrado sin personas."),
+     "Mejor no, sobre todo en los primeros días. El hollín suelto y los productos no son amigables con la presencia continua, y la ozonización exige espacio cerrado sin personas ni mascotas dentro. Salvo en intervenciones muy pequeñas, no es buena idea."),
     ("¿Hacéis también reformas o pintura?",
-     "No. Solo limpieza y descontaminación tras incendio. Si una pared está calcinada y hay que reponerla, te indicamos qué reformista puede hacerlo. Cuando termine la obra, podemos volver a entregar todo limpio."),
+     "No. Solo limpieza y descontaminación tras incendio. Si una pared está calcinada y hay que tirarla, le indicamos qué reformista puede hacerlo. Cuando termine la obra, volvemos a entregar todo limpio. Cada cosa con su especialista."),
     ("¿Tenéis seguro de responsabilidad civil propio?",
-     "Sí. Toda nuestra actividad está cubierta con póliza de responsabilidad civil profesional. Te lo acreditamos si tu aseguradora lo solicita."),
+     "Sí. Toda nuestra actividad está cubierta con póliza de responsabilidad civil profesional. Si su aseguradora pide acreditación, se la enviamos en el momento, sin trámites."),
 ]
 
 # ---------------------------------------------------------- form block --
@@ -546,9 +546,29 @@ def render_geo_page(p: GeoPage) -> str:
     h1 = h1_t.format(**fmt)
 
     # ---- intro (la keyword principal en los primeros 100 caracteres) ----
-    intro = (f"{KEYWORD} en {ciudad}: te ayudamos con el hollín, el humo y el "
-             f"olor a quemado tras un incendio en {ciudad} ({provincia}). "
-             f"Llegamos, valoramos y limpiamos.")
+    # Rotamos 6 leads narrativos por hash(slug) para que ninguna landing
+    # repita el mismo arranque que su vecina.
+    INTRO_LEADS = [
+        (f"{KEYWORD} en {ciudad}: limpiamos el hollín, retiramos el humo y "
+         f"borramos el olor a quemado en viviendas y locales de {ciudad}. "
+         f"Si llama hoy, esa misma tarde podemos estar allí mirando."),
+        (f"{KEYWORD} en {ciudad}. Quitamos el hollín de paredes, techos y "
+         f"muebles, tratamos el olor a humo en cada estancia y le ahorramos "
+         f"el papeleo del seguro. Vamos al día siguiente, sin promesas raras."),
+        (f"{KEYWORD} en {ciudad}: pisos, locales, naves. Las primeras 72 "
+         f"horas son las que mandan. Subimos, valoramos sin compromiso y le "
+         f"damos presupuesto cerrado antes de tocar nada."),
+        (f"{KEYWORD} en {ciudad} y los pueblos de alrededor. No reformamos. "
+         f"No pintamos. Solo limpiamos y descontaminamos tras incendio. Eso, "
+         f"sí, lo hacemos bien y por escrito para que el seguro lo cobre."),
+        (f"{KEYWORD} en {ciudad}: el equipo que mira es el mismo que limpia "
+         f"y el mismo que firma la memoria final. Sin subcontratas, sin "
+         f"intermediarios, sin teléfono escacharrado. Llámenos."),
+        (f"{KEYWORD} en {ciudad}. Hollín, humo y olor a quemado se quitan "
+         f"con paciencia y método, no con un trapo y un ambientador. Por "
+         f"eso, antes de tocar la pared, llámenos y véngale a echar un ojo."),
+    ]
+    intro = INTRO_LEADS[h("intro-" + slug) % len(INTRO_LEADS)]
 
     # ---- cuerpo: 6 párrafos rotados por hash(slug) ----
     notes = LOCAL_NOTES.get(provincia, {}) if p["kind"] != "barrio" else LOCAL_NOTES.get("Madrid", {})
@@ -878,17 +898,17 @@ def render_home() -> str:
     # FAQ de la home (genérica, sin {city})
     home_faq = [
         ("¿Cuánto tarda una limpieza después de incendio?",
-         "Depende del tamaño y del tipo de incendio. Una cocina pequeña suele estar lista en 2-3 días; un piso completo, entre 5 y 10 días; un local o nave, según superficie. Damos plazo cerrado tras la primera visita."),
+         "Depende del tamaño y del tipo de fuego. Una cocina pequeña suele estar lista en dos o tres días. Un piso completo, entre cinco y diez. Un local o nave, según la superficie y lo que se haya quemado dentro. Tras la primera visita le damos plazo cerrado, no “depende”."),
         ("¿Trabajáis con todas las compañías de seguros?",
-         "Sí. Preparamos la documentación en el formato que pide el perito (memoria, fotos antes/después, desglose). Si la aseguradora lo pide, hablamos directamente con ellos."),
+         "Sí. Preparamos la documentación en el formato que pide cada perito: memoria con fotos antes y después, desglose por estancias e inventario de lo perdido. Si la aseguradora pone trabas, hablamos directamente con ellos. Las grandes ―Mapfre, Mutua, AXA, Aegon― la han aceptado sin pegas."),
         ("¿Hace falta sacar las cosas antes de que vengáis?",
-         "No. Llegamos, fotografiamos, protegemos y empezamos a trabajar. Lo que haya que retirar lo inventariamos para el seguro."),
+         "No, mejor no toque nada. Cuanto menos se mueva antes de la valoración, mejor para el seguro. Llegamos, fotografiamos, protegemos lo que no va a tocarse y empezamos. Lo que haya que retirar lo inventariamos pieza a pieza."),
         ("¿Eliminar el olor a humo está incluido?",
-         "Sí. Tras la limpieza física hacemos ozonización o tratamiento con hidroxilo. Si pasadas 48 horas detectas olor residual, volvemos a tratar sin coste."),
+         "Sí, siempre. Tras la limpieza física hacemos ozonización o tratamiento con hidroxilo en cada estancia. Si pasadas 48 horas detecta cualquier olor residual, volvemos sin cobrar. Forma parte del trato, no es una cláusula."),
         ("¿Trabajáis solo en grandes incendios?",
-         "Trabajamos a cualquier escala. La mayoría de avisos que recibimos son cocinas, fritadoras y pequeños incendios eléctricos."),
+         "No. La mitad de los avisos que nos llegan son cocinas pequeñas: una freidora, una vela olvidada, un cargador que se quemó por la noche. El proceso técnico es el mismo, solo cambia el tiempo."),
         ("¿Cuánto cuesta?",
-         "Hacemos una visita previa gratuita y entregamos presupuesto cerrado antes de empezar. Si lo cubre tu seguro, lo tramitamos contigo."),
+         "La visita técnica es gratuita y sin compromiso. Subimos, miramos, le explicamos lo que vamos a hacer y le damos presupuesto cerrado antes de empezar. Si lo cubre su seguro, gestionamos el cobro con la compañía y a usted le ahorramos el papeleo."),
     ]
     home_faq_html = "".join(
         f'<details class="card"><summary><h3>{q}</h3></summary><p>{a}</p></details>'
@@ -916,7 +936,7 @@ def render_home() -> str:
     <div>
       <p class="eyebrow">Operativos 24/7 · 365 días</p>
       <h1>{KEYWORD}: hollín, humo y olor fuera</h1>
-      <p class="lead">Tras un incendio, cada hora cuenta. Limpiamos el hollín antes de que se fije, neutralizamos el olor y dejamos la documentación lista para el seguro.</p>
+      <p class="lead">Tras un incendio, lo último que necesita es lidiar con bayetas, ambientadores y peritos. Subimos a su casa o local, miramos en serio lo que ha pasado y empezamos a trabajar. La memoria para el seguro la entregamos nosotros. Usted descansa.</p>
       <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="{KEYWORD} — intervención real" width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
@@ -943,18 +963,18 @@ def render_home() -> str:
 <section class="section"><div class="wrap">
   <h2>Qué hacemos en una limpieza tras incendio</h2>
   <div class="grid service-list">
-    <article class="card"><p class="eyebrow">01</p><h3>Hollín y humo</h3><p>Retirada por capas para no fijar la mancha, tanto en seco como con productos específicos.</p></article>
-    <article class="card"><p class="eyebrow">02</p><h3>Olor a quemado</h3><p>Ozonización o tratamiento con hidroxilo en cada estancia hasta dejar olor neutro.</p></article>
-    <article class="card"><p class="eyebrow">03</p><h3>Cocina incendiada</h3><p>Desengrase de campanas, muebles, techos y azulejos. Recuperación de superficies útiles.</p></article>
-    <article class="card"><p class="eyebrow">04</p><h3>Vivienda quemada</h3><p>Trabajo por estancias para priorizar lo crítico (cocina, baño, dormitorios) y devolver la vivienda al uso.</p></article>
+    <article class="card"><p class="eyebrow">01</p><h3>Hollín y humo</h3><p>Lo retiramos por capas, primero en seco. Si pasamos un trapo húmedo el primer día, la mancha se queda en el yeso. Por eso vamos despacio y con método.</p></article>
+    <article class="card"><p class="eyebrow">02</p><h3>Olor a quemado</h3><p>Ozonización o hidroxilo en cada estancia, hasta que la nariz no encuentra nada. Si a las 48 horas vuelve a oler, regresamos sin cobrar.</p></article>
+    <article class="card"><p class="eyebrow">03</p><h3>Cocina incendiada</h3><p>Desengrasamos campana, muebles altos, techos y azulejos. Lo que se recupera, vuelve a estar útil. Lo que no, le decimos qué reformista lo arregla.</p></article>
+    <article class="card"><p class="eyebrow">04</p><h3>Vivienda quemada</h3><p>Trabajamos por estancias. Primero cocina y baño, después dormitorios, al final el resto. Para que vuelva a dormir en casa antes de lo que cree.</p></article>
   </div>
 </div></section>
 
 <section class="section critical"><div class="wrap grid" style="grid-template-columns:1fr 1fr">
   <article>
     <p class="eyebrow">Primeras 72 horas</p>
-    <h2>Cada hora cuenta para que el hollín no se fije</h2>
-    <p>El hollín es ácido. Si pasa de 72 horas sin tratar empieza a corroer materiales y a fijar el olor en textiles, paredes y conductos. Llámanos pronto, aunque sea para una valoración.</p>
+    <h2>El hollín es ácido. Y tiene prisa.</h2>
+    <p>En las primeras horas tras un incendio, los restos de combustión empiezan a meterse dentro del yeso, del papel, de la ropa que estaba en el armario cerrado. Pase tres días sin tratar la vivienda y el olor ya no se va con productos normales: hay que arrancarlo. Por eso lo razonable es llamar pronto, aunque sea solo para que pasemos a echar un vistazo y valorar.</p>
     <p><a class="btn" href="/servicios/limpieza-tras-incendio/">Ver el servicio detallado</a></p>
   </article>
   <div class="grid before-after">
@@ -1018,7 +1038,7 @@ def render_servicio_madre() -> str:
     <div>
       <p class="eyebrow">Servicio</p>
       <h1>{KEYWORD}: el servicio explicado</h1>
-      <p class="lead">{KEYWORD} es lo único que hacemos. Limpieza y descontaminación tras un incendio: hollín, humo, olor y apoyo para el seguro. No reformamos, no reparamos, no construimos. Hacemos lo que sabemos hacer.</p>
+      <p class="lead">Esto es lo único que hacemos: limpiar y descontaminar viviendas, locales y naves tras un incendio. No reformamos paredes, no reparamos electrodomésticos, no echamos pintura nueva. Cada cosa con su especialista. Lo nuestro es el hollín, el olor a humo y la memoria para el seguro.</p>
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
         <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
@@ -1029,35 +1049,36 @@ def render_servicio_madre() -> str:
 </section>
 
 <section class="section"><div class="wrap article">
-  <h2>Qué incluye una {KEYWORD.lower()}</h2>
+  <h2>Qué hay dentro del precio</h2>
   <ul>
-    <li><strong>Valoración técnica gratuita</strong> en menos de 24 horas.</li>
-    <li><strong>Documentación previa</strong>: fotografías por estancias, descripción del daño y plan de actuación.</li>
-    <li><strong>Limpieza de hollín</strong> por capas en techos, paredes y suelos, según el tipo de combustión (cocina, eléctrica, mobiliario).</li>
-    <li><strong>Tratamiento del olor a humo</strong>: ozonización o hidroxilo en estancias afectadas hasta dejar olor neutro.</li>
-    <li><strong>Limpieza de cocina incendiada</strong>: desengrase de campana, muebles, baldas, electrodomésticos exteriores y azulejos.</li>
-    <li><strong>Tratamiento de textiles</strong> (ropa, cortinas, sofás, alfombras) por separado, con inventario.</li>
-    <li><strong>Memoria final</strong> con fotos antes/después y desglose para el perito.</li>
+    <li><strong>Subimos a verlo, gratis.</strong> Sin compromiso. Si no contrata, no pasa nada.</li>
+    <li><strong>Hacemos la documentación previa</strong>: fotos por estancias, descripción del daño y plan de actuación por escrito.</li>
+    <li><strong>Limpieza de hollín por capas</strong>: techos, paredes y suelos. Cambia el método según se quemara aceite, plástico o cuadro eléctrico. Nuestro técnico lo ve al pasar la mano.</li>
+    <li><strong>Olor a humo</strong>: ozonización o hidroxilo en cada estancia hasta que la nariz no encuentra nada.</li>
+    <li><strong>Cocinas incendiadas</strong>: desengrasamos campana, muebles altos, baldas, exteriores de electrodomésticos y azulejos.</li>
+    <li><strong>Textiles aparte</strong>: ropa, cortinas, sofás, alfombras. Inventario pieza a pieza y proceso especializado, nunca en tintorería normal.</li>
+    <li><strong>Memoria final para el seguro</strong>: fotos antes y después, desglose por estancia y resumen ejecutivo que el perito lee en diez minutos.</li>
   </ul>
 
-  <h2>Qué NO incluye (y por qué)</h2>
+  <h2>Lo que no hacemos (y le decimos quién sí)</h2>
+  <p>Hay tres cosas que no son lo nuestro, y preferimos decirlas claras antes de empezar.</p>
   <ul>
-    <li>No reformamos ni pintamos: si una pared está calcinada, te decimos qué reformista la repondrá. Tras la reforma podemos volver a entregar limpio.</li>
-    <li>No reparamos electrodomésticos: limpiamos el exterior y dejamos los aparatos para revisión del SAT.</li>
-    <li>No realizamos peritaciones de seguro: documentamos para que el perito haga su trabajo más rápido.</li>
+    <li>No reformamos ni pintamos. Si una pared está calcinada hay que tirarla y reponerla; le indicamos qué reformista o pintor lo hace. Cuando termine, volvemos a entregar todo limpio.</li>
+    <li>No reparamos electrodomésticos. Limpiamos el exterior y dejamos los aparatos para que los revise el SAT correspondiente. Tocarlos antes invalida la garantía.</li>
+    <li>No hacemos peritaciones de seguro. Eso es trabajo del perito de la compañía. Lo que sí hacemos es entregarle la documentación tan bien preparada que su trabajo se reduce a la mitad.</li>
   </ul>
 
-  <h2>Las primeras 72 horas: por qué importan</h2>
-  <p>El hollín tras un incendio es ácido. En las primeras 24 horas empieza a fijarse en superficies porosas (yeso, madera, textil) y en las 48-72 horas siguientes corroe metales, daña electrónica y deja olor que ya no sale con limpieza normal. Cuanto antes intervenimos, menos pierdes.</p>
+  <h2>Las primeras 72 horas</h2>
+  <p>El hollín tras un incendio es ácido. En las primeras horas empieza a meterse en el yeso, en la madera, en el textil del armario cerrado. En 48 ó 72 horas más empieza a corroer metales, daña la electrónica que estaba dentro y fija un olor que ya no se va con limpieza normal. Cuanto antes intervenimos, menos pierde el seguro y menos se desgasta usted.</p>
 
-  <h2>Cómo trabajamos: paso a paso</h2>
+  <h2>Cómo trabajamos, paso a paso</h2>
   <ol>
-    <li><strong>Llamada</strong> al {PHONE} o formulario. Te contestamos en horas.</li>
-    <li><strong>Visita técnica</strong> gratuita y sin compromiso para valorar y fotografiar.</li>
-    <li><strong>Presupuesto cerrado</strong>: nada de "depende".</li>
-    <li><strong>Limpieza</strong> ordenada por estancias, con tu calendario.</li>
-    <li><strong>Entrega</strong>: comprobación de olor, fotos finales y memoria para el seguro.</li>
-    <li><strong>Garantía</strong>: si pasadas 48 horas detectas olor residual, volvemos a pasar sin coste.</li>
+    <li><strong>Llamada</strong>. Marca el {PHONE} o nos escribe por WhatsApp. Le contestamos en menos de una hora durante el día.</li>
+    <li><strong>Visita técnica</strong>. Subimos, miramos y fotografiamos. Sin compromiso. Sin coste.</li>
+    <li><strong>Presupuesto cerrado</strong>. Nada de “depende”: cifra firme, plazo firme.</li>
+    <li><strong>Limpieza por estancias</strong>. Primero lo crítico para que pueda volver a vivir antes. El resto, en orden.</li>
+    <li><strong>Entrega</strong>. Comprobamos olor con medidor en cada habitación, fotos finales y memoria en PDF.</li>
+    <li><strong>Garantía</strong>. Si en las 48 horas siguientes detecta cualquier olor residual, volvemos sin cobrar.</li>
   </ol>
 
   <p><a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a></p>
