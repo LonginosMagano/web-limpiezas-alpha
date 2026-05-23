@@ -123,3 +123,61 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
   background: var(--accent);
   color: var(--btnText);
 }
+
+/* ============ HAMBURGER MENU MÓVIL ============ */
+.nav-toggle{display:none;background:transparent;border:0;cursor:pointer;padding:10px;gap:5px;flex-direction:column;align-items:center;justify-content:center}
+.nav-toggle span{display:block;width:26px;height:3px;background:#161a1e;border-radius:2px;transition:transform .2s,opacity .2s}
+.nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.nav-cta{display:none}
+@media (max-width:900px){
+  .alpha .main-nav .wrap{grid-template-columns:1fr auto auto!important;gap:10px!important;padding:12px 0!important}
+  .nav-desktop-cta{display:none!important}
+  .nav-toggle{display:inline-flex!important}
+  .alpha .main-nav .nav{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#dddddd;padding:18px;gap:14px;box-shadow:0 18px 40px rgba(0,0,0,.18);border-top:1px solid #c4c4c4;z-index:100}
+  .alpha .main-nav .nav.open{display:flex!important}
+  .alpha .main-nav .nav a{padding:10px 0;border-bottom:1px solid rgba(0,0,0,.08);font-size:17px}
+  .alpha .main-nav .nav a:last-child{border-bottom:0}
+  .nav-cta{display:inline-flex!important;background:#161a1e!important;border-color:#161a1e!important;color:#fff!important;justify-content:center;margin-top:8px}
+  .logo-text{display:none}
+}
+
+/* ============ TRUST STRIP — ASEGURADORAS ============ */
+.trust-strip{background:#f5f0e8;color:#161a1e;padding:34px 0;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06)}
+.trust-strip .eyebrow{color:#161a1e;text-align:center;margin-bottom:18px}
+.trust-logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:38px}
+.trust-logos img{height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) brightness(.6);opacity:.85;transition:.2s}
+.trust-logos img:hover{filter:none;opacity:1}
+@media (max-width:600px){.trust-logos{gap:24px}.trust-logos img{height:36px}}
+
+/* ============ UBICACIONES — diseño visual ============ */
+.loc-totals{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px;max-width:680px}
+.loc-total{background:var(--card);border:var(--border);padding:14px;text-align:center;border-radius:8px}
+.loc-total strong{display:block;color:var(--accent);font-family:var(--display);font-size:clamp(24px,3vw,38px);line-height:1}
+.loc-total span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.loc-ccaa{padding:40px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.loc-ccaa-head{display:flex;gap:22px;align-items:flex-start;margin-bottom:24px}
+.loc-num{font-family:var(--display);font-size:clamp(54px,8vw,90px);color:var(--accent);line-height:.9;font-weight:700;letter-spacing:-.04em}
+.loc-meta{margin:6px 0 0}
+.loc-prov-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.loc-prov{display:flex;flex-direction:column;gap:12px}
+.loc-prov-head h3{margin:0}
+.loc-prov-head h3 a{color:var(--ink);text-decoration:none}
+.loc-prov-head h3 a:hover{color:var(--accent)}
+.loc-stat{color:var(--accent);font-weight:800}
+.loc-prov .chips{margin:8px 0 0}
+.loc-prov .chip-on{font-size:12px;padding:6px 10px}
+.ver-landing{font-weight:800;color:var(--accent);text-decoration:none}
+.ver-landing:hover{text-decoration:underline}
+@media (max-width:600px){.loc-totals{grid-template-columns:repeat(2,1fr)}.loc-ccaa-head{flex-direction:column;gap:8px}}
+
+/* ============ FIX: panel-img/label-ba ya estaban en CSS; nos aseguramos ============ */
+.panel-img{position:relative;height:280px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.panel-img img{width:100%;height:100%;object-fit:cover;display:block}
+.label-ba{position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,.75);color:#fff;padding:4px 10px;font-size:14px;font-weight:900;border-radius:4px;letter-spacing:.05em;z-index:2}
+.label-ba.active{background:var(--accent);color:var(--btnText)}
+.before-after-mini .panel-img{height:200px}
+
+/* hero-img foto real en landings */
+.alpha .hero-local .hero-img{aspect-ratio:16/9;object-fit:cover;border:1px solid rgba(255,255,255,.1)}

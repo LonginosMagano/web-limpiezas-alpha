@@ -105,7 +105,44 @@ SLUG_ALIAS = {
     "villa de vallecas": "villa-de-vallecas",
 }
 
-# Datos para personalizar el texto de cada localidad (snippets reales).
+# --- Fotos reales ----------------------------------------------------------
+# Cards antes/después por ciudad para /galeria/ y para el hero de la landing.
+# Las claves coinciden con el nombre exacto de la provincia/ciudad.
+INTERVENCIONES = {
+    "Madrid":    ("assets/Limpieza de incendios madrid (1).png",     "assets/1759851918028.jpg"),
+    "Barcelona": ("assets/1759851783934.jpg",                         "assets/1759852290735.jpg"),
+    "Valencia":  ("assets/1759851834214.jpg",                         "assets/1759851918028.jpg"),
+    "Sevilla":   ("assets/1759851974041.jpg",                         "assets/1759852290735.jpg"),
+    "Málaga":    ("assets/1759852160572.jpg",                         "assets/1759851918028.jpg"),
+    "Zaragoza":  ("assets/Limpieza Incendioss Comunidades.jpg",       "assets/1759852290735.jpg"),
+    "Murcia":    ("assets/Limpieza de incendios en Oficina.png",      "assets/1759851918028.jpg"),
+    "Toledo":    ("assets/limpieza post incendios.png",               "assets/1759852290735.jpg"),
+}
+
+# Pool de fotos sueltas para cyclar como hero en landings que no están
+# en INTERVENCIONES. Se selecciona por hash(slug).
+HERO_POOL = [
+    "assets/1759851783934.jpg",
+    "assets/1759851834214.jpg",
+    "assets/1759851918028.jpg",
+    "assets/1759851974041.jpg",
+    "assets/1759851980235.jpg",
+    "assets/1759852160572.jpg",
+    "assets/1759852290735.jpg",
+    "assets/Limpieza Incendioss Comunidades.jpg",
+    "assets/Limpieza de incendios en Oficina.png",
+    "assets/Limpieza de incendios madrid (1).png",
+    "assets/limpieza post incendios.png",
+]
+
+# Logos de aseguradoras con las que trabajamos (trust strip en home).
+ASEGURADORAS = [
+    ("Mutua Madrileña", "assets/Limpieza de incendios Mutua madrileña.png"),
+    ("Mapfre",          "assets/limpieza de incendios maphre.png"),
+    ("AXA",             "assets/limpieza de incendios axa.jpg"),
+    ("Aegon",           "assets/limpieza de incendios aegon.png"),
+]
+
 # Se completa lo conocido; el generador usa textos genéricos cuando falta.
 LOCAL_NOTES = {
     "Madrid": {
