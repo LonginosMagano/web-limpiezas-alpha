@@ -25,6 +25,12 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Pillow (para regenerar OG images)
+        run: pip install Pillow
+
+      - name: Regenerate OG images por post
+        run: python3 tools/generate_og.py
+
       - name: Regenerate static site
         run: python3 tools/generate.py
 

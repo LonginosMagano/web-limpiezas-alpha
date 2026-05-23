@@ -1518,7 +1518,9 @@ def render_post(post: dict) -> str:
     if faq_pairs:
         jsonld.append(faqpage_ld(faq_pairs))
 
-    head = head_block(title, desc, url, extra_jsonld=jsonld)
+    # OG image específica del post (generada por tools/generate_og.py)
+    og_path = f"/assets/og/{slug}.webp"
+    head = head_block(title, desc, url, og_image=og_path, extra_jsonld=jsonld)
     cat = CATEGORY_LABEL.get(post.get("category", "general"), "")
 
     # Foto representativa del post (rotada por hash del slug) con alt
