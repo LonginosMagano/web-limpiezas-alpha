@@ -118,22 +118,23 @@ SLUG_ALIAS = {
 # Octubre 2025: incorporadas las fotos propias del cliente (cuadro
 # eléctrico calcinado, TV derretida, escaleras de comunidad, etc.).
 INTERVENCIONES = {
+    # Cada ciudad con foto antes y después ÚNICA (no se repite entre ciudades)
     "Madrid":    ("assets/television-derretida-pared-vivienda-incendio.webp",
                   "assets/operario-limpieza-hollin-tras-incendio.webp"),
     "Barcelona": ("assets/cuadro-electrico-calcinado-tras-incendio.webp",
-                  "assets/1759852290735.webp"),
+                  "assets/limpieza-pared-piedra-hollin-chimenea.webp"),
     "Valencia":  ("assets/azulejos-hollin-cocina-incendiada.webp",
                   "assets/1759851918028.webp"),
     "Sevilla":   ("assets/escalera-comunidad-hollin-tras-incendio.webp",
-                  "assets/1759852290735.webp"),
+                  "assets/1759851974041.webp"),
     "Málaga":    ("assets/pared-escalera-vecinos-hollin-incendio.webp",
-                  "assets/1759851918028.webp"),
+                  "assets/1759851980235.webp"),
     "Zaragoza":  ("assets/Limpieza Incendioss Comunidades.webp",
-                  "assets/1759852290735.webp"),
+                  "assets/1759851783934.webp"),
     "Murcia":    ("assets/Limpieza de incendios en Oficina.webp",
-                  "assets/1759851918028.webp"),
+                  "assets/1759852160572.webp"),
     "Toledo":    ("assets/limpieza post incendios.webp",
-                  "assets/1759852290735.webp"),
+                  "assets/1759851834214.webp"),
 }
 
 # Pool de fotos sueltas para cyclar como hero en landings que no están

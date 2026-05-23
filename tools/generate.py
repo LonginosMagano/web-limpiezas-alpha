@@ -529,14 +529,17 @@ def render_geo_page(p: GeoPage) -> str:
     meta_t = pick(META, slug)
     h1_t = pick(H1, slug)
 
-    # Foto hero: usa la intervención específica si existe (Madrid, BCN…)
-    # o cicla por hash sobre el pool de fotos reales.
-    if provincia in INTERVENCIONES:
-        hero_photo = INTERVENCIONES[provincia][1]
-    elif ciudad in INTERVENCIONES:
+    # Foto hero con variedad real:
+    #  - Las 8 capitales (Madrid, BCN, etc.) → su par único en INTERVENCIONES.
+    #  - Todo el resto (municipios, barrios, otras provincias) → ciclar por
+    #    hash en HERO_POOL filtrando las fotos que ya identifican a una
+    #    capital, para que ninguna landing repita la foto de una capital.
+    intervenciones_heroes = {pair[1] for pair in INTERVENCIONES.values()}
+    pool_libre = [f for f in HERO_POOL if f not in intervenciones_heroes]
+    if ciudad in INTERVENCIONES and p["kind"] == "provincia":
         hero_photo = INTERVENCIONES[ciudad][1]
     else:
-        hero_photo = HERO_POOL[h("hero-" + slug) % len(HERO_POOL)]
+        hero_photo = pool_libre[h("hero-" + slug) % len(pool_libre)] if pool_libre else HERO_POOL[h("hero-" + slug) % len(HERO_POOL)]
 
     fmt = dict(keyword=KEYWORD, kw_var=kw_var, ciudad=ciudad,
                provincia=provincia, brand=BRAND, phone=PHONE)
@@ -829,7 +832,7 @@ def render_geo_page(p: GeoPage) -> str:
       <h1>{h1}</h1>
       <p class="lead">{intro}</p>
       <img class="hero-img" src="/{urlsafe(hero_photo)}"
-        alt="{ALT_SCENES[h('alt-' + slug) % len(ALT_SCENES)]} en {ciudad} | {KEYWORD}"
+        alt="{KEYWORD} en {ciudad}: {ALT_SCENES[h('alt-' + slug) % len(ALT_SCENES)].lower()} ({kw_var}, {provincia})"
         width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
@@ -970,16 +973,16 @@ def render_home() -> str:
   </div>
 </div></section>
 
-<section class="section critical"><div class="wrap grid" style="grid-template-columns:1fr 1fr">
-  <article>
+<section class="section critical"><div class="wrap critical-stack">
+  <article class="critical-text">
     <p class="eyebrow">Primeras 72 horas</p>
     <h2>El hollín es ácido. Y tiene prisa.</h2>
     <p>En las primeras horas tras un incendio, los restos de combustión empiezan a meterse dentro del yeso, del papel, de la ropa que estaba en el armario cerrado. Pase tres días sin tratar la vivienda y el olor ya no se va con productos normales: hay que arrancarlo. Por eso lo razonable es llamar pronto, aunque sea solo para que pasemos a echar un vistazo y valorar.</p>
     <p><a class="btn" href="/servicios/limpieza-tras-incendio/">Ver el servicio detallado</a></p>
   </article>
-  <figure class="panel-img stone-wall-figure">
+  <figure class="stone-wall-figure">
     <img src="/assets/limpieza-pared-piedra-hollin-chimenea.webp"
-      alt="Pared de piedra natural cubierta de hollín durante el proceso de limpieza profesional tras incendio: a la derecha la zona ya tratada, a la izquierda todavía con la capa de carbón ácido por retirar"
+      alt="Limpieza despues de incendio: pared de piedra natural cubierta de hollín durante el proceso de descontaminación profesional. A la derecha la zona ya tratada, a la izquierda todavía con la capa de carbón ácido por retirar."
       width="800" height="1000" loading="lazy">
     <figcaption>Antes y durante, en la misma pared: la limpieza del hollín avanza por zonas.</figcaption>
   </figure>
