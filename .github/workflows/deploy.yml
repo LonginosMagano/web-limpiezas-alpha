@@ -1,0 +1,46 @@
+name: Build & deploy site
+
+# Cada push a main regenera el sitio y lo despliega a gh-pages.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Regenerate static site
+        run: python3 tools/generate.py
+
+      - name: Run QA (falla si rompe el checklist)
+        run: python3 tools/qa.py
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
+          # No publicar fuentes ni configuración del workflow
+          exclude_assets: 'tools,.github,.gitignore,README.md'
+          commit_message: 'Deploy ${{ github.sha }}'
+          keep_files: false
+          force_orphan: false
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
