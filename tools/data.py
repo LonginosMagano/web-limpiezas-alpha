@@ -38,6 +38,13 @@ KW_SECUNDARIAS = [
     "limpieza de ropa con olor a humo", "valoración daños por incendio",
     "perito de seguros incendio", "limpieza profesional post fuego",
     "limpieza nave industrial incendiada",
+    "limpieza cocina quemada", "limpieza tras incendio eléctrico",
+    "descontaminación de hollín en mobiliario", "limpieza de paredes ahumadas",
+    "limpieza tras incendio en comunidad de vecinos",
+    "limpieza después de fuego en vivienda", "tratamiento de humo tras incendio",
+    "limpieza textil después de incendio", "neutralizar olor a quemado",
+    "limpieza tras incendio en restaurante", "limpieza de oficina post incendio",
+    "limpieza chimenea con hollín", "intervención urgente tras incendio",
 ]
 
 # 8 CCAA en el orden fijado por la especificación, con sus provincias.
@@ -109,30 +116,30 @@ SLUG_ALIAS = {
 # Cards antes/después por ciudad para /galeria/ y para el hero de la landing.
 # Las claves coinciden con el nombre exacto de la provincia/ciudad.
 INTERVENCIONES = {
-    "Madrid":    ("assets/Limpieza de incendios madrid (1).png",     "assets/1759851918028.jpg"),
-    "Barcelona": ("assets/1759851783934.jpg",                         "assets/1759852290735.jpg"),
-    "Valencia":  ("assets/1759851834214.jpg",                         "assets/1759851918028.jpg"),
-    "Sevilla":   ("assets/1759851974041.jpg",                         "assets/1759852290735.jpg"),
-    "Málaga":    ("assets/1759852160572.jpg",                         "assets/1759851918028.jpg"),
-    "Zaragoza":  ("assets/Limpieza Incendioss Comunidades.jpg",       "assets/1759852290735.jpg"),
-    "Murcia":    ("assets/Limpieza de incendios en Oficina.png",      "assets/1759851918028.jpg"),
-    "Toledo":    ("assets/limpieza post incendios.png",               "assets/1759852290735.jpg"),
+    "Madrid":    ("assets/Limpieza de incendios madrid (1).webp",    "assets/1759851918028.webp"),
+    "Barcelona": ("assets/1759851783934.webp",                       "assets/1759852290735.webp"),
+    "Valencia":  ("assets/1759851834214.webp",                       "assets/1759851918028.webp"),
+    "Sevilla":   ("assets/1759851974041.webp",                       "assets/1759852290735.webp"),
+    "Málaga":    ("assets/1759852160572.webp",                       "assets/1759851918028.webp"),
+    "Zaragoza":  ("assets/Limpieza Incendioss Comunidades.webp",     "assets/1759852290735.webp"),
+    "Murcia":    ("assets/Limpieza de incendios en Oficina.webp",    "assets/1759851918028.webp"),
+    "Toledo":    ("assets/limpieza post incendios.webp",             "assets/1759852290735.webp"),
 }
 
 # Pool de fotos sueltas para cyclar como hero en landings que no están
 # en INTERVENCIONES. Se selecciona por hash(slug).
 HERO_POOL = [
-    "assets/1759851783934.jpg",
-    "assets/1759851834214.jpg",
-    "assets/1759851918028.jpg",
-    "assets/1759851974041.jpg",
-    "assets/1759851980235.jpg",
-    "assets/1759852160572.jpg",
-    "assets/1759852290735.jpg",
-    "assets/Limpieza Incendioss Comunidades.jpg",
-    "assets/Limpieza de incendios en Oficina.png",
-    "assets/Limpieza de incendios madrid (1).png",
-    "assets/limpieza post incendios.png",
+    "assets/1759851783934.webp",
+    "assets/1759851834214.webp",
+    "assets/1759851918028.webp",
+    "assets/1759851974041.webp",
+    "assets/1759851980235.webp",
+    "assets/1759852160572.webp",
+    "assets/1759852290735.webp",
+    "assets/Limpieza Incendioss Comunidades.webp",
+    "assets/Limpieza de incendios en Oficina.webp",
+    "assets/Limpieza de incendios madrid (1).webp",
+    "assets/limpieza post incendios.webp",
 ]
 
 # Logos de aseguradoras con las que trabajamos (trust strip en home).

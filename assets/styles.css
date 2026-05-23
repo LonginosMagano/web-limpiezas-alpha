@@ -181,3 +181,10 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
 
 /* hero-img foto real en landings */
 .alpha .hero-local .hero-img{aspect-ratio:16/9;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
+
+/* === Buscador en /ubicaciones/ === */
+.loc-search{margin-top:24px;max-width:560px}
+.loc-search input{width:100%;padding:14px 18px;font-size:16px;border:2px solid rgba(255,255,255,.15);background:#0a0d11;color:var(--ink);border-radius:8px;font-family:inherit}
+.loc-search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(255,107,0,.18)}
+.loc-search input::placeholder{color:var(--muted)}
+.loc-search-count{margin-top:8px;min-height:18px;color:var(--accent);font-weight:700}
