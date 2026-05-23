@@ -1035,9 +1035,40 @@ def render_ubicaciones() -> str:
     <div class="loc-total"><strong>{n_muns}</strong><span>Municipios</span></div>
     <div class="loc-total"><strong>{n_barr}</strong><span>Barrios Madrid</span></div>
   </div>
+  <div class="loc-search">
+    <input type="search" id="loc-search-input" placeholder="Busca tu ciudad, municipio o barrio…" autocomplete="off" aria-label="Buscar ubicación">
+    <p class="small loc-search-count" id="loc-search-count" aria-live="polite"></p>
+  </div>
 </div></section>
 {"".join(bloques)}
 </main>
+<script>
+(function(){{
+  var input = document.getElementById("loc-search-input");
+  var counter = document.getElementById("loc-search-count");
+  if (!input) return;
+  var ccaas = Array.from(document.querySelectorAll(".loc-ccaa"));
+  function norm(s){{ return (s||"").toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,""); }}
+  function filter(){{
+    var q = norm(input.value.trim());
+    var totalVisible = 0;
+    ccaas.forEach(function(sec){{
+      var anyVisible = false;
+      sec.querySelectorAll(".loc-prov").forEach(function(card){{
+        var hay = norm(card.textContent);
+        var match = !q || hay.indexOf(q) !== -1;
+        card.style.display = match ? "" : "none";
+        if (match) anyVisible = true, totalVisible++;
+      }});
+      sec.style.display = anyVisible ? "" : "none";
+    }});
+    if (counter) counter.textContent = q
+      ? (totalVisible + " ubicaci" + (totalVisible === 1 ? "ón" : "ones") + " coinciden")
+      : "";
+  }}
+  input.addEventListener("input", filter);
+}})();
+</script>
 {footer_html()}"""
     return head + body
 
