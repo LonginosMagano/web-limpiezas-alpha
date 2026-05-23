@@ -36,6 +36,7 @@ PHOTOS = [
     "azulejos-hollin-cocina-incendiada.jpg",
     "escalera-comunidad-hollin-tras-incendio.jpg",
     "pared-escalera-vecinos-hollin-incendio.jpg",
+    "limpieza-pared-piedra-hollin-chimenea.jpg",
 ]
 
 MAX_SIDE = 1600

@@ -977,10 +977,12 @@ def render_home() -> str:
     <p>En las primeras horas tras un incendio, los restos de combustión empiezan a meterse dentro del yeso, del papel, de la ropa que estaba en el armario cerrado. Pase tres días sin tratar la vivienda y el olor ya no se va con productos normales: hay que arrancarlo. Por eso lo razonable es llamar pronto, aunque sea solo para que pasemos a echar un vistazo y valorar.</p>
     <p><a class="btn" href="/servicios/limpieza-tras-incendio/">Ver el servicio detallado</a></p>
   </article>
-  <div class="grid before-after">
-    <div class="panel-img"><img src="/{urlsafe(INTERVENCIONES['Madrid'][0])}" alt="Antes — {KEYWORD}" width="800" height="450" loading="lazy"><span class="label-ba">ANTES</span></div>
-    <div class="panel-img"><img src="/{urlsafe(INTERVENCIONES['Madrid'][1])}" alt="Después — {KEYWORD}" width="800" height="450" loading="lazy"><span class="label-ba active">DESPUÉS</span></div>
-  </div>
+  <figure class="panel-img stone-wall-figure">
+    <img src="/assets/limpieza-pared-piedra-hollin-chimenea.webp"
+      alt="Pared de piedra natural cubierta de hollín durante el proceso de limpieza profesional tras incendio: a la derecha la zona ya tratada, a la izquierda todavía con la capa de carbón ácido por retirar"
+      width="800" height="1000" loading="lazy">
+    <figcaption>Antes y durante, en la misma pared: la limpieza del hollín avanza por zonas.</figcaption>
+  </figure>
 </div></section>
 
 <section class="section"><div class="wrap">
