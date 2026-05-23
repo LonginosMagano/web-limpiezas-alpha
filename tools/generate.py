@@ -27,6 +27,7 @@ from data import (
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
 )
 from templates import TITLE, META, H1, PARRAFOS, COBERTURA_BLURB, FAQ_LOCAL_POOL
+from posts import POSTS, CATEGORY_LABEL
 
 ROOT = Path(__file__).parent.parent
 NOW = "2026-05-23"
@@ -839,6 +840,8 @@ def render_sitemap() -> str:
     urls = ["/", "/servicios/limpieza-tras-incendio/", "/ubicaciones/",
             "/blog/", "/galeria/", "/testimonios/", "/faq/",
             "/aviso-legal/", "/privacidad/", "/cookies/"]
+    for post in POSTS:
+        urls.append(f"/blog/{post['slug']}/")
     for p in PAGES:
         urls.append(p["url"])
 
@@ -903,6 +906,9 @@ def render_llms() -> str:
     for p in PAGES:
         if p["kind"] == "provincia":
             lines.append(f"- [{p['name']}]({DOMAIN}{p['url']})")
+    lines += ["", "## Blog"]
+    for post in POSTS:
+        lines.append(f"- [{post['title']}]({DOMAIN}/blog/{post['slug']}/): {post['meta'][:120]}")
     lines += [
         "",
         "## Información de la empresa",
@@ -969,6 +975,192 @@ ErrorDocument 404 /404.html
 """
 
 
+# --------------------------------------------------------- BLOG --
+
+def article_ld(post: dict, url: str) -> dict:
+    return {
+        "@context": "https://schema.org", "@type": "Article",
+        "headline": post["title"],
+        "description": post["meta"],
+        "author": {"@type": "Organization", "name": BRAND},
+        "publisher": {
+            "@type": "Organization", "name": BRAND,
+            "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.svg"},
+        },
+        "datePublished": NOW, "dateModified": NOW,
+        "mainEntityOfPage": DOMAIN + url,
+        "inLanguage": "es-ES",
+    }
+
+def howto_ld(post: dict) -> dict:
+    return {
+        "@context": "https://schema.org", "@type": "HowTo",
+        "name": post["title"],
+        "description": post["quick_answer"],
+        "step": [
+            {"@type": "HowToStep", "position": i + 1,
+             "name": s["name"], "text": s["text"]}
+            for i, s in enumerate(post["howto_steps"])
+        ],
+    }
+
+
+def render_post(post: dict) -> str:
+    slug = post["slug"]
+    url = f"/blog/{slug}/"
+    title = f"{post['title']} | Blog {BRAND}"
+    desc = post["meta"]
+    crumbs = [("Inicio", "/"), ("Blog", "/blog/"), (post["title"], url)]
+
+    # cuerpo
+    secs_html = []
+    for sec in post.get("sections", []):
+        parts = [f"<h2>{sec['h2']}</h2>"]
+        for p in sec.get("paragraphs", []):
+            parts.append(f"<p>{p}</p>")
+        if "list_items" in sec:
+            parts.append("<ul>" + "".join(f"<li>{li}</li>" for li in sec["list_items"]) + "</ul>")
+        if "table" in sec:
+            rows = sec["table"]
+            head_row = "<tr>" + "".join(f"<th>{c}</th>" for c in rows[0]) + "</tr>"
+            body_rows = "".join(
+                "<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows[1:]
+            )
+            parts.append(f'<div class="table-wrap"><table class="data-table"><thead>{head_row}</thead><tbody>{body_rows}</tbody></table></div>')
+        secs_html.append("\n".join(parts))
+
+    howto_html = ""
+    if post.get("howto_steps"):
+        items = "".join(
+            f'<li><strong>{s["name"]}.</strong> {s["text"]}</li>'
+            for s in post["howto_steps"]
+        )
+        howto_html = f'<h2>Paso a paso</h2><ol class="howto">{items}</ol>'
+
+    faq_pairs = post.get("faq", [])
+    faq_html = ""
+    if faq_pairs:
+        items = "".join(
+            f'<details class="card"><summary><h3>{q}</h3></summary><p>{a}</p></details>'
+            for q, a in faq_pairs
+        )
+        faq_html = f'<section class="section faqs"><div class="wrap"><h2>Preguntas frecuentes</h2>{items}</div></section>'
+
+    # related
+    related = post.get("related", [])
+    related_html = ""
+    if related:
+        items = []
+        for rs in related:
+            rp = next((x for x in POSTS if x["slug"] == rs), None)
+            if rp:
+                items.append(f'<li><a href="/blog/{rp["slug"]}/">{rp["title"]}</a></li>')
+        if items:
+            related_html = f'<section class="section"><div class="wrap"><h2>También te puede interesar</h2><ul class="related-list">{"".join(items)}</ul></div></section>'
+
+    # JSON-LD
+    jsonld = [
+        organization_ld(),
+        article_ld(post, url),
+        breadcrumb_ld(crumbs),
+    ]
+    if post.get("howto_steps"):
+        jsonld.append(howto_ld(post))
+    if faq_pairs:
+        jsonld.append(faqpage_ld(faq_pairs))
+
+    head = head_block(title, desc, url, extra_jsonld=jsonld)
+    cat = CATEGORY_LABEL.get(post.get("category", "general"), "")
+
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <a href="/blog/">Blog</a> › <span>{post['title']}</span></div></nav>
+<main>
+<article class="post">
+  <header class="post-head"><div class="wrap">
+    <p class="eyebrow">{cat}</p>
+    <h1>{post['title']}</h1>
+  </div></header>
+
+  <section class="section"><div class="wrap article">
+    <div class="quick-answer">
+      <strong>Respuesta rápida:</strong>
+      <p>{post['quick_answer']}</p>
+    </div>
+
+    {"".join(secs_html)}
+
+    {howto_html}
+
+    <p class="cta-inline">¿Necesitas ayuda hoy? <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a></p>
+  </div></section>
+
+  {faq_html}
+  {related_html}
+</article>
+</main>
+{footer_html()}"""
+    return head + body
+
+
+def render_blog_index() -> str:
+    url = "/blog/"
+    title = f"Blog: guías sobre {KEYWORD.lower()} | {BRAND}"
+    desc = f"Blog con guías sobre {KEYWORD.lower()}, cómo eliminar el olor a humo, cómo gestionar el seguro y casos por ciudad."
+
+    # agrupar por categoría
+    by_cat = {}
+    for p in POSTS:
+        by_cat.setdefault(p["category"], []).append(p)
+
+    bloques = []
+    for cat_key in ["general", "seguros", "ciudad"]:
+        if cat_key not in by_cat:
+            continue
+        items = "".join(
+            f'<article class="card post-card">'
+            f'<p class="eyebrow">{CATEGORY_LABEL[cat_key]}</p>'
+            f'<h3><a href="/blog/{p["slug"]}/">{p["title"]}</a></h3>'
+            f'<p>{p["meta"][:140]}…</p>'
+            f'<p><a href="/blog/{p["slug"]}/">Leer más →</a></p>'
+            f'</article>'
+            for p in by_cat[cat_key]
+        )
+        bloques.append(
+            f'<section class="section"><div class="wrap">'
+            f'<h2>{CATEGORY_LABEL[cat_key]}</h2>'
+            f'<div class="grid post-grid">{items}</div>'
+            f'</div></section>'
+        )
+
+    jsonld = [
+        organization_ld(),
+        breadcrumb_ld([("Inicio", "/"), ("Blog", url)]),
+        {
+            "@context": "https://schema.org", "@type": "Blog",
+            "name": f"Blog de {BRAND}", "url": DOMAIN + url,
+            "blogPost": [
+                {"@type": "BlogPosting", "headline": p["title"],
+                 "url": DOMAIN + f"/blog/{p['slug']}/", "datePublished": NOW}
+                for p in POSTS
+            ],
+        },
+    ]
+    head = head_block(title, desc, url, extra_jsonld=jsonld)
+
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Blog</span></div></nav>
+<main>
+<section class="hero hero-local"><div class="wrap">
+  <p class="eyebrow">Blog</p>
+  <h1>Guías sobre {KEYWORD.lower()}</h1>
+  <p class="lead">Qué hacer en las primeras 72 horas, cómo eliminar el olor a humo, cómo gestionar el seguro y casos prácticos por ciudad.</p>
+</div></section>
+{"".join(bloques)}
+</main>
+{footer_html()}"""
+    return head + body
+
+
 # Placeholder pages (legales, blog, galería, testimonios, faq) — versión mínima
 def render_placeholder(title_short: str, h1: str, body_text: str, path: str) -> str:
     title = f"{title_short} | {BRAND}"
@@ -1023,11 +1215,10 @@ def main() -> None:
     # 404
     write(ROOT / "404.html", render_404())
 
-    # Placeholders (se completan en Fase 2 y 3)
-    write(ROOT / "blog" / "index.html", render_placeholder(
-        "Blog", f"Blog sobre {KEYWORD.lower()}",
-        "Próximamente publicaremos guías sobre cómo actuar tras un incendio, cómo eliminar el olor a humo, cómo gestionar el seguro y casos reales por ciudad.",
-        "/blog/"))
+    # Blog (índice + posts)
+    write(ROOT / "blog" / "index.html", render_blog_index())
+    for post in POSTS:
+        write(ROOT / "blog" / post["slug"] / "index.html", render_post(post))
     write(ROOT / "galeria" / "index.html", render_placeholder(
         "Galería", "Galería de trabajos reales",
         "Publicaremos pronto fotografías reales de intervenciones por estancias, antes y después, en distintas ciudades.",

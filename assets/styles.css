@@ -37,3 +37,28 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
 .floating-contact .btn{box-shadow:0 14px 40px rgba(0,0,0,.4);padding:12px 16px;font-size:14px}
 @media (min-width:901px){.floating-contact{flex-direction:row;align-items:center}}
 @media (max-width:900px){.layout-with-sidebar{grid-template-columns:1fr}}
+
+/* === Blog === */
+.post-head{padding:48px 0 12px;background:linear-gradient(135deg,#1b222b,#0b0f14)}
+.post-head h1{font-size:clamp(30px,4.5vw,52px)}
+.quick-answer{background:rgba(255,107,0,.08);border-left:4px solid var(--accent);padding:18px 22px;border-radius:6px;margin:0 0 32px}
+.quick-answer strong{color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-size:13px;display:block;margin-bottom:6px}
+.quick-answer p{margin:0;font-size:18px;color:var(--ink)}
+.article ul,.article ol{padding-left:20px;line-height:1.7}
+.article li{margin-bottom:10px}
+.article ol.howto{counter-reset:ho;list-style:none;padding:0}
+.article ol.howto li{counter-increment:ho;padding:14px 14px 14px 56px;position:relative;background:var(--card);border-radius:6px;margin-bottom:10px}
+.article ol.howto li::before{content:counter(ho);position:absolute;left:16px;top:14px;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--btnText);display:grid;place-items:center;font-weight:900}
+.table-wrap{overflow-x:auto;margin:14px 0}
+.data-table{width:100%;border-collapse:collapse;font-size:15px}
+.data-table th,.data-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left}
+.data-table th{background:rgba(255,107,0,.12);color:var(--accent);font-weight:800}
+.post-grid{grid-template-columns:repeat(3,1fr)}
+.post-card h3 a{text-decoration:none}
+.post-card h3 a:hover{color:var(--accent)}
+.related-list{list-style:none;padding:0}
+.related-list li{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.related-list a{font-weight:700;text-decoration:none}
+.related-list a:hover{color:var(--accent)}
+.cta-inline{margin-top:32px;padding:18px;background:var(--card);border-radius:8px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+@media (max-width:900px){.post-grid{grid-template-columns:1fr!important}}
