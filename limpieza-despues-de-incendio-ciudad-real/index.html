@@ -29,14 +29,18 @@
 <div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:681811301">Urgencias y valoración: 681811301</a></div></div>
 <header class="main-nav"><div class="wrap">
   <a class="brand-row" href="/web-limpiezas-alpha/"><img class="logo-img" src="/web-limpiezas-alpha/assets/logo.png" alt="Limpiezas de Incendios Alpha" width="140" height="70" loading="eager"><span class="logo-text">Limpiezas de Incendios Alpha</span></a>
-  <nav class="nav">
+  <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav" id="primary-nav">
     <a href="/web-limpiezas-alpha/servicios/limpieza-tras-incendio/">Servicio</a>
     <a href="/web-limpiezas-alpha/ubicaciones/">Ubicaciones</a>
     <a href="/web-limpiezas-alpha/blog/">Blog</a>
     <a href="/web-limpiezas-alpha/testimonios/">Testimonios</a>
     <a href="/web-limpiezas-alpha/faq/">FAQ</a>
+    <a class="btn nav-cta" href="tel:681811301">Llamar 681811301</a>
   </nav>
-  <a class="btn" href="tel:681811301">Llamar 681811301</a>
+  <a class="btn nav-desktop-cta" href="tel:681811301">Llamar 681811301</a>
 </div></header>
 <nav class="crumbs"><div class="wrap"><a href="/web-limpiezas-alpha/">Inicio</a> › <a href="/web-limpiezas-alpha/ubicaciones/">Ubicaciones</a> › <span>Ciudad Real</span></div></nav>
 <main>
@@ -46,7 +50,7 @@
       <p class="eyebrow">Ciudad Real · Castilla-La Mancha</p>
       <h1>Limpieza Despues de Incendio en Ciudad Real: vivienda, local o nave</h1>
       <p class="lead">Limpieza Despues de Incendio en Ciudad Real: te ayudamos con el hollín, el humo y el olor a quemado tras un incendio en Ciudad Real (Ciudad Real). Llegamos, valoramos y limpiamos.</p>
-      <img class="hero-img" src="/web-limpiezas-alpha/assets/landings/limpieza-despues-de-incendio-ciudad-real.svg"
+      <img class="hero-img" src="/web-limpiezas-alpha/assets/limpieza%20post%20incendios.png"
         alt="Limpieza Despues de Incendio en Ciudad Real" width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:681811301">Llamar 681811301</a>
@@ -117,7 +121,6 @@
         <p>"Tuvimos un incendio en la cocina y el olor llegó a todas las habitaciones. En Ciudad Real llamamos a Limpiezas de Incendios Alpha, vinieron al día siguiente y a la semana ya podíamos volver a casa."</p>
         <footer>— Tomás, centro (Ciudad Real)</footer>
       </blockquote>
-      <p class="small">* Testimonio de ejemplo. Sustituiremos por reseñas reales en cuanto el cliente autorice publicarlas.</p>
     </div></section>
 
 <section class="section faqs"><div class="wrap">
@@ -177,6 +180,24 @@
   <button type="button">Aceptar</button>
 </div>
 <script>
+  // Hamburger mobile menu
+  (function(){
+    var t = document.querySelector(".nav-toggle"),
+        n = document.getElementById("primary-nav");
+    if (!t || !n) return;
+    t.addEventListener("click", function(){
+      var open = n.classList.toggle("open");
+      t.setAttribute("aria-expanded", open ? "true" : "false");
+      t.classList.toggle("open", open);
+    });
+    n.querySelectorAll("a").forEach(function(a){
+      a.addEventListener("click", function(){
+        n.classList.remove("open");
+        t.classList.remove("open");
+        t.setAttribute("aria-expanded", "false");
+      });
+    });
+  })();
   // Banner cookies
   (function(){
     var k="lda_cookies_v1", b=document.getElementById("cookies");

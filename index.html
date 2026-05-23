@@ -29,14 +29,18 @@
 <div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:681811301">Urgencias y valoración: 681811301</a></div></div>
 <header class="main-nav"><div class="wrap">
   <a class="brand-row" href="/web-limpiezas-alpha/"><img class="logo-img" src="/web-limpiezas-alpha/assets/logo.png" alt="Limpiezas de Incendios Alpha" width="140" height="70" loading="eager"><span class="logo-text">Limpiezas de Incendios Alpha</span></a>
-  <nav class="nav">
+  <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav" id="primary-nav">
     <a href="/web-limpiezas-alpha/servicios/limpieza-tras-incendio/">Servicio</a>
     <a href="/web-limpiezas-alpha/ubicaciones/">Ubicaciones</a>
     <a href="/web-limpiezas-alpha/blog/">Blog</a>
     <a href="/web-limpiezas-alpha/testimonios/">Testimonios</a>
     <a href="/web-limpiezas-alpha/faq/">FAQ</a>
+    <a class="btn nav-cta" href="tel:681811301">Llamar 681811301</a>
   </nav>
-  <a class="btn" href="tel:681811301">Llamar 681811301</a>
+  <a class="btn nav-desktop-cta" href="tel:681811301">Llamar 681811301</a>
 </div></header>
 <main>
 <section class="hero">
@@ -45,6 +49,7 @@
       <p class="eyebrow">Operativos 24/7 · 365 días</p>
       <h1>Limpieza Despues de Incendio: hollín, humo y olor fuera</h1>
       <p class="lead">Tras un incendio, cada hora cuenta. Limpiamos el hollín antes de que se fije, neutralizamos el olor y dejamos la documentación lista para el seguro.</p>
+      <img class="hero-img" src="/web-limpiezas-alpha/assets/1759851783934.jpg" alt="Limpieza Despues de Incendio — intervención real" width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:681811301">Llamar 681811301</a>
         <a class="btn alt" href="https://wa.me/34681811301">WhatsApp</a>
@@ -73,6 +78,16 @@
   </div>
 </section>
 
+<section class="trust-strip"><div class="wrap">
+  <p class="eyebrow">Trabajamos con tu aseguradora</p>
+  <div class="trust-logos">
+    <img src="/web-limpiezas-alpha/assets/Limpieza%20de%20incendios%20Mutua%20madrile%C3%B1a.png" alt="Logo Mutua Madrileña" loading="lazy" height="48">
+    <img src="/web-limpiezas-alpha/assets/limpieza%20de%20incendios%20maphre.png" alt="Logo Mapfre" loading="lazy" height="48">
+    <img src="/web-limpiezas-alpha/assets/limpieza%20de%20incendios%20axa.jpg" alt="Logo AXA" loading="lazy" height="48">
+    <img src="/web-limpiezas-alpha/assets/limpieza%20de%20incendios%20aegon.png" alt="Logo Aegon" loading="lazy" height="48">
+  </div>
+</div></section>
+
 <section class="stats-strip"><div class="wrap">
   <div class="stat"><strong>24h</strong><span>Primera valoración</span></div>
   <div class="stat"><strong>72h</strong><span>Fase crítica</span></div>
@@ -98,8 +113,8 @@
     <p><a class="btn" href="/web-limpiezas-alpha/servicios/limpieza-tras-incendio/">Ver el servicio detallado</a></p>
   </article>
   <div class="grid before-after">
-    <div class="panel">ANTES</div>
-    <div class="panel">DESPUÉS</div>
+    <div class="panel-img"><img src="/web-limpiezas-alpha/assets/Limpieza%20de%20incendios%20madrid%20%281%29.png" alt="Antes — Limpieza Despues de Incendio" width="800" height="450" loading="lazy"><span class="label-ba">ANTES</span></div>
+    <div class="panel-img"><img src="/web-limpiezas-alpha/assets/1759851918028.jpg" alt="Después — Limpieza Despues de Incendio" width="800" height="450" loading="lazy"><span class="label-ba active">DESPUÉS</span></div>
   </div>
 </div></section>
 
@@ -154,6 +169,24 @@
   <button type="button">Aceptar</button>
 </div>
 <script>
+  // Hamburger mobile menu
+  (function(){
+    var t = document.querySelector(".nav-toggle"),
+        n = document.getElementById("primary-nav");
+    if (!t || !n) return;
+    t.addEventListener("click", function(){
+      var open = n.classList.toggle("open");
+      t.setAttribute("aria-expanded", open ? "true" : "false");
+      t.classList.toggle("open", open);
+    });
+    n.querySelectorAll("a").forEach(function(a){
+      a.addEventListener("click", function(){
+        n.classList.remove("open");
+        t.classList.remove("open");
+        t.setAttribute("aria-expanded", "false");
+      });
+    });
+  })();
   // Banner cookies
   (function(){
     var k="lda_cookies_v1", b=document.getElementById("cookies");
