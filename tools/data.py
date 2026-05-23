@@ -141,6 +141,8 @@ INTERVENCIONES = {
 HERO_POOL = [
     # Foto humana de operario trabajando — la que mejor convierte
     "assets/operario-limpieza-hollin-tras-incendio.webp",
+    # Pared de piedra mostrando contraste antes/durante en una sola imagen
+    "assets/limpieza-pared-piedra-hollin-chimenea.webp",
     # Daños tangibles
     "assets/television-derretida-pared-vivienda-incendio.webp",
     "assets/cuadro-electrico-calcinado-tras-incendio.webp",
