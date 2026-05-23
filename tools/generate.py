@@ -937,7 +937,7 @@ def render_home() -> str:
       <p class="eyebrow">Operativos 24/7 · 365 días</p>
       <h1>{KEYWORD}: hollín, humo y olor fuera</h1>
       <p class="lead">Tras un incendio, lo último que necesita es lidiar con bayetas, ambientadores y peritos. Subimos a su casa o local, miramos en serio lo que ha pasado y empezamos a trabajar. La memoria para el seguro la entregamos nosotros. Usted descansa.</p>
-      <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="{KEYWORD} — intervención real" width="800" height="450" loading="eager">
+      <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="Operario de Limpiezas de Incendios Alpha retirando hollín de una pared tras un incendio doméstico" width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
         <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>

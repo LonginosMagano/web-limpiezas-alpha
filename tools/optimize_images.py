@@ -29,6 +29,13 @@ PHOTOS = [
     "Limpieza de incendios en Oficina.png",
     "Limpieza de incendios madrid (1).png",
     "limpieza post incendios.png",
+    # Nuevas fotos propias subidas por el cliente (octubre 2025)
+    "operario-limpieza-hollin-tras-incendio.jpg",
+    "cuadro-electrico-calcinado-tras-incendio.jpg",
+    "television-derretida-pared-vivienda-incendio.jpg",
+    "azulejos-hollin-cocina-incendiada.jpg",
+    "escalera-comunidad-hollin-tras-incendio.jpg",
+    "pared-escalera-vecinos-hollin-incendio.jpg",
 ]
 
 MAX_SIDE = 1600
