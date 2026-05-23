@@ -242,6 +242,18 @@ def footer_html() -> str:
     <img src="/assets/wa.svg" alt="WhatsApp" width="22" height="22" loading="lazy"> WhatsApp
   </a>
 </div>
+<div class="sticky-cta-mobile" role="region" aria-label="Contacto rápido">
+  <a class="sticky-cta-btn primary" href="tel:{PHONE}">
+    <span class="sticky-cta-icon" aria-hidden="true">📞</span>
+    <span class="sticky-cta-text">
+      <span class="sticky-cta-line">Llamar ahora</span>
+      <span class="sticky-cta-sub">Respondemos en menos de 1h</span>
+    </span>
+  </a>
+  <a class="sticky-cta-btn whatsapp" href="https://wa.me/{PHONE_INTL}" aria-label="WhatsApp">
+    <img src="/assets/wa.svg" alt="" width="28" height="28" loading="lazy" aria-hidden="true">
+  </a>
+</div>
 <footer class="site-foot"><div class="wrap">
   <div>
     <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.webp" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>

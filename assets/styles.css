@@ -237,3 +237,44 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
 .video-teaser-thumb:hover img{transform:scale(1.03)}
 .video-teaser-thumb .play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:rgba(255,107,0,.92);color:#fff;display:grid;place-items:center;font-size:28px;line-height:1;padding-left:8px;box-shadow:0 8px 30px rgba(255,107,0,.5)}
 .video-teaser-thumb .video-duration{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.78);color:#fff;font-size:13px;font-weight:800;padding:4px 9px;border-radius:4px;letter-spacing:.04em}
+
+/* === Sticky CTA móvil — barra fija inferior con Llamar + WhatsApp === */
+.sticky-cta-mobile{display:none}
+
+@media (max-width:900px){
+  /* Ocultamos la pill flotante anterior — la sustituimos por la barra */
+  .floating-contact{display:none!important}
+
+  .sticky-cta-mobile{
+    display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;
+    gap:10px;padding:10px 12px;
+    background:rgba(11,15,20,.96);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border-top:1px solid rgba(255,255,255,.12);
+    box-shadow:0 -10px 30px rgba(0,0,0,.4)
+  }
+  .sticky-cta-btn{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;color:var(--btnText);font-weight:900;
+    padding:11px 14px;border-radius:8px;line-height:1;
+    transition:filter .15s ease
+  }
+  .sticky-cta-btn:active{filter:brightness(.92)}
+  .sticky-cta-btn.primary{
+    flex:1 1 auto;background:var(--accent);
+    box-shadow:0 6px 18px rgba(255,107,0,.4)
+  }
+  .sticky-cta-btn.whatsapp{
+    flex:0 0 auto;background:#25D366;width:54px;justify-content:center;padding:0
+  }
+  .sticky-cta-btn.whatsapp img{height:30px;width:30px;display:block}
+  .sticky-cta-icon{font-size:20px;line-height:1}
+  .sticky-cta-text{display:flex;flex-direction:column;text-align:left}
+  .sticky-cta-line{font-size:15px;font-weight:900;letter-spacing:.01em}
+  .sticky-cta-sub{font-size:11px;font-weight:700;opacity:.78;margin-top:2px;letter-spacing:.02em}
+
+  /* Padding al body para que la barra no tape el último contenido */
+  body{padding-bottom:78px}
+  .cookie-banner{bottom:90px}
+}
