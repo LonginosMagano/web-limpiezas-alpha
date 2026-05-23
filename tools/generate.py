@@ -792,7 +792,6 @@ def render_home() -> str:
     <article class="card"><p class="eyebrow">02</p><h3>Olor a quemado</h3><p>Ozonización o tratamiento con hidroxilo en cada estancia hasta dejar olor neutro.</p></article>
     <article class="card"><p class="eyebrow">03</p><h3>Cocina incendiada</h3><p>Desengrase de campanas, muebles, techos y azulejos. Recuperación de superficies útiles.</p></article>
     <article class="card"><p class="eyebrow">04</p><h3>Vivienda quemada</h3><p>Trabajo por estancias para priorizar lo crítico (cocina, baño, dormitorios) y devolver la vivienda al uso.</p></article>
-    <article class="card"><p class="eyebrow">05</p><h3>Documentación para el seguro</h3><p>Fotos antes/después, memoria de actuación y desglose para el perito. Sin sorpresas.</p></article>
   </div>
 </div></section>
 
