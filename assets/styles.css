@@ -188,3 +188,22 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
 .loc-search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(255,107,0,.18)}
 .loc-search input::placeholder{color:var(--muted)}
 .loc-search-count{margin-top:8px;min-height:18px;color:var(--accent);font-weight:700}
+
+/* === Link juice extras === */
+.guias-blog{background:#0a0d11;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)}
+.guias-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.guia-card{text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;min-height:160px;transition:.2s;border-left:3px solid var(--accent)}
+.guia-card:hover{transform:translateY(-3px);background:#1a2230}
+.guia-card h3{margin:6px 0;font-size:18px;color:var(--ink)}
+.guia-card .ver-mas{color:var(--accent);font-weight:800;font-size:14px;margin-top:8px}
+
+.post-photo{margin:0;background:#0a0d11}
+.post-photo img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block}
+
+.city-cta{background:rgba(255,107,0,.08);border-left:4px solid var(--accent);padding:18px 22px;border-radius:6px;margin:24px 0 32px}
+.city-cta .eyebrow{margin-bottom:6px}
+.city-cta p{margin:0}
+.city-cta .btn{margin-left:8px}
+
+.zones-cta{background:#0a0d11}
+.zones-cta .chips{margin:14px 0 18px}

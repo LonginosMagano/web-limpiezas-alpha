@@ -31,7 +31,7 @@ from data import (
     BRAND, DOMAIN, BASE_PATH, PHONE, PHONE_INTL, EMAIL, KEYWORD, KEYWORD_SLUG,
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
-    INTERVENCIONES, HERO_POOL, ASEGURADORAS,
+    INTERVENCIONES, HERO_POOL, ASEGURADORAS, ALT_SCENES,
 )
 
 
@@ -707,8 +707,39 @@ def render_geo_page(p: GeoPage) -> str:
 
     # ---- enlaces contextuales en cuerpo ----
     contextual = (
-        f'<p>Lee también <a href="/blog/que-hacer-despues-de-un-incendio/">qué hacer en las primeras 72 horas</a> '
+        f'<p>Lee también <a href="/blog/que-hacer-despues-de-un-incendio/">qué hacer en las primeras 72 horas</a>, '
+        f'<a href="/blog/como-eliminar-olor-humo/">cómo eliminar el olor a humo</a> '
         f'o consulta nuestra <a href="/galeria/">galería de trabajos reales</a>.</p>'
+    )
+
+    # ---- bloque "Guías del blog" para link juice landing → posts ----
+    # Selección curada: si la landing es Madrid/Barcelona/Málaga enlaza al
+    # post específico de esa ciudad además de 3 generales rotados por hash.
+    from posts import POSTS as _POSTS  # import local para evitar ciclo
+    blog_links = []
+    # Post de ciudad si existe (Madrid, Barcelona, Málaga)
+    city_post = next((p for p in _POSTS if p.get("city") == ciudad), None)
+    if city_post:
+        blog_links.append((f"/blog/{city_post['slug']}/", city_post["title"]))
+    # 3-4 posts generales (rotación por hash para no clonar)
+    generales = [p for p in _POSTS if p["category"] in ("general", "seguros")]
+    for i in range(4 if not city_post else 3):
+        pg_post = generales[(h("blog-" + slug) + i * 7) % len(generales)]
+        link = (f"/blog/{pg_post['slug']}/", pg_post["title"])
+        if link not in blog_links:
+            blog_links.append(link)
+    guias_html = (
+        '<section class="section guias-blog"><div class="wrap">'
+        f'<h2>Guías y consejos relacionados</h2>'
+        '<div class="grid guias-grid">'
+        + "".join(
+            f'<a class="card guia-card" href="{href}">'
+            f'<span class="eyebrow">Guía</span>'
+            f'<h3>{title}</h3>'
+            f'<span class="ver-mas">Leer →</span></a>'
+            for href, title in blog_links
+        )
+        + '</div></div></section>'
     )
 
     head = head_block(title, desc, url,
@@ -724,7 +755,8 @@ def render_geo_page(p: GeoPage) -> str:
       <h1>{h1}</h1>
       <p class="lead">{intro}</p>
       <img class="hero-img" src="/{urlsafe(hero_photo)}"
-        alt="{KEYWORD} en {ciudad}" width="800" height="450" loading="eager">
+        alt="{ALT_SCENES[h('alt-' + slug) % len(ALT_SCENES)]} en {ciudad} | {KEYWORD}"
+        width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
         <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
@@ -761,6 +793,8 @@ def render_geo_page(p: GeoPage) -> str:
 
 {tambien_html}
 {barrios_section}
+
+{guias_html}
 
 <section class="section cta-band"><div class="wrap" style="text-align:center">
   <h2>¿Has tenido un incendio en {ciudad}?</h2>
@@ -1334,6 +1368,49 @@ def render_post(post: dict) -> str:
     head = head_block(title, desc, url, extra_jsonld=jsonld)
     cat = CATEGORY_LABEL.get(post.get("category", "general"), "")
 
+    # Foto representativa del post (rotada por hash del slug) con alt
+    # descriptivo de escena — bueno para IA y SEO de imágenes.
+    photo = HERO_POOL[h("post-img-" + slug) % len(HERO_POOL)]
+    photo_alt = (
+        f"{ALT_SCENES[h('post-alt-' + slug) % len(ALT_SCENES)]} "
+        f"— ilustración del artículo: {post['title']}"
+    )
+
+    # Link juice → landing:
+    # • Si el post tiene `city`, CTA destacado a su landing geo
+    # • En posts generales/seguros, bloque "¿Necesitas ayuda en tu zona?"
+    #   con chips a las 8 capitales destacadas
+    city_cta = ""
+    if post.get("city"):
+        city_slug = slugify(post["city"])
+        city_cta = (
+            '<aside class="city-cta">'
+            f'<p class="eyebrow">¿Necesitas ayuda en {post["city"]}?</p>'
+            f'<p>Tenemos equipo local con desplazamiento en menos de 4 horas. '
+            f'<a class="btn" href="/{KEYWORD_SLUG}-{city_slug}/">'
+            f'Ver servicio en {post["city"]} →</a></p>'
+            '</aside>'
+        )
+
+    zonas_html = ""
+    if not post.get("city"):
+        destacadas = ["Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga",
+                      "Zaragoza", "Murcia", "Toledo"]
+        chips = []
+        for d in destacadas:
+            pg = next((x for x in PAGES
+                       if x["kind"] == "provincia" and x["name"] == d), None)
+            if pg:
+                chips.append(f'<a class="chip chip-on" href="{pg["url"]}">→ {d}</a>')
+        zonas_html = (
+            '<section class="section zones-cta"><div class="wrap">'
+            '<h2>¿Necesitas ayuda en tu zona?</h2>'
+            '<p>Cubrimos 8 comunidades autónomas con landing propia por ciudad. Elige la tuya:</p>'
+            f'<div class="chips">{"".join(chips)}</div>'
+            f'<p><a class="btn alt" href="/ubicaciones/">Ver las {sum(1 for x in PAGES if x["kind"] != "provincia") + sum(1 for x in PAGES if x["kind"] == "provincia")} ubicaciones</a></p>'
+            '</div></section>'
+        )
+
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <a href="/blog/">Blog</a> › <span>{post['title']}</span></div></nav>
 <main>
@@ -1343,11 +1420,18 @@ def render_post(post: dict) -> str:
     <h1>{post['title']}</h1>
   </div></header>
 
+  <figure class="post-photo">
+    <img src="/{urlsafe(photo)}" alt="{photo_alt}"
+      width="1200" height="675" loading="eager">
+  </figure>
+
   <section class="section"><div class="wrap article">
     <div class="quick-answer">
       <strong>Respuesta rápida:</strong>
       <p>{post['quick_answer']}</p>
     </div>
+
+    {city_cta}
 
     {"".join(secs_html)}
 
@@ -1357,6 +1441,7 @@ def render_post(post: dict) -> str:
   </div></section>
 
   {faq_html}
+  {zonas_html}
   {related_html}
 </article>
 </main>
