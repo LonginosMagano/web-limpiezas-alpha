@@ -35,6 +35,26 @@ from data import (
 )
 
 
+# Plantillas de anchor para variar el texto de los enlaces de localidad.
+# Se selecciona uno por hash(origen+destino) para diversificar sin caos.
+ANCHOR_TEMPLATES = [
+    "{ciudad}",
+    "{keyword} en {ciudad}",
+    "empresa de limpieza tras incendio en {ciudad}",
+    "limpieza profesional en {ciudad}",
+    "limpieza de hollín en {ciudad}",
+    "servicio en {ciudad}",
+    "limpieza post incendio en {ciudad}",
+    "atendemos en {ciudad}",
+    "hollín, humo y olor en {ciudad}",
+]
+
+def anchor_for(origen_slug: str, dst_slug: str, ciudad: str) -> str:
+    """Texto de anchor variado pero determinista por par (origen, destino)."""
+    idx = h(f"a-{origen_slug}->{dst_slug}") % len(ANCHOR_TEMPLATES)
+    return ANCHOR_TEMPLATES[idx].format(keyword=KEYWORD, ciudad=ciudad)
+
+
 def with_base(html: str) -> str:
     """Prefija href="/foo" y src="/foo" con BASE_PATH para que el sitio
     funcione cuando se sirve desde un subdirectorio (GitHub Pages project).
@@ -573,7 +593,8 @@ def render_geo_page(p: GeoPage) -> str:
         for m in MUNICIPIOS.get(provincia, []):
             pg = next((x for x in muns_with_page if x["name"] == m), None)
             if pg:
-                chips.append(f'<a class="chip chip-on" href="{pg["url"]}">→ {m}</a>')
+                anchor = anchor_for(slug, pg["slug"], m)
+                chips.append(f'<a class="chip chip-on" href="{pg["url"]}">{anchor}</a>')
             else:
                 chips.append(f'<span class="chip">{m}</span>')
         if chips:
@@ -589,7 +610,8 @@ def render_geo_page(p: GeoPage) -> str:
             for b in BARRIOS_MADRID:
                 pg = next((x for x in PAGES if x["kind"] == "barrio" and x["name"] == b), None)
                 if pg:
-                    barrio_chips.append(f'<a class="chip chip-on" href="{pg["url"]}">→ Barrio {b}</a>')
+                    anchor = anchor_for(slug, pg["slug"], f"barrio {b}")
+                    barrio_chips.append(f'<a class="chip chip-on" href="{pg["url"]}">{anchor}</a>')
             if barrio_chips:
                 barrios_section = (
                     '<section class="section barrios-band"><div class="wrap">'
@@ -603,11 +625,13 @@ def render_geo_page(p: GeoPage) -> str:
                                if x["kind"] == "provincia" and x["name"] == provincia), None)
         bits = []
         if provincia_page:
-            bits.append(f'<a class="chip chip-on" href="{provincia_page["url"]}">→ {provincia}</a>')
+            anchor = anchor_for(slug, provincia_page["slug"], provincia)
+            bits.append(f'<a class="chip chip-on" href="{provincia_page["url"]}">{anchor}</a>')
         sib = [x for x in PAGE_BY_PROV.get(provincia, [])
                if x["slug"] != slug and x["kind"] != "provincia"][:8]
         for x in sib:
-            bits.append(f'<a class="chip chip-on" href="{x["url"]}">→ {x["name"]}</a>')
+            anchor = anchor_for(slug, x["slug"], x["name"])
+            bits.append(f'<a class="chip chip-on" href="{x["url"]}">{anchor}</a>')
         if bits:
             tambien_html = (
                 '<section class="section"><div class="wrap">'
@@ -619,7 +643,8 @@ def render_geo_page(p: GeoPage) -> str:
     sidebar_links = []
     for pg in PAGE_BY_PROV.get(provincia, []):
         if pg["slug"] != slug:
-            sidebar_links.append(f'<a href="{pg["url"]}">{pg["name"]}</a>')
+            anchor = anchor_for(slug + "-sb", pg["slug"], pg["name"])
+            sidebar_links.append(f'<a href="{pg["url"]}">{anchor}</a>')
     sidebar_links = sidebar_links[:12]
 
     cercanas = []
@@ -633,7 +658,8 @@ def render_geo_page(p: GeoPage) -> str:
             ppage = next((x for x in PAGES
                           if x["kind"] == "provincia" and x["name"] == prov), None)
             if ppage:
-                cercanas.append(f'<a href="{ppage["url"]}">{prov}</a>')
+                anchor = anchor_for(slug + "-c", ppage["slug"], prov)
+                cercanas.append(f'<a href="{ppage["url"]}">{anchor}</a>')
     cercanas = cercanas[:8]
 
     # Sidebar extra: "Otros barrios" cuando estamos en una landing de barrio
@@ -642,7 +668,8 @@ def render_geo_page(p: GeoPage) -> str:
         otros_b = []
         for x in PAGES:
             if x["kind"] == "barrio" and x["slug"] != slug:
-                otros_b.append(f'<a href="{x["url"]}">Barrio {x["name"]}</a>')
+                anchor = anchor_for(slug + "-bb", x["slug"], f"barrio {x['name']}")
+                otros_b.append(f'<a href="{x["url"]}">{anchor}</a>')
         otros_b = otros_b[:12]
         if otros_b:
             sidebar_barrios = (
@@ -789,6 +816,7 @@ def render_geo_page(p: GeoPage) -> str:
 <section class="section faqs"><div class="wrap">
   <h2>La gente también pregunta — {ciudad}</h2>
   {faq_html}
+  <p class="faq-more"><a href="/faq/">Ver todas las preguntas frecuentes →</a> · <a href="/testimonios/">Ver reseñas de clientes →</a> · <a href="/blog/">Ir al blog completo →</a></p>
 </div></section>
 
 {tambien_html}
@@ -917,6 +945,26 @@ def render_home() -> str:
 <section class="section faqs"><div class="wrap">
   <h2>Preguntas frecuentes</h2>
   {home_faq_html}
+  <p class="faq-more"><a href="/faq/">Ver todas las preguntas frecuentes →</a></p>
+</div></section>
+
+<section class="section guias-blog"><div class="wrap">
+  <h2>Guías del blog</h2>
+  <p>Lo que más se busca: cómo eliminar el olor a humo, qué hacer en las primeras 72h, cuánto cuesta una limpieza tras incendio, qué pide el perito del seguro.</p>
+  <div class="grid guias-grid">
+    <a class="card guia-card" href="/blog/que-hacer-despues-de-un-incendio/"><span class="eyebrow">Guía</span><h3>Qué hacer después de un incendio en casa</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/como-eliminar-olor-humo/"><span class="eyebrow">Guía</span><h3>Cómo eliminar el olor a humo</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/cuanto-cuesta-limpieza-tras-incendio/"><span class="eyebrow">Guía</span><h3>Cuánto cuesta una limpieza tras incendio</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/seguro-cubre-limpieza-incendio/"><span class="eyebrow">Seguros</span><h3>¿La limpieza tras incendio la cubre el seguro?</h3><span class="ver-mas">Leer →</span></a>
+  </div>
+  <p style="margin-top:18px"><a class="btn alt" href="/blog/">Ver las 21 guías del blog →</a></p>
+</div></section>
+
+<section class="section"><div class="wrap" style="text-align:center">
+  <p class="eyebrow">Reseñas reales</p>
+  <h2>Lo que dicen nuestros clientes</h2>
+  <p>Valoración media 4.9/5 sobre intervenciones en vivienda, local y comunidad.</p>
+  <p><a class="btn alt" href="/testimonios/">Ver testimonios →</a></p>
 </div></section>
 
 </main>
@@ -986,6 +1034,33 @@ def render_servicio_madre() -> str:
   </ol>
 
   <p><a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a></p>
+</div></section>
+
+<section class="section"><div class="wrap">
+  <h2>¿Dónde damos servicio?</h2>
+  <p>Atendemos en 8 comunidades autónomas, con landing propia por capital y municipios principales. Algunas ubicaciones destacadas:</p>
+  <div class="chips">
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-madrid/">Limpieza tras incendio en Madrid</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-barcelona/">Empresa de limpieza en Barcelona</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-valencia/">Limpieza profesional en Valencia</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-sevilla/">Hollín, humo y olor en Sevilla</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-malaga/">Servicio en Málaga</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-zaragoza/">Limpieza post incendio en Zaragoza</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-murcia/">Atendemos en Murcia</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-toledo/">Limpieza de hollín en Toledo</a>
+  </div>
+  <p><a class="btn alt" href="/ubicaciones/">Ver las 113 ubicaciones</a></p>
+</div></section>
+
+<section class="section guias-blog"><div class="wrap">
+  <h2>Antes de llamarnos, quizá te sirva leer</h2>
+  <div class="grid guias-grid">
+    <a class="card guia-card" href="/blog/que-hacer-despues-de-un-incendio/"><span class="eyebrow">Guía</span><h3>Qué hacer después de un incendio</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/como-eliminar-olor-humo/"><span class="eyebrow">Guía</span><h3>Cómo eliminar el olor a humo</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/cuanto-cuesta-limpieza-tras-incendio/"><span class="eyebrow">Guía</span><h3>Cuánto cuesta</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/documentacion-perito-seguros/"><span class="eyebrow">Seguros</span><h3>Qué pide el perito tras un incendio</h3><span class="ver-mas">Leer →</span></a>
+  </div>
+  <p><a href="/faq/">Ver FAQ completa →</a> · <a href="/testimonios/">Ver testimonios →</a> · <a href="/galeria/">Galería de intervenciones →</a></p>
 </div></section>
 
 </main>
@@ -1528,6 +1603,30 @@ def render_faq_global() -> str:
   <p class="lead">Plazos, coste, seguro, olor a humo, ropa, ozonización. Si tu duda no está aquí, llámanos al {PHONE}.</p>
 </div></section>
 <section class="section faqs"><div class="wrap">{items}</div></section>
+
+<section class="section cta-band"><div class="wrap" style="text-align:center">
+  <h2>¿Tu duda sigue sin resolverse?</h2>
+  <p>Llámanos y te respondemos al momento, sin compromiso.</p>
+  <div class="cta-row" style="justify-content:center">
+    <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
+    <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
+  </div>
+</div></section>
+
+<section class="section"><div class="wrap">
+  <h2>Cobertura por ciudad</h2>
+  <div class="chips">
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-madrid/">Madrid</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-barcelona/">Barcelona</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-valencia/">Valencia</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-sevilla/">Sevilla</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-malaga/">Málaga</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-zaragoza/">Zaragoza</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-murcia/">Murcia</a>
+    <a class="chip chip-on" href="/limpieza-despues-de-incendio-toledo/">Toledo</a>
+  </div>
+  <p><a href="/ubicaciones/">Ver las 113 ubicaciones →</a> · <a href="/servicios/limpieza-tras-incendio/">El servicio explicado →</a> · <a href="/blog/">Blog completo →</a></p>
+</div></section>
 </main>
 {footer_html()}"""
     return head + body
@@ -1588,6 +1687,26 @@ def render_testimonios() -> str:
 <section class="section"><div class="wrap">
   <div class="grid review-grid">{"".join(cards)}</div>
   <p class="small">* Testimonios de ejemplo basados en perfiles reales hasta tener consentimiento explícito de publicación. Pide referencias verificadas al {PHONE}.</p>
+</div></section>
+
+<section class="section guias-blog"><div class="wrap">
+  <h2>Lo más leído del blog</h2>
+  <div class="grid guias-grid">
+    <a class="card guia-card" href="/blog/que-hacer-despues-de-un-incendio/"><span class="eyebrow">Guía</span><h3>Qué hacer después de un incendio</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/como-eliminar-olor-humo/"><span class="eyebrow">Guía</span><h3>Cómo eliminar el olor a humo</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/blog/seguro-cubre-limpieza-incendio/"><span class="eyebrow">Seguros</span><h3>¿La limpieza la cubre el seguro?</h3><span class="ver-mas">Leer →</span></a>
+    <a class="card guia-card" href="/galeria/"><span class="eyebrow">Galería</span><h3>Trabajos reales antes/después</h3><span class="ver-mas">Ver →</span></a>
+  </div>
+  <p><a href="/blog/">Ver las 21 guías del blog →</a> · <a href="/faq/">FAQ completa →</a> · <a href="/ubicaciones/">Cobertura por ciudad →</a></p>
+</div></section>
+
+<section class="section cta-band"><div class="wrap" style="text-align:center">
+  <h2>¿Has tenido un incendio?</h2>
+  <p>Te valoramos hoy mismo, sin compromiso.</p>
+  <div class="cta-row" style="justify-content:center">
+    <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
+    <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
+  </div>
 </div></section>
 </main>
 {footer_html()}"""

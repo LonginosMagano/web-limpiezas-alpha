@@ -207,3 +207,8 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
 
 .zones-cta{background:#0a0d11}
 .zones-cta .chips{margin:14px 0 18px}
+
+/* === Enlaces FAQ-more al final de bloques FAQ === */
+.faq-more{margin-top:18px;font-weight:700}
+.faq-more a{color:var(--accent);text-decoration:none;margin-right:6px}
+.faq-more a:hover{text-decoration:underline}
