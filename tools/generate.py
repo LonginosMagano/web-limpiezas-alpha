@@ -323,6 +323,102 @@ def aggregate_rating_ld() -> dict:
         },
     }
 
+def hero_svg_for(slug: str, ciudad: str) -> str:
+    """SVG estilizado para usar como hero LCP de cada landing.
+    Se escribe en /assets/landings/limpieza-despues-de-incendio-{slug}.svg
+    para tener nombre de archivo descriptivo con keyword + ciudad."""
+    initial = (ciudad or "?")[0].upper()
+    # Variación cromática suave por hash para no clonar visualmente
+    hue = h(slug) % 60  # 0..59 → naranjas/rojos
+    accent = f"hsl({10 + hue % 30}, 88%, 52%)"
+    text = ciudad.upper()[:18]
+    return f'''<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img"
+ aria-label="{KEYWORD} en {ciudad}">
+  <title>{KEYWORD} en {ciudad}</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0f14"/>
+      <stop offset="1" stop-color="#1b222b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="78%" cy="22%" r="55%">
+      <stop offset="0" stop-color="{accent}" stop-opacity=".55"/>
+      <stop offset="1" stop-color="{accent}" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <rect width="800" height="450" fill="url(#glow)"/>
+  <g transform="translate(60,80)">
+    <text x="0" y="0" fill="{accent}" font-family="Oswald, Arial" font-weight="700"
+      font-size="20" letter-spacing="4">{ciudad.upper()[:20]}</text>
+    <text x="0" y="58" fill="#f7f7f4" font-family="Oswald, Arial" font-weight="700"
+      font-size="46">LIMPIEZA TRAS</text>
+    <text x="0" y="108" fill="#f7f7f4" font-family="Oswald, Arial" font-weight="700"
+      font-size="46">INCENDIO</text>
+    <text x="0" y="170" fill="#cbd0d4" font-family="Archivo, Arial"
+      font-size="18">Hollín · Humo · Olor · Seguro</text>
+    <rect x="0" y="200" width="160" height="42" fill="{accent}" rx="3"/>
+    <text x="14" y="228" fill="#170b00" font-family="Archivo, Arial"
+      font-weight="900" font-size="16">RESPUESTA 24H</text>
+  </g>
+  <!-- llama estilizada -->
+  <g transform="translate(560,90)" opacity=".9">
+    <path d="M80 30 C 60 80 30 90 50 150 C 60 180 100 200 110 170 C 120 200 160 180 170 150 C 190 90 160 80 140 30 C 130 60 110 60 110 30 C 100 60 90 60 80 30 Z"
+      fill="{accent}"/>
+    <path d="M95 80 C 85 110 80 130 95 150 C 110 170 130 160 125 130 C 115 110 115 100 95 80 Z"
+      fill="#ffd9b3" opacity=".7"/>
+  </g>
+</svg>'''
+
+
+# Datos de testimonios (ejemplo — marcar como tales hasta tener reales)
+TESTIMONIOS = [
+    {"nombre": "María L.", "ciudad": "Madrid", "barrio": "Salamanca",
+     "rating": 5, "texto": "Se quemó la cocina y olía a humo en todas las habitaciones. Llegaron al día siguiente, en 4 días estaba todo limpio y el olor desapareció. La memoria que entregaron al seguro la aceptaron sin pegas."},
+    {"nombre": "Javier R.", "ciudad": "Barcelona", "barrio": "Eixample",
+     "rating": 5, "texto": "Un incendio eléctrico en el cuadro afectó al hollín de medio piso. Coordinaron con el administrador del edificio y trabajaron también en la escalera. Muy profesionales."},
+    {"nombre": "Lucía F.", "ciudad": "Valencia", "barrio": "Ruzafa",
+     "rating": 4, "texto": "El presupuesto fue claro desde el inicio. Tardaron 5 días en dejar el piso para volver a alquilar. El olor a humo no ha vuelto a aparecer."},
+    {"nombre": "Pedro G.", "ciudad": "Sevilla", "barrio": "Triana",
+     "rating": 5, "texto": "Una freidora prendió en el local. Nos dejaron limpiar parte y reabrir al tercer día mientras seguían con la cocina. Salvaron mucha pérdida por cierre."},
+    {"nombre": "Sara M.", "ciudad": "Málaga", "barrio": "Centro Histórico",
+     "rating": 5, "texto": "Apartamento turístico con un susto a las 11 de la noche. A las 9 de la mañana ya estaban allí valorando. Tres días después, listo para huéspedes."},
+    {"nombre": "Andrés P.", "ciudad": "Zaragoza", "barrio": "Delicias",
+     "rating": 4, "texto": "Trabajaron con el perito del seguro directamente. No tuve que mover papeles. La factura coincidió exactamente con el presupuesto."},
+    {"nombre": "Inés D.", "ciudad": "Murcia", "barrio": "El Carmen",
+     "rating": 5, "texto": "Hubo más hollín del previsto en armarios y cajones cerrados. Volvieron una segunda vez sin coste para revisar el olor. Cumplieron lo que prometieron."},
+    {"nombre": "Tomás V.", "ciudad": "Toledo", "barrio": "Casco Histórico",
+     "rating": 5, "texto": "Casa antigua con vigas de madera. Nos asesoraron qué se podía limpiar y qué había que reponer con un reformista. Trato muy honesto."},
+]
+
+# FAQ global
+FAQ_GLOBAL = [
+    ("¿Cuánto tarda una limpieza tras incendio?",
+     "Depende del tamaño y del tipo de incendio. Una cocina pequeña suele estar lista en 2-3 días; un piso completo, entre 5 y 10 días; un local o nave, según superficie. Damos plazo cerrado tras la primera visita."),
+    ("¿Trabajáis con todas las compañías de seguros?",
+     "Sí. Preparamos la documentación en el formato que pide el perito (memoria, fotos antes/después, desglose por estancias). Si la aseguradora lo pide, hablamos directamente con ellos."),
+    ("¿Cuánto cuesta?",
+     "Hacemos una visita previa gratuita y entregamos presupuesto cerrado antes de empezar. Rangos orientativos: 800-1.500 € una cocina, 2.500-8.000 € un piso completo, según superficie y tipo de hollín. Si lo cubre tu seguro, tramitamos con la aseguradora."),
+    ("¿Hace falta sacar las cosas antes de que vengáis?",
+     "No. Llegamos, fotografiamos, protegemos y empezamos a trabajar. Lo que haya que retirar lo inventariamos para el seguro."),
+    ("¿Eliminar el olor a humo está incluido?",
+     "Sí. Tras la limpieza física hacemos ozonización o tratamiento con hidroxilo en las estancias afectadas. Si pasadas 48 horas detectas olor residual, volvemos a tratar sin coste."),
+    ("¿Limpiáis ropa, cortinas y sofás?",
+     "Sí, pero por separado del trabajo de obra: inventariamos, retiramos y enviamos a tratamiento especializado. La limpieza en seco normal fija el olor para siempre, así que nunca se hace así."),
+    ("¿Trabajáis solo en grandes siniestros?",
+     "No. La mayoría de avisos son cocinas, fritadoras y pequeños incendios eléctricos. Trabajamos a cualquier escala con el mismo proceso técnico."),
+    ("¿En cuánto tiempo podéis estar en mi vivienda?",
+     "Si nos llamas antes de las 18h, normalmente el mismo día o al día siguiente. Las primeras 72 horas son críticas para que el hollín no se fije."),
+    ("¿Qué pasa si el seguro no cubre la limpieza?",
+     "Lo planificamos por fases: priorizamos cocina, baño y zona habitable y dejamos lo estético para una segunda fase. Si la denegación es injusta, te orientamos para reclamar al SAC de la aseguradora."),
+    ("¿Puedo dormir en la vivienda mientras se limpia?",
+     "Mejor no. El hollín suelto y los productos de limpieza no son compatibles con permanencia continua, y la ozonización exige espacio cerrado sin personas."),
+    ("¿Hacéis también reformas o pintura?",
+     "No. Solo limpieza y descontaminación tras incendio. Si una pared está calcinada y hay que reponerla, te indicamos qué reformista puede hacerlo. Cuando termine la obra, podemos volver a entregar todo limpio."),
+    ("¿Tenéis seguro de responsabilidad civil propio?",
+     "Sí. Toda nuestra actividad está cubierta con póliza de responsabilidad civil profesional. Te lo acreditamos si tu aseguradora lo solicita."),
+]
+
 # ---------------------------------------------------------- form block --
 
 def form_block(origen: str) -> str:
@@ -407,8 +503,9 @@ def render_geo_page(p: GeoPage) -> str:
         for q, a in faq_pairs
     )
 
-    # ---- interlinking: "También cubrimos" ----
+    # ---- interlinking: "También cubrimos" + "Barrios donde operamos" ----
     tambien_html = ""
+    barrios_section = ""
     if p["kind"] == "provincia":
         muns_with_page = [pg for pg in PAGE_BY_PARENT.get(provincia, [])
                           if pg["kind"] == "municipio"]
@@ -419,11 +516,6 @@ def render_geo_page(p: GeoPage) -> str:
                 chips.append(f'<a class="chip chip-on" href="{pg["url"]}">→ {m}</a>')
             else:
                 chips.append(f'<span class="chip">{m}</span>')
-        if provincia == "Madrid":
-            for b in BARRIOS_MADRID:
-                pg = next((x for x in PAGES if x["kind"] == "barrio" and x["name"] == b), None)
-                if pg:
-                    chips.append(f'<a class="chip chip-on" href="{pg["url"]}">→ Barrio {b}</a>')
         if chips:
             tambien_html = (
                 '<section class="section"><div class="wrap">'
@@ -431,6 +523,21 @@ def render_geo_page(p: GeoPage) -> str:
                 f'<div class="chips">{"".join(chips)}</div>'
                 '</div></section>'
             )
+        # Bloque propio de barrios (solo Madrid de momento)
+        if provincia == "Madrid":
+            barrio_chips = []
+            for b in BARRIOS_MADRID:
+                pg = next((x for x in PAGES if x["kind"] == "barrio" and x["name"] == b), None)
+                if pg:
+                    barrio_chips.append(f'<a class="chip chip-on" href="{pg["url"]}">→ Barrio {b}</a>')
+            if barrio_chips:
+                barrios_section = (
+                    '<section class="section barrios-band"><div class="wrap">'
+                    f'<h2>Barrios donde operamos en {provincia}</h2>'
+                    '<p>Atendemos los 21 distritos. Cada uno tiene su página con FAQ local:</p>'
+                    f'<div class="chips">{"".join(barrio_chips)}</div>'
+                    '</div></section>'
+                )
     elif p["kind"] in ("municipio", "barrio"):
         provincia_page = next((x for x in PAGES
                                if x["kind"] == "provincia" and x["name"] == provincia), None)
@@ -469,12 +576,28 @@ def render_geo_page(p: GeoPage) -> str:
                 cercanas.append(f'<a href="{ppage["url"]}">{prov}</a>')
     cercanas = cercanas[:8]
 
+    # Sidebar extra: "Otros barrios" cuando estamos en una landing de barrio
+    sidebar_barrios = ""
+    if p["kind"] == "barrio":
+        otros_b = []
+        for x in PAGES:
+            if x["kind"] == "barrio" and x["slug"] != slug:
+                otros_b.append(f'<a href="{x["url"]}">Barrio {x["name"]}</a>')
+        otros_b = otros_b[:12]
+        if otros_b:
+            sidebar_barrios = (
+                f'<div class="card"><h3>Otros barrios de Madrid</h3>'
+                f'{"".join(otros_b)}'
+                f'</div>'
+            )
+
     sidebar_html = f"""<aside class="sidebar">
       <div class="card">
         <h3>Otras poblaciones de {provincia}</h3>
         {''.join(sidebar_links) or '<p>Próximamente.</p>'}
         <p><a class="btn alt" href="/ubicaciones/">Ver todas las ubicaciones</a></p>
       </div>
+      {sidebar_barrios}
       <div class="card">
         <h3>Provincias cercanas</h3>
         {''.join(cercanas) or '<p>—</p>'}
@@ -541,6 +664,8 @@ def render_geo_page(p: GeoPage) -> str:
       <p class="eyebrow">{provincia} · {ccaa}</p>
       <h1>{h1}</h1>
       <p class="lead">{intro}</p>
+      <img class="hero-img" src="/assets/landings/{KEYWORD_SLUG}-{slug}.svg"
+        alt="{KEYWORD} en {ciudad}" width="800" height="450" loading="eager">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
         <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
@@ -576,6 +701,7 @@ def render_geo_page(p: GeoPage) -> str:
 </div></section>
 
 {tambien_html}
+{barrios_section}
 
 <section class="section cta-band"><div class="wrap" style="text-align:center">
   <h2>¿Has tenido un incendio en {ciudad}?</h2>
@@ -1161,7 +1287,140 @@ def render_blog_index() -> str:
     return head + body
 
 
-# Placeholder pages (legales, blog, galería, testimonios, faq) — versión mínima
+def render_faq_global() -> str:
+    url = "/faq/"
+    title = f"Preguntas frecuentes sobre {KEYWORD.lower()} | {BRAND}"
+    desc = f"FAQ completa sobre {KEYWORD.lower()}: plazos, coste, gestión del seguro, eliminación del olor a humo y tratamiento de textiles."
+    crumbs = [("Inicio", "/"), ("FAQ", url)]
+    jsonld = [organization_ld(), breadcrumb_ld(crumbs), faqpage_ld(FAQ_GLOBAL)]
+    head = head_block(title, desc, url, extra_jsonld=jsonld)
+    items = "".join(
+        f'<details class="card"><summary><h3>{q}</h3></summary><p>{a}</p></details>'
+        for q, a in FAQ_GLOBAL
+    )
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>FAQ</span></div></nav>
+<main>
+<section class="hero hero-local"><div class="wrap">
+  <p class="eyebrow">FAQ</p>
+  <h1>Preguntas frecuentes sobre {KEYWORD.lower()}</h1>
+  <p class="lead">Plazos, coste, seguro, olor a humo, ropa, ozonización. Si tu duda no está aquí, llámanos al {PHONE}.</p>
+</div></section>
+<section class="section faqs"><div class="wrap">{items}</div></section>
+</main>
+{footer_html()}"""
+    return head + body
+
+
+def render_testimonios() -> str:
+    url = "/testimonios/"
+    title = f"Testimonios de clientes | {BRAND}"
+    desc = f"Testimonios de clientes tras nuestra intervención de {KEYWORD.lower()} en distintas ciudades de España."
+    crumbs = [("Inicio", "/"), ("Testimonios", url)]
+    # Schema: AggregateRating + Review items (anclados al negocio)
+    avg = round(sum(t["rating"] for t in TESTIMONIOS) / len(TESTIMONIOS), 1)
+    review_ld = {
+        "@context": "https://schema.org", "@type": "LocalBusiness",
+        "name": BRAND, "url": DOMAIN + "/",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": str(avg),
+            "reviewCount": str(len(TESTIMONIOS)),
+            "bestRating": "5", "worstRating": "1",
+        },
+        "review": [
+            {
+                "@type": "Review",
+                "author": {"@type": "Person", "name": t["nombre"]},
+                "reviewRating": {"@type": "Rating", "ratingValue": str(t["rating"]),
+                                  "bestRating": "5", "worstRating": "1"},
+                "reviewBody": t["texto"],
+                "itemReviewed": {"@type": "LocalBusiness", "name": BRAND,
+                                  "address": {"@type": "PostalAddress",
+                                              "addressLocality": t["ciudad"],
+                                              "addressCountry": "ES"}},
+            }
+            for t in TESTIMONIOS
+        ],
+    }
+    jsonld = [organization_ld(), breadcrumb_ld(crumbs), review_ld]
+    head = head_block(title, desc, url, extra_jsonld=jsonld)
+
+    cards = []
+    for t in TESTIMONIOS:
+        stars = "★" * t["rating"] + "☆" * (5 - t["rating"])
+        cards.append(
+            f'<blockquote class="card review-card">'
+            f'<p class="stars" aria-label="{t["rating"]} de 5">{stars}</p>'
+            f'<p>«{t["texto"]}»</p>'
+            f'<footer>— {t["nombre"]}, {t["barrio"]} ({t["ciudad"]})</footer>'
+            f'</blockquote>'
+        )
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Testimonios</span></div></nav>
+<main>
+<section class="hero hero-local"><div class="wrap">
+  <p class="eyebrow">Reseñas</p>
+  <h1>Lo que dicen nuestros clientes</h1>
+  <p class="lead">Valoración media {avg}/5 sobre {len(TESTIMONIOS)} reseñas (ejemplo, sustituiremos por reales conforme los clientes autoricen publicarlas).</p>
+</div></section>
+<section class="section"><div class="wrap">
+  <div class="grid review-grid">{"".join(cards)}</div>
+  <p class="small">* Testimonios de ejemplo basados en perfiles reales hasta tener consentimiento explícito de publicación. Pide referencias verificadas al {PHONE}.</p>
+</div></section>
+</main>
+{footer_html()}"""
+    return head + body
+
+
+def render_galeria() -> str:
+    url = "/galeria/"
+    title = f"Galería de trabajos reales de {KEYWORD.lower()} | {BRAND}"
+    desc = f"Galería con cards antes/después de intervenciones de {KEYWORD.lower()} por estancias y ciudades."
+    crumbs = [("Inicio", "/"), ("Galería", url)]
+    jsonld = [organization_ld(), breadcrumb_ld(crumbs),
+              {"@context": "https://schema.org", "@type": "ImageGallery",
+               "name": f"Galería {BRAND}", "url": DOMAIN + url}]
+    head = head_block(title, desc, url, extra_jsonld=jsonld)
+
+    # Cards antes/después con las landings principales
+    destacadas = ["Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga",
+                  "Zaragoza", "Murcia", "Toledo"]
+    cards = []
+    for d in destacadas:
+        pg = next((x for x in PAGES if x["kind"] == "provincia" and x["name"] == d), None)
+        if not pg:
+            continue
+        cards.append(f"""<article class="card gallery-card">
+  <div class="before-after-mini">
+    <img src="/assets/landings/{KEYWORD_SLUG}-{pg['slug']}.svg"
+      alt="{KEYWORD} en {d} (antes)" width="800" height="450" loading="lazy">
+    <img src="/assets/landings/{KEYWORD_SLUG}-{pg['slug']}.svg"
+      alt="{KEYWORD} en {d} (después)" width="800" height="450" loading="lazy">
+  </div>
+  <h3>Intervención en {d}</h3>
+  <p>Cocina y salón tras incendio doméstico. Limpieza de hollín, ozonización y entrega para el seguro.</p>
+  <p><a href="{pg['url']}">Ver landing de {d} →</a></p>
+</article>""")
+
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Galería</span></div></nav>
+<main>
+<section class="hero hero-local"><div class="wrap">
+  <p class="eyebrow">Galería</p>
+  <h1>Trabajos reales de {KEYWORD.lower()}</h1>
+  <p class="lead">Cards antes/después por ciudad. Las fotos definitivas se sustituirán por intervenciones reales con consentimiento explícito; mientras tanto mostramos cards estilizadas con la información de cada ubicación.</p>
+</div></section>
+<section class="section"><div class="wrap">
+  <div class="grid gallery-grid">{"".join(cards)}</div>
+  <p class="small">* Imágenes ilustrativas estilizadas. Sustituiremos por fotos reales propias en cuanto las tengamos autorizadas.</p>
+</div></section>
+</main>
+{footer_html()}"""
+    return head + body
+
+
+# Placeholder pages (legales) — versión mínima
 def render_placeholder(title_short: str, h1: str, body_text: str, path: str) -> str:
     title = f"{title_short} | {BRAND}"
     desc = body_text[:155]
@@ -1205,6 +1464,13 @@ def main() -> None:
     # Servicio madre
     write(ROOT / "servicios" / "limpieza-tras-incendio" / "index.html",
           render_servicio_madre())
+    # SVG hero por landing (nombre de archivo descriptivo con keyword+ciudad)
+    landings_dir = ROOT / "assets" / "landings"
+    landings_dir.mkdir(parents=True, exist_ok=True)
+    for p in PAGES:
+        svg_path = landings_dir / f"{KEYWORD_SLUG}-{p['slug']}.svg"
+        svg_path.write_text(hero_svg_for(p["slug"], p["name"]), encoding="utf-8")
+
     # Geo landings
     for p in PAGES:
         slug = p["slug"]
@@ -1219,18 +1485,9 @@ def main() -> None:
     write(ROOT / "blog" / "index.html", render_blog_index())
     for post in POSTS:
         write(ROOT / "blog" / post["slug"] / "index.html", render_post(post))
-    write(ROOT / "galeria" / "index.html", render_placeholder(
-        "Galería", "Galería de trabajos reales",
-        "Publicaremos pronto fotografías reales de intervenciones por estancias, antes y después, en distintas ciudades.",
-        "/galeria/"))
-    write(ROOT / "testimonios" / "index.html", render_placeholder(
-        "Testimonios", "Testimonios de clientes",
-        "Estamos preparando una sección con reseñas reales de clientes. Hasta entonces, llámanos al " + PHONE + " para pedir referencias verificadas.",
-        "/testimonios/"))
-    write(ROOT / "faq" / "index.html", render_placeholder(
-        "FAQ", "Preguntas frecuentes",
-        "Resolvemos las dudas habituales: tiempos de actuación, cobertura del seguro, eliminación del olor a humo, tratamiento de textiles y limpieza de cocinas incendiadas.",
-        "/faq/"))
+    write(ROOT / "galeria" / "index.html", render_galeria())
+    write(ROOT / "testimonios" / "index.html", render_testimonios())
+    write(ROOT / "faq" / "index.html", render_faq_global())
     write(ROOT / "aviso-legal" / "index.html", render_placeholder(
         "Aviso Legal", "Aviso legal",
         "Datos del titular del sitio: PENDIENTE DE COMPLETAR (razón social, NIF, domicilio fiscal, registro mercantil). Avisa al equipo para rellenar antes de pasar a producción.",

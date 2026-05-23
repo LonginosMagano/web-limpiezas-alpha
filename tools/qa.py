@@ -164,6 +164,28 @@ for p in pages:
 if img_no_alt: warn(f"Páginas con <img> sin alt: {len(img_no_alt)} (ej. {img_no_alt[:3]})")
 else: ok("Todas las imágenes tienen atributo alt")
 
+# Cada landing geo: al menos una foto de contenido (no solo el icono wa.svg)
+geo_no_foto = []
+geo_alt_sin_kw = []
+for p in geo:
+    content_imgs = [a for a in p["imgs"] if "wa.svg" not in a]
+    if not content_imgs:
+        geo_no_foto.append(p["path"])
+        continue
+    # alt debe contener keyword principal
+    ok_alt = False
+    for a in content_imgs:
+        m = re.search(r'alt="([^"]+)"', a)
+        if m and KEYWORD.lower() in m.group(1).lower():
+            ok_alt = True
+            break
+    if not ok_alt:
+        geo_alt_sin_kw.append(p["path"])
+if geo_no_foto: err(f"Landings geo sin foto de contenido: {len(geo_no_foto)}")
+else: ok(f"Las {len(geo)} landings geo tienen al menos una foto de contenido")
+if geo_alt_sin_kw: err(f"Landings con foto pero sin alt con keyword: {len(geo_alt_sin_kw)}")
+else: ok("Todas las fotos de landings tienen alt con keyword principal")
+
 # --- 8. "Toda España" prohibido ------------------------------------------
 malos = []
 for p in pages:
