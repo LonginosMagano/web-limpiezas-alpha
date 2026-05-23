@@ -1,0 +1,52 @@
+# .htaccess — Limpiezas de Incendios Alpha
+
+DirectoryIndex index.html
+
+# Forzar HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Redirect www → sin www
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# 301 de URLs antiguas → nueva arquitectura
+RewriteRule ^provincias/([a-z0-9-]+)/?$ /limpieza-despues-de-incendio-$1/ [L,R=301]
+RewriteRule ^localidades/([a-z0-9-]+)/?$ /limpieza-despues-de-incendio-$1/ [L,R=301]
+RewriteRule ^zonas/([a-z0-9-]+)/?$ /ubicaciones/ [L,R=301]
+RewriteRule ^barrios/madrid/([a-z0-9-]+)/?$ /limpieza-despues-de-incendio-madrid-$1/ [L,R=301]
+RewriteRule ^barrios/valencia/([a-z0-9-]+)/?$ /limpieza-despues-de-incendio-valencia-$1/ [L,R=301]
+RewriteRule ^servicios/eliminacion-humo-hollin/?$ /servicios/limpieza-tras-incendio/ [L,R=301]
+RewriteRule ^servicios/limpieza-cocina-incendiada/?$ /servicios/limpieza-tras-incendio/ [L,R=301]
+RewriteRule ^servicios/recuperacion-vivienda-quemada/?$ /servicios/limpieza-tras-incendio/ [L,R=301]
+RewriteRule ^servicios/informe-seguro-incendio/?$ /servicios/limpieza-tras-incendio/ [L,R=301]
+
+# Página 404 personalizada
+ErrorDocument 404 /404.html
+
+# Caché de estáticos
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                 "access plus 30 days"
+  ExpiresByType application/javascript   "access plus 30 days"
+  ExpiresByType image/jpeg               "access plus 90 days"
+  ExpiresByType image/png                "access plus 90 days"
+  ExpiresByType image/svg+xml            "access plus 90 days"
+  ExpiresByType image/webp               "access plus 90 days"
+  ExpiresByType font/woff2               "access plus 180 days"
+  ExpiresByType text/html                "access plus 1 hour"
+</IfModule>
+
+# Compresión gzip
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# Cabeceras de seguridad
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "interest-cohort=()"
+</IfModule>
