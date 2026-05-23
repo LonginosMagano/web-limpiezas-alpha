@@ -22,10 +22,29 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from data import (
-    BRAND, DOMAIN, PHONE, PHONE_INTL, EMAIL, KEYWORD, KEYWORD_SLUG,
+    BRAND, DOMAIN, BASE_PATH, PHONE, PHONE_INTL, EMAIL, KEYWORD, KEYWORD_SLUG,
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
 )
+
+
+def with_base(html: str) -> str:
+    """Prefija href="/foo" y src="/foo" con BASE_PATH para que el sitio
+    funcione cuando se sirve desde un subdirectorio (GitHub Pages project).
+    Ignora rutas protocol-relative ("//..."), absolutas (http(s)://),
+    fragmentos (#...), tel:/mailto:/wa.me y rutas ya prefijadas."""
+    if not BASE_PATH:
+        return html
+    bp = BASE_PATH.rstrip("/")
+    # Solo paths que empiezan por "/" pero no por "//" y no por BASE_PATH ya.
+    html = re.sub(r'href="/(?!/)(?!' + re.escape(bp[1:]) + r'/)',
+                  f'href="{bp}/', html)
+    html = re.sub(r'src="/(?!/)(?!' + re.escape(bp[1:]) + r'/)',
+                  f'src="{bp}/', html)
+    # Atributo action="/" en formularios (por si lo añadimos algún día)
+    html = re.sub(r'action="/(?!/)(?!' + re.escape(bp[1:]) + r'/)',
+                  f'action="{bp}/', html)
+    return html
 from templates import TITLE, META, H1, PARRAFOS, COBERTURA_BLURB, FAQ_LOCAL_POOL
 from posts import POSTS, CATEGORY_LABEL
 
@@ -54,6 +73,9 @@ def kw_variant_for(slug: str) -> str:
 
 def write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    # Aplicar prefijo de BASE_PATH a enlaces internos en archivos HTML.
+    if path.suffix == ".html":
+        content = with_base(content)
     path.write_text(content, encoding="utf-8")
 
 # Diccionarios de provincia/ccaa para cada municipio y barrio

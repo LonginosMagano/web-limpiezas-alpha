@@ -20,6 +20,7 @@ HTMLS = [h for h in HTMLS if "/tools/" not in h]
 
 KEYWORD = "Limpieza Despues de Incendio"
 DOMAIN = "https://longinosmagano.github.io/web-limpiezas-alpha"
+BASE_PATH = "/web-limpiezas-alpha"
 
 errors, warnings, oks = [], [], []
 def err(msg): errors.append(msg)
@@ -237,6 +238,11 @@ for p in pages:
         path = u.path
         if not path.startswith("/"):
             continue
+        # Quitar el prefijo BASE_PATH para comparar contra la estructura local
+        if BASE_PATH and path.startswith(BASE_PATH + "/"):
+            path = path[len(BASE_PATH):]
+        elif BASE_PATH and path == BASE_PATH:
+            path = "/"
         if path in existing or (path + "index.html") in existing:
             continue
         broken.append((p["path"], href))

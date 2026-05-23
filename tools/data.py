@@ -6,6 +6,9 @@ listado de Comunidades Autónomas, provincias, municipios y barrios.
 
 BRAND = "Limpiezas de Incendios Alpha"
 DOMAIN = "https://longinosmagano.github.io/web-limpiezas-alpha"
+# Prefijo de las URLs internas cuando el sitio se sirve en un subdirectorio
+# (como project page de GitHub Pages). Cambiar a "" si pasa a dominio propio.
+BASE_PATH = "/web-limpiezas-alpha"
 PHONE = "681811301"
 PHONE_INTL = "34681811301"
 EMAIL = "contacto@limpiezasdeincendiosalpha.com"
