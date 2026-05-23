@@ -732,11 +732,38 @@ def render_geo_page(p: GeoPage) -> str:
         faqpage_ld(faq_pairs),
     ]
 
-    # ---- enlaces contextuales en cuerpo ----
+    # ---- párrafo contextual con enlaces inline naturales ----
+    # Anchors variados por hash(slug) para no clonar entre landings.
+    contextual_pool = [
+        ('cómo actuar en las primeras 72 horas', '/blog/que-hacer-despues-de-un-incendio/'),
+        ('eliminar el olor a humo paso a paso', '/blog/como-eliminar-olor-humo/'),
+        ('limpiar el hollín sin fijar la mancha', '/blog/limpieza-hollin-paredes/'),
+        ('cuánto cuesta una limpieza tras incendio', '/blog/cuanto-cuesta-limpieza-tras-incendio/'),
+        ('qué pide el perito del seguro', '/blog/documentacion-perito-seguros/'),
+        ('cómo reclamar al seguro', '/blog/como-reclamar-seguro-incendio/'),
+        ('cómo evitar que el hollín se fije', '/blog/como-evitar-que-hollin-se-fije/'),
+        ('qué hacer con la ropa con olor a humo', '/blog/que-hago-con-la-ropa-con-olor-a-humo/'),
+        ('cuánto tarda en limpiarse una casa', '/blog/cuanto-tarda-limpiarse-casa-tras-incendio/'),
+        ('necesito vaciar mi piso tras el incendio', '/blog/necesito-vaciar-piso-tras-incendio/'),
+    ]
+    # 3 enlaces curados por hash(slug), distintos entre sí
+    picked = []
+    for i in range(3):
+        idx = (h("ctx-" + slug) + i * 4) % len(contextual_pool)
+        if contextual_pool[idx] not in picked:
+            picked.append(contextual_pool[idx])
+    # Frase con anchor variado hacia el servicio madre
+    servicio_anchor = ANCHOR_TEMPLATES[h("serv-" + slug) % len(ANCHOR_TEMPLATES)].format(
+        keyword=KEYWORD, ciudad=ciudad
+    )
     contextual = (
-        f'<p>Lee también <a href="/blog/que-hacer-despues-de-un-incendio/">qué hacer en las primeras 72 horas</a>, '
-        f'<a href="/blog/como-eliminar-olor-humo/">cómo eliminar el olor a humo</a> '
-        f'o consulta nuestra <a href="/galeria/">galería de trabajos reales</a>.</p>'
+        f'<p>Si quieres profundizar antes de llamar, lee '
+        f'<a href="{picked[0][1]}">{picked[0][0]}</a>, '
+        f'<a href="{picked[1][1]}">{picked[1][0]}</a> o '
+        f'<a href="{picked[2][1]}">{picked[2][0]}</a>. '
+        f'También puedes ver el detalle de <a href="/servicios/limpieza-tras-incendio/">'
+        f'{servicio_anchor}: qué incluye y qué no</a>, y echarle un ojo a la '
+        f'<a href="/galeria/">galería de trabajos reales antes y después</a>.</p>'
     )
 
     # ---- bloque "Guías del blog" para link juice landing → posts ----
@@ -1137,7 +1164,7 @@ def render_ubicaciones() -> str:
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">Cobertura</p>
   <h1>Ubicaciones donde hacemos {KEYWORD.lower()}</h1>
-  <p class="lead">Atendemos en {len(CCAA)} comunidades autónomas, con landing propia por provincia, principales municipios y barrios.</p>
+  <p class="lead">Atendemos en {len(CCAA)} comunidades autónomas, con landing propia por provincia, principales municipios y barrios. Antes de elegir tu ciudad puedes mirar <a href="/servicios/limpieza-tras-incendio/">qué incluye nuestro servicio</a> y <a href="/galeria/">ver trabajos reales antes/después</a>.</p>
   <div class="loc-totals">
     <div class="loc-total"><strong>{len(CCAA)}</strong><span>Comunidades</span></div>
     <div class="loc-total"><strong>{n_provs}</strong><span>Provincias</span></div>
@@ -1462,7 +1489,11 @@ def render_post(post: dict) -> str:
             '<aside class="city-cta">'
             f'<p class="eyebrow">¿Necesitas ayuda en {post["city"]}?</p>'
             f'<p>Tenemos equipo local con desplazamiento en menos de 4 horas. '
-            f'<a class="btn" href="/{KEYWORD_SLUG}-{city_slug}/">'
+            f'Mira <a href="/{KEYWORD_SLUG}-{city_slug}/">'
+            f'la landing de {post["city"]} con FAQ específica</a> '
+            f'o consulta <a href="/servicios/limpieza-tras-incendio/">'
+            f'qué incluye nuestro servicio</a>.</p>'
+            f'<p><a class="btn" href="/{KEYWORD_SLUG}-{city_slug}/">'
             f'Ver servicio en {post["city"]} →</a></p>'
             '</aside>'
         )
@@ -1476,13 +1507,15 @@ def render_post(post: dict) -> str:
             pg = next((x for x in PAGES
                        if x["kind"] == "provincia" and x["name"] == d), None)
             if pg:
-                chips.append(f'<a class="chip chip-on" href="{pg["url"]}">→ {d}</a>')
+                anchor = anchor_for("post-" + slug, pg["slug"], d)
+                chips.append(f'<a class="chip chip-on" href="{pg["url"]}">{anchor}</a>')
         zonas_html = (
             '<section class="section zones-cta"><div class="wrap">'
             '<h2>¿Necesitas ayuda en tu zona?</h2>'
-            '<p>Cubrimos 8 comunidades autónomas con landing propia por ciudad. Elige la tuya:</p>'
+            '<p>Cubrimos 8 comunidades autónomas con landing propia por ciudad. '
+            'Si quieres entender antes <a href="/servicios/limpieza-tras-incendio/">qué incluye y qué no nuestro servicio de limpieza tras incendio</a>, mira la página del servicio. Para una valoración real, elige tu zona:</p>'
             f'<div class="chips">{"".join(chips)}</div>'
-            f'<p><a class="btn alt" href="/ubicaciones/">Ver las {sum(1 for x in PAGES if x["kind"] != "provincia") + sum(1 for x in PAGES if x["kind"] == "provincia")} ubicaciones</a></p>'
+            f'<p><a class="btn alt" href="/ubicaciones/">Ver las {len(PAGES)} ubicaciones</a></p>'
             '</div></section>'
         )
 
@@ -1746,7 +1779,7 @@ def render_galeria() -> str:
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">Galería</p>
   <h1>Trabajos reales de {KEYWORD.lower()}</h1>
-  <p class="lead">Cards antes/después por ciudad. Las fotos definitivas se sustituirán por intervenciones reales con consentimiento explícito; mientras tanto mostramos cards estilizadas con la información de cada ubicación.</p>
+  <p class="lead">Cards antes/después por ciudad de intervenciones reales de nuestro equipo. Si quieres entender <a href="/servicios/limpieza-tras-incendio/">qué incluye nuestro servicio paso a paso</a> o <a href="/ubicaciones/">en qué ciudades operamos</a>, los tienes a un clic.</p>
 </div></section>
 <section class="section"><div class="wrap">
   <div class="grid gallery-grid">{"".join(cards)}</div>
