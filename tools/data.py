@@ -126,6 +126,23 @@ INTERVENCIONES = {
     "Toledo":    ("assets/limpieza post incendios.webp",             "assets/1759852290735.webp"),
 }
 
+# Descripciones naturales de escena para los alts (rota por hash → cada
+# landing recibe un alt único pero descriptivo, no keyword-stuffed).
+# Los modelos de IA leen alt para entender qué hay en la imagen.
+ALT_SCENES = [
+    "Equipo retirando hollín y partículas de humo de pared tras incendio doméstico",
+    "Cocina tras incendio en proceso de descontaminación con ozono",
+    "Salón con muebles cubiertos antes de iniciar la limpieza profesional",
+    "Vivienda lista tras finalizar la limpieza post incendio",
+    "Operario aplicando producto desengrasante en techos ahumados",
+    "Estancia entregada después del tratamiento de olor a humo",
+    "Trabajos de limpieza profesional tras siniestro de cocina",
+    "Detalle de pared sin manchas tras retirada del hollín",
+    "Resultado final del tratamiento integral de descontaminación",
+    "Cocina recuperada tras retirar el hollín de campana y muebles",
+    "Estancia tras ozonización completa: olor a humo neutralizado",
+]
+
 # Pool de fotos sueltas para cyclar como hero en landings que no están
 # en INTERVENCIONES. Se selecciona por hash(slug).
 HERO_POOL = [
