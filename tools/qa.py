@@ -221,7 +221,7 @@ for fp in HTMLS:
         existing.add(rel[:-len("index.html")])
 # añadir robots, sitemap, llms
 for f in ["/robots.txt", "/sitemap.xml", "/llms.txt", "/assets/styles.css",
-          "/assets/favicon.ico", "/assets/logo.png", "/assets/hero.jpg",
+          "/assets/favicon.ico", "/assets/logo.webp", "/assets/hero.jpg",
           "/assets/wa.svg"]:
     if (ROOT / f.lstrip("/")).exists():
         existing.add(f)
