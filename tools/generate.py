@@ -877,8 +877,6 @@ def render_geo_page(p: GeoPage) -> str:
             f'{dir_linea}<br>'
             f'<a href="tel:{PHONE}">{PHONE}</a>'
             '</address>'
-            f'<p><a class="btn alt" href="{maps_url(deleg, ciudad)}" '
-            f'target="_blank" rel="noopener">Cómo llegar →</a></p>'
             '</div></section>'
         )
 
@@ -1226,8 +1224,6 @@ def render_ubicaciones() -> str:
             f'<div class="deleg-item">'
             f'<h3>{h3}</h3>'
             f'<address>{dir_linea}<br><a href="tel:{PHONE}">{PHONE}</a></address>'
-            f'<a class="deleg-maps" href="{maps_url(deleg, ciudad_d)}" '
-            f'target="_blank" rel="noopener">Cómo llegar →</a>'
             f'</div>'
         )
     delegaciones_cards = "".join(deleg_items)
