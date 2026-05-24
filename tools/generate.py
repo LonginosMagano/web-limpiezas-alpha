@@ -31,7 +31,7 @@ from data import (
     BRAND, DOMAIN, BASE_PATH, PHONE, PHONE_INTL, EMAIL, KEYWORD, KEYWORD_SLUG,
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
-    INTERVENCIONES, HERO_POOL, ASEGURADORAS, ALT_SCENES,
+    INTERVENCIONES, HERO_POOL, ASEGURADORAS, ALT_SCENES, DELEGACIONES,
 )
 
 
@@ -352,7 +352,21 @@ def organization_ld() -> dict:
     }
 
 def local_business_ld(ciudad: str, url: str) -> dict:
-    return {
+    # Si hay delegación física en esta ciudad, usamos su dirección real
+    # (NAP) y coordenadas; si no, dirección genérica de localidad.
+    deleg = DELEGACIONES.get(ciudad)
+    if deleg:
+        address = {
+            "@type": "PostalAddress",
+            "streetAddress": deleg["calle"],
+            "addressLocality": ciudad,
+            "postalCode": deleg["cp"],
+            "addressCountry": "ES",
+        }
+    else:
+        address = {"@type": "PostalAddress", "addressLocality": ciudad,
+                   "addressCountry": "ES"}
+    ld = {
         "@context": "https://schema.org", "@type": "LocalBusiness",
         "name": f"{BRAND} – {ciudad}",
         "url": DOMAIN + url, "telephone": "+" + PHONE_INTL,
@@ -360,7 +374,7 @@ def local_business_ld(ciudad: str, url: str) -> dict:
         "image": DOMAIN + "/assets/hero.jpg",
         "priceRange": "€€",
         "areaServed": ciudad,
-        "address": {"@type": "PostalAddress", "addressLocality": ciudad, "addressCountry": "ES"},
+        "address": address,
         "openingHoursSpecification": [
             {"@type": "OpeningHoursSpecification",
              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -370,6 +384,18 @@ def local_business_ld(ciudad: str, url: str) -> dict:
              "opens": "08:00", "closes": "16:00"},
         ],
     }
+    if deleg and deleg.get("lat") and deleg.get("lon"):
+        ld["geo"] = {"@type": "GeoCoordinates",
+                     "latitude": deleg["lat"], "longitude": deleg["lon"]}
+    return ld
+
+
+def maps_url(deleg: dict, ciudad: str) -> str:
+    """Enlace 'Cómo llegar' a Google Maps por coordenadas o por dirección."""
+    if deleg.get("lat") and deleg.get("lon"):
+        return f"https://www.google.com/maps/search/?api=1&query={deleg['lat']},{deleg['lon']}"
+    q = quote(f"{deleg['calle']}, {deleg['cp']} {ciudad}")
+    return f"https://www.google.com/maps/search/?api=1&query={q}"
 
 def faqpage_ld(pairs: list[tuple[str, str]]) -> dict:
     return {
@@ -831,6 +857,31 @@ def render_geo_page(p: GeoPage) -> str:
         + '</div></div></section>'
     )
 
+    # ---- bloque visible de delegación física (NAP) si existe ----
+    delegacion_html = ""
+    deleg = DELEGACIONES.get(ciudad)
+    if deleg:
+        dir_linea = deleg["calle"]
+        if deleg.get("distrito"):
+            dir_linea += f", {deleg['distrito']}"
+        dir_linea += f", {deleg['cp']} {ciudad}"
+        delegacion_html = (
+            '<section class="section delegacion"><div class="wrap">'
+            '<p class="eyebrow">Delegación local</p>'
+            f'<h2>Estamos en {ciudad}</h2>'
+            f'<p>No somos un número de teléfono lejano: tenemos base física en '
+            f'{ciudad}. Esto nos permite llegar antes y conocer de primera mano '
+            f'cómo son las viviendas y los edificios de la zona.</p>'
+            '<address class="delegacion-card">'
+            f'<strong>{BRAND} · {ciudad}</strong><br>'
+            f'{dir_linea}<br>'
+            f'<a href="tel:{PHONE}">{PHONE}</a>'
+            '</address>'
+            f'<p><a class="btn alt" href="{maps_url(deleg, ciudad)}" '
+            f'target="_blank" rel="noopener">Cómo llegar →</a></p>'
+            '</div></section>'
+        )
+
     head = head_block(title, desc, url,
                       og_image=f"/assets/foto-{slug[:30]}.jpg",
                       extra_jsonld=jsonld)
@@ -872,6 +923,8 @@ def render_geo_page(p: GeoPage) -> str:
     {sidebar_html}
   </div>
 </section>
+
+{delegacion_html}
 
 {testimonio_html}
 
@@ -1158,6 +1211,27 @@ def render_ubicaciones() -> str:
     n_muns = sum(1 for p in PAGES if p["kind"] == "municipio")
     n_barr = sum(1 for p in PAGES if p["kind"] == "barrio")
 
+    # Cards de delegaciones físicas, enlazando a su landing + Google Maps.
+    n_deleg = len(DELEGACIONES)
+    deleg_items = []
+    for ciudad_d, deleg in DELEGACIONES.items():
+        pg = next((x for x in PAGES
+                   if x["kind"] == "provincia" and x["name"] == ciudad_d), None)
+        dir_linea = deleg["calle"]
+        if deleg.get("distrito"):
+            dir_linea += f", {deleg['distrito']}"
+        dir_linea += f", {deleg['cp']} {ciudad_d}"
+        h3 = (f'<a href="{pg["url"]}">{ciudad_d}</a>' if pg else ciudad_d)
+        deleg_items.append(
+            f'<div class="deleg-item">'
+            f'<h3>{h3}</h3>'
+            f'<address>{dir_linea}<br><a href="tel:{PHONE}">{PHONE}</a></address>'
+            f'<a class="deleg-maps" href="{maps_url(deleg, ciudad_d)}" '
+            f'target="_blank" rel="noopener">Cómo llegar →</a>'
+            f'</div>'
+        )
+    delegaciones_cards = "".join(deleg_items)
+
     # Bloques por CCAA: cabecera grande con número + nombre + métricas;
     # provincias en grid de cards con sus municipios como chips.
     bloques = []
@@ -1227,6 +1301,14 @@ def render_ubicaciones() -> str:
     <p class="small loc-search-count" id="loc-search-count" aria-live="polite"></p>
   </div>
 </div></section>
+
+<section class="section delegacion"><div class="wrap">
+  <p class="eyebrow">Delegaciones</p>
+  <h2>Dónde tenemos base física</h2>
+  <p>Estas son nuestras {n_deleg} delegaciones. Desde ellas salen los equipos: por eso llegamos antes y conocemos de primera mano cómo son las viviendas y los edificios de cada zona.</p>
+  <div class="grid delegaciones-grid">{delegaciones_cards}</div>
+</div></section>
+
 {"".join(bloques)}
 </main>
 <script>
