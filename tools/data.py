@@ -189,6 +189,34 @@ ASEGURADORAS = [
     ("Aegon",           "assets/limpieza de incendios aegon.png"),
 ]
 
+# Delegaciones físicas (NAP real para SEO local). Clave = nombre de ciudad
+# que coincide con una landing de provincia. Enriquecen el LocalBusiness
+# JSON-LD con dirección postal y coordenadas, y se muestran visibles en la
+# landing con enlace "Cómo llegar".
+DELEGACIONES = {
+    "Madrid":     {"calle": "Calle de Juan de Mena, 7", "distrito": "Retiro",
+                   "cp": "28014", "lat": None, "lon": None},
+    "Valladolid": {"calle": "Plaza de León Felipe", "distrito": "",
+                   "cp": "47012", "lat": 41.641414, "lon": -4.714888},
+    "Zaragoza":   {"calle": "Torre Pajaritos I, 30", "distrito": "",
+                   "cp": "50012", "lat": 41.635964, "lon": -0.927542},
+    "Barcelona":  {"calle": "Carrer de Manuel Muñoz, 4", "distrito": "Sant Andreu",
+                   "cp": "08030", "lat": 41.444006, "lon": 2.190954},
+    "Valencia":   {"calle": "Calle del Filólogo Sanelo, 5", "distrito": "La Zaidía",
+                   "cp": "46009", "lat": None, "lon": None},
+    "Alicante":   {"calle": "Calle de la Violeta, 8, Torrellano", "distrito": "",
+                   "cp": "03320", "lat": None, "lon": None},
+    "Murcia":     {"calle": "Callejón del Quijero", "distrito": "",
+                   "cp": "30011", "lat": None, "lon": None},
+    "Almería":    {"calle": "Calle Bahía de Algeciras", "distrito": "",
+                   "cp": "04120", "lat": None, "lon": None},
+    "Granada":    {"calle": "Calle Huerta de los Ángeles, 3", "distrito": "Centro",
+                   "cp": "18009", "lat": None, "lon": None},
+    "Málaga":     {"calle": "Calle Torredonjimeno, 8", "distrito": "Bailén-Miraflores",
+                   "cp": "29010", "lat": None, "lon": None},
+}
+
+
 # Se completa lo conocido; el generador usa textos genéricos cuando falta.
 LOCAL_NOTES = {
     "Madrid": {
