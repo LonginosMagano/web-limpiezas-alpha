@@ -98,6 +98,63 @@ def pick(pool: list, seed: str, idx: int = 0) -> str:
 def kw_variant_for(slug: str) -> str:
     return KW_VARIANTS_NUCLEO[h("var-" + slug) % len(KW_VARIANTS_NUCLEO)]
 
+# ---------------------------------------------------- SEO length helpers --
+# Marca corta para que los <title> quepan en 30-60 caracteres sin perder la
+# keyword (que siempre va delante).
+BRAND_SHORT = "Limpiezas Alpha"
+
+def clamp_title(t: str, max_len: int = 60) -> str:
+    """Recorta un <title> a <=max_len sin cortar palabras ni dejar separadores."""
+    t = " ".join(t.split()).strip()
+    if len(t) <= max_len:
+        return t
+    cut = t[:max_len].rsplit(" ", 1)[0]
+    return cut.rstrip(" |:·-–—,")
+
+def fit_title(base: str, slug: str = "", min_len: int = 30, max_len: int = 60) -> str:
+    """Compone un title 30-60 chars añadiendo la mejor variante de marca que
+    quepa. `base` ya incluye la keyword/contexto (sin marca)."""
+    base = " ".join(base.split()).rstrip(" |:·-–—").strip()
+    suffixes = [f" | {BRAND_SHORT}", " | Alpha", ""]
+    fitting = [base + s for s in suffixes if len(base + s) <= max_len]
+    if fitting:
+        good = [c for c in fitting if len(c) >= min_len]
+        return max(good or fitting, key=len)
+    return clamp_title(base, max_len)
+
+def geo_title(ciudad: str, slug: str) -> str:
+    """Title de landing local 30-60 chars, con keyword + ciudad + marca."""
+    base = f"{KEYWORD} en {ciudad}"
+    quals = ["", ": 24h", ": hollín y humo", ": urgente",
+             ": humo y olor", ": empresa local"]
+    q = quals[h("tq-" + slug) % len(quals)]
+    t = fit_title(base + q, slug)
+    if KEYWORD.lower() not in t.lower():  # seguridad si el recorte comió la kw
+        t = fit_title(base, slug)
+    return t
+
+def fit_meta(desc: str, seed: str = "", min_len: int = 120, max_len: int = 160) -> str:
+    """Ajusta una meta description al rango óptimo 120-160 caracteres."""
+    desc = " ".join(desc.split()).strip()
+    if not seed:
+        seed = desc
+    tails = [
+        " Atención urgente las 24 horas, 365 días.",
+        " Respuesta en menos de 1 hora y trato directo.",
+        " Te valoramos hoy mismo y sin compromiso.",
+        " Hollín, humo y olor bajo control en horas.",
+    ]
+    guard = 0
+    while len(desc) < min_len and guard < 4:
+        t = tails[h(f"m-{seed}-{guard}") % len(tails)]
+        if len(desc) + len(t) > max_len:
+            break
+        desc += t
+        guard += 1
+    if len(desc) > max_len:
+        desc = desc[:max_len].rsplit(" ", 1)[0].rstrip(",.;:·-") + "."
+    return desc
+
 def write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     # Aplicar prefijo de BASE_PATH a enlaces internos en archivos HTML.
@@ -179,13 +236,22 @@ for p in PAGES:
 
 def head_block(title: str, description: str, canonical: str,
                og_image: str = "/assets/hero.jpg",
-               extra_jsonld: list | None = None) -> str:
+               extra_jsonld: list | None = None,
+               preload_image: str | None = None) -> str:
     """`<head>` común: meta, OG, Twitter, favicon, CSS preload, JSON-LD."""
     css = "/assets/styles.css"
     favicon = "/assets/favicon.ico"
+    # Longitud SEO: title 30-60, meta description 120-160.
+    title = clamp_title(title)
+    description = fit_meta(description, seed=canonical)
     canonical_abs = DOMAIN + canonical
     og_image_abs = DOMAIN + og_image
     jsonld = json.dumps(extra_jsonld or [], ensure_ascii=False, separators=(",", ":"))
+    # Preload de la imagen LCP (hero) para acelerar el render del above-the-fold.
+    preload_lcp = (
+        f'\n<link rel="preload" as="image" href="{preload_image}" fetchpriority="high">'
+        if preload_image else ""
+    )
     return f"""<!doctype html>
 <html lang="es">
 <head>
@@ -205,7 +271,7 @@ def head_block(title: str, description: str, canonical: str,
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{description}">
 <meta name="twitter:image" content="{og_image_abs}">
-<link rel="icon" type="image/x-icon" href="{favicon}">
+<link rel="icon" type="image/x-icon" href="{favicon}">{preload_lcp}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap">
@@ -218,13 +284,14 @@ def head_block(title: str, description: str, canonical: str,
 def header_html(active: str = "") -> str:
     """Cabecera (sticky), logo con ruta relativa al raíz."""
     return f"""<body class="alpha">
+<a class="skip-link" href="#contenido">Saltar al contenido principal</a>
 <div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:{PHONE}">Urgencias y valoración: {PHONE}</a></div></div>
 <header class="main-nav"><div class="wrap">
   <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.webp" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
   <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
     <span></span><span></span><span></span>
   </button>
-  <nav class="nav" id="primary-nav">
+  <nav class="nav" id="primary-nav" aria-label="Navegación principal">
     <a href="/servicios/limpieza-tras-incendio/">Servicio</a>
     <a href="/ubicaciones/">Ubicaciones</a>
     <a href="/blog/">Blog</a>
@@ -407,6 +474,21 @@ def faqpage_ld(pairs: list[tuple[str, str]]) -> dict:
         ],
     }
 
+def howto_local_ld(ciudad: str, steps: list[tuple[str, str]]) -> dict:
+    """Schema HowTo del proceso de limpieza técnica post-incendio (posición cero)."""
+    return {
+        "@context": "https://schema.org", "@type": "HowTo",
+        "name": f"Cómo limpiamos una vivienda tras un incendio en {ciudad}",
+        "description": (f"Proceso de limpieza técnica post-incendio en {ciudad}: "
+                        f"retirada de escombros, eliminación del hollín y "
+                        f"desinfección con ozono y filtración HEPA."),
+        "totalTime": "P3D",
+        "step": [
+            {"@type": "HowToStep", "position": i + 1, "name": n, "text": t}
+            for i, (n, t) in enumerate(steps)
+        ],
+    }
+
 def service_ld(ciudad: str) -> dict:
     return {
         "@context": "https://schema.org", "@type": "Service",
@@ -582,8 +664,8 @@ def render_geo_page(p: GeoPage) -> str:
     fmt = dict(keyword=KEYWORD, kw_var=kw_var, ciudad=ciudad,
                provincia=provincia, brand=BRAND, phone=PHONE)
 
-    title = title_t.format(**fmt)
-    desc = meta_t.format(**fmt)
+    title = geo_title(ciudad, slug)
+    desc = fit_meta(meta_t.format(**fmt), seed=slug)
     h1 = h1_t.format(**fmt)
 
     # ---- intro (la keyword principal en los primeros 100 caracteres) ----
@@ -638,6 +720,87 @@ def render_geo_page(p: GeoPage) -> str:
         if it["q"] not in seen:
             seen.add(it["q"]); ufaqs.append(it)
     faq_pairs = [(it["q"].format(**fmt), it["a"].format(**fmt)) for it in ufaqs]
+
+    # ---- FASE 2: Posición Cero (fragmento destacado multi-formato) ----------
+    # 2 FAQ cortas (urgencia + método) al frente del FAQPage único de la página.
+    pz_faqs = [
+        (f"¿En cuánto tiempo actuáis tras un incendio en {ciudad}?",
+         f"Atendemos las 24 horas. Tras tu llamada al {PHONE}, un técnico se "
+         f"desplaza el mismo día: las primeras 72 horas son críticas para que "
+         f"el hollín ácido no se fije en paredes ni textiles."),
+        ("¿Qué método de limpieza técnica usáis?",
+         "Retirada de escombros, limpieza del hollín por capas en seco y "
+         "desinfección técnica con ozono y filtración HEPA. Solo limpieza y "
+         "descontaminación post-incendio: no reformamos ni pintamos."),
+    ]
+    faq_pairs = pz_faqs + faq_pairs
+
+    # Pasos del proceso (formato lista + alimenta el schema HowTo).
+    proceso_steps = [
+        ("Valoración técnica",
+         f"Inspeccionamos la vivienda o local de {ciudad}, medimos el alcance "
+         f"del hollín y documentamos los daños con fotos para el seguro."),
+        ("Retirada de escombros",
+         "Retiramos restos calcinados, mobiliario irrecuperable y materiales "
+         "dañados por el fuego para dejar las superficies libres."),
+        ("Eliminación del hollín",
+         "Limpiamos paredes, techos y superficies por capas, primero en seco, "
+         "para arrancar el hollín ácido sin fijarlo en el material."),
+        ("Desinfección técnica",
+         "Tratamos cada estancia con ozono y filtración HEPA para eliminar el "
+         "olor a humo y descontaminar el aire de forma profesional."),
+        ("Verificación y entrega",
+         "Comprobamos que no queda olor residual y entregamos la memoria "
+         "fotográfica lista para tu compañía de seguros."),
+    ]
+
+    # Párrafo de respuesta directa (40-50 palabras, con teléfono y 24h).
+    zero_para = (
+        f"Nuestro equipo de limpieza técnica post-incendio retira escombros, "
+        f"elimina el hollín y desinfecta con ozono y filtración HEPA las 24 "
+        f"horas del día. Llama ahora al {PHONE} y un técnico valorará tu "
+        f"vivienda o local de forma urgente, con presupuesto cerrado y sin "
+        f"compromiso."
+    )
+
+    zero_table_rows = [
+        ("Disponibilidad", "24 horas, 365 días al año"),
+        ("Tiempo de respuesta", "Menos de 1 hora"),
+        ("Servicio", "Retirada de escombros, hollín y desinfección HEPA/ozono"),
+        ("Cobertura", f"{ciudad} y alrededores"),
+        ("Teléfono", PHONE),
+    ]
+    zero_table = (
+        '<div class="table-wrap"><table class="data-table">'
+        '<thead><tr><th>Dato</th><th>Detalle</th></tr></thead><tbody>'
+        + "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in zero_table_rows)
+        + "</tbody></table></div>"
+    )
+    zero_list = (
+        '<ol class="howto zero-steps">'
+        + "".join(f"<li><strong>{n}.</strong> {t}</li>" for n, t in proceso_steps)
+        + "</ol>"
+    )
+    featured_snippet = f"""<section class="section featured-snippet"><div class="wrap">
+  <div class="zero-box card">
+    <h2>¿Necesitas una Limpieza por Incendios en {ciudad}?</h2>
+    <p class="zero-answer">{zero_para}</p>
+    <div class="cta-row">
+      <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
+      <a class="btn alt" href="https://wa.me/{PHONE_INTL}" aria-label="Escribir por WhatsApp 24 horas">WhatsApp 24h</a>
+    </div>
+  </div>
+  <div class="zero-formats grid">
+    <div class="card zero-table-card">
+      <h3>El servicio en {ciudad} de un vistazo</h3>
+      {zero_table}
+    </div>
+    <div class="card zero-steps-card">
+      <h3>Proceso de limpieza técnica post-incendio en {ciudad}</h3>
+      {zero_list}
+    </div>
+  </div>
+</div></section>"""
 
     faq_html = "".join(
         f'<details class="card"><summary><h3>{q}</h3></summary><p>{a}</p></details>'
@@ -789,6 +952,7 @@ def render_geo_page(p: GeoPage) -> str:
         organization_ld(),
         local_business_ld(ciudad, url),
         service_ld(ciudad),
+        howto_local_ld(ciudad, proceso_steps),
         breadcrumb_ld(crumbs),
         faqpage_ld(faq_pairs),
     ]
@@ -881,11 +1045,12 @@ def render_geo_page(p: GeoPage) -> str:
         )
 
     head = head_block(title, desc, url,
-                      og_image=f"/assets/foto-{slug[:30]}.jpg",
-                      extra_jsonld=jsonld)
+                      og_image=f"/{hero_photo}",
+                      extra_jsonld=jsonld,
+                      preload_image=f"/{hero_photo}")
     body = f"""{header_html()}
 {crumbs_html}
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local">
   <div class="wrap hero-grid">
     <div>
@@ -894,7 +1059,7 @@ def render_geo_page(p: GeoPage) -> str:
       <p class="lead">{intro}</p>
       <img class="hero-img" src="/{urlsafe(hero_photo)}"
         alt="{KEYWORD} en {ciudad}: {ALT_SCENES[h('alt-' + slug) % len(ALT_SCENES)].lower()} ({kw_var}, {provincia})"
-        width="800" height="450" loading="eager">
+        width="800" height="450" loading="eager" fetchpriority="high">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
         <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
@@ -903,6 +1068,8 @@ def render_geo_page(p: GeoPage) -> str:
     {form_block(url)}
   </div>
 </section>
+
+{featured_snippet}
 
 <section class="section">
   <div class="wrap layout-with-sidebar">
@@ -953,7 +1120,7 @@ def render_geo_page(p: GeoPage) -> str:
 
 def render_home() -> str:
     url = "/"
-    title = f"{KEYWORD} 24h | Hollín, humo, olor y seguro | {BRAND}"
+    title = f"{KEYWORD} 24h | {BRAND_SHORT}"
     desc = (f"{KEYWORD} con respuesta 24h: hollín, humo, olor a quemado y "
             f"documentación para el seguro. Llámanos al {PHONE} y te valoramos hoy.")
     jsonld = [organization_ld(), website_ld(), local_business_ld("España", "/"),
@@ -982,8 +1149,9 @@ def render_home() -> str:
     )
     jsonld.append(faqpage_ld(home_faq))
 
-    # Re-render head con FAQ incluido
-    head = head_block(title, desc, url, extra_jsonld=jsonld)
+    # Re-render head con FAQ incluido + preload de la imagen LCP del hero
+    head = head_block(title, desc, url, extra_jsonld=jsonld,
+                      preload_image=f"/{HERO_POOL[0]}")
 
     # Selección destacada de provincias (las 8 capitales / provincias top)
     destacadas = ["Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga",
@@ -996,7 +1164,7 @@ def render_home() -> str:
             dest_html += f'<a class="chip chip-on" href="{pg["url"]}">→ {d}</a>'
 
     body = f"""{header_html()}
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
@@ -1016,7 +1184,7 @@ def render_home() -> str:
 <section class="trust-strip"><div class="wrap">
   <p class="eyebrow">Trabajamos con tu aseguradora</p>
   <div class="trust-logos">
-{"".join(f'    <img src="/{urlsafe(src)}" alt="Logo {name}" loading="lazy" height="48">' + chr(10) for name, src in ASEGURADORAS)}  </div>
+{"".join(f'    <img src="/{urlsafe(src)}" alt="Logo de {name}, aseguradora con la que trabajamos" width="120" height="48" loading="lazy">' + chr(10) for name, src in ASEGURADORAS)}  </div>
 </div></section>
 
 <section class="stats-strip"><div class="wrap">
@@ -1102,7 +1270,7 @@ def render_home() -> str:
 
 def render_servicio_madre() -> str:
     url = "/servicios/limpieza-tras-incendio/"
-    title = f"{KEYWORD}: servicio completo 24h | {BRAND}"
+    title = f"{KEYWORD}: servicio 24h | Alpha"
     desc = (f"Servicio profesional de {KEYWORD.lower()}: hollín, humo, olor, "
             f"cocina, vivienda y documentación para el seguro. Atención al {PHONE}.")
     crumbs = [("Inicio", "/"), ("Servicio", url)]
@@ -1113,7 +1281,7 @@ def render_servicio_madre() -> str:
 
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Servicio</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local">
   <div class="wrap hero-grid">
     <div>
@@ -1199,7 +1367,7 @@ def render_servicio_madre() -> str:
 
 def render_ubicaciones() -> str:
     url = "/ubicaciones/"
-    title = f"Ubicaciones donde hacemos {KEYWORD} | {BRAND}"
+    title = f"Ubicaciones | {KEYWORD} | Alpha"
     desc = f"Listado completo de provincias, municipios y barrios donde damos servicio de {KEYWORD.lower()}."
     crumbs = [("Inicio", "/"), ("Ubicaciones", url)]
     jsonld = [organization_ld(), breadcrumb_ld(crumbs)]
@@ -1281,7 +1449,7 @@ def render_ubicaciones() -> str:
 
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Ubicaciones</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">Cobertura</p>
   <h1>Ubicaciones donde hacemos {KEYWORD.lower()}</h1>
@@ -1345,7 +1513,7 @@ def render_404() -> str:
     head = head_block(title, desc, "/404.html",
                       extra_jsonld=[organization_ld()])
     body = f"""{header_html()}
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap" style="text-align:center">
   <p class="eyebrow">Error 404</p>
   <h1>Esta página no existe</h1>
@@ -1535,7 +1703,7 @@ def howto_ld(post: dict) -> dict:
 def render_post(post: dict) -> str:
     slug = post["slug"]
     url = f"/blog/{slug}/"
-    title = f"{post['title']} | Blog {BRAND}"
+    title = fit_title(post["title"], slug)
     desc = post["meta"]
     crumbs = [("Inicio", "/"), ("Blog", "/blog/"), (post["title"], url)]
 
@@ -1596,14 +1764,16 @@ def render_post(post: dict) -> str:
     if faq_pairs:
         jsonld.append(faqpage_ld(faq_pairs))
 
-    # OG image específica del post (generada por tools/generate_og.py)
-    og_path = f"/assets/og/{slug}.webp"
-    head = head_block(title, desc, url, og_image=og_path, extra_jsonld=jsonld)
-    cat = CATEGORY_LABEL.get(post.get("category", "general"), "")
-
     # Foto representativa del post (rotada por hash del slug) con alt
     # descriptivo de escena — bueno para IA y SEO de imágenes.
     photo = HERO_POOL[h("post-img-" + slug) % len(HERO_POOL)]
+
+    # OG image específica del post (generada por tools/generate_og.py)
+    og_path = f"/assets/og/{slug}.webp"
+    head = head_block(title, desc, url, og_image=og_path, extra_jsonld=jsonld,
+                      preload_image=f"/{photo}")
+    cat = CATEGORY_LABEL.get(post.get("category", "general"), "")
+
     photo_alt = (
         f"{ALT_SCENES[h('post-alt-' + slug) % len(ALT_SCENES)]} "
         f"— ilustración del artículo: {post['title']}"
@@ -1652,7 +1822,7 @@ def render_post(post: dict) -> str:
 
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <a href="/blog/">Blog</a> › <span>{post['title']}</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <article class="post">
   <header class="post-head"><div class="wrap">
     <p class="eyebrow">{cat}</p>
@@ -1690,7 +1860,7 @@ def render_post(post: dict) -> str:
 
 def render_blog_index() -> str:
     url = "/blog/"
-    title = f"Blog: guías sobre {KEYWORD.lower()} | {BRAND}"
+    title = f"Blog | Guías de {KEYWORD.lower()} | Alpha"
     desc = f"Blog con guías sobre {KEYWORD.lower()}, cómo eliminar el olor a humo, cómo gestionar el seguro y casos por ciudad."
 
     # agrupar por categoría
@@ -1735,7 +1905,7 @@ def render_blog_index() -> str:
 
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Blog</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">Blog</p>
   <h1>Guías sobre {KEYWORD.lower()}</h1>
@@ -1749,7 +1919,7 @@ def render_blog_index() -> str:
 
 def render_faq_global() -> str:
     url = "/faq/"
-    title = f"Preguntas frecuentes sobre {KEYWORD.lower()} | {BRAND}"
+    title = f"Preguntas frecuentes | {KEYWORD} | Alpha"
     desc = f"FAQ completa sobre {KEYWORD.lower()}: plazos, coste, gestión del seguro, eliminación del olor a humo y tratamiento de textiles."
     crumbs = [("Inicio", "/"), ("FAQ", url)]
     jsonld = [organization_ld(), breadcrumb_ld(crumbs), faqpage_ld(FAQ_GLOBAL)]
@@ -1760,7 +1930,7 @@ def render_faq_global() -> str:
     )
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>FAQ</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">FAQ</p>
   <h1>Preguntas frecuentes sobre {KEYWORD.lower()}</h1>
@@ -1842,7 +2012,7 @@ def render_testimonios() -> str:
         )
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Testimonios</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">Reseñas</p>
   <h1>Lo que dicen nuestros clientes</h1>
@@ -1879,7 +2049,7 @@ def render_testimonios() -> str:
 
 def render_galeria() -> str:
     url = "/galeria/"
-    title = f"Galería de trabajos reales de {KEYWORD.lower()} | {BRAND}"
+    title = f"Galería | {KEYWORD} | Alpha"
     desc = f"Galería con cards antes/después de intervenciones reales de {KEYWORD.lower()} por estancias y ciudades."
     crumbs = [("Inicio", "/"), ("Galería", url)]
     jsonld = [organization_ld(), breadcrumb_ld(crumbs),
@@ -1915,7 +2085,7 @@ def render_galeria() -> str:
 
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Galería</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">Galería</p>
   <h1>Trabajos reales de {KEYWORD.lower()}</h1>
@@ -1956,7 +2126,7 @@ def render_placeholder(title_short: str, h1: str, body_text: str, path: str) -> 
                                     breadcrumb_ld([("Inicio", "/"), (title_short, path)])])
     body = f"""{header_html()}
 <nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>{title_short}</span></div></nav>
-<main>
+<main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap">
   <p class="eyebrow">{title_short}</p>
   <h1>{h1}</h1>
