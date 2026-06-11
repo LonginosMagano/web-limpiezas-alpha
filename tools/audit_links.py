@@ -21,7 +21,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).parent.parent
-BASE = "/web-limpiezas-alpha"
+BASE = ""
 
 # Cargar todas las páginas HTML
 HTMLS = sorted(glob.glob(str(ROOT / "**" / "*.html"), recursive=True))

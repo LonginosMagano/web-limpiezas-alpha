@@ -19,8 +19,8 @@ HTMLS = sorted(glob.glob(str(ROOT / "**" / "*.html"), recursive=True))
 HTMLS = [h for h in HTMLS if "/tools/" not in h]
 
 KEYWORD = "Limpieza Despues de Incendio"
-DOMAIN = "https://longinosmagano.github.io/web-limpiezas-alpha"
-BASE_PATH = "/web-limpiezas-alpha"
+DOMAIN = "https://limpiezadeincendiosalpha.es"
+BASE_PATH = ""
 
 errors, warnings, oks = [], [], []
 def err(msg): errors.append(msg)
