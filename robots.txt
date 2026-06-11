@@ -22,4 +22,4 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://longinosmagano.github.io/web-limpiezas-alpha/sitemap.xml
+Sitemap: https://limpiezadeincendiosalpha.es/sitemap.xml
