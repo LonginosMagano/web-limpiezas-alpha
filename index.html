@@ -239,10 +239,16 @@
   // Banner cookies
   (function(){
     var k="lda_cookies_v1", b=document.getElementById("cookies");
-    if(!localStorage.getItem(k)){ b.hidden=false; }
-    b.querySelector("button").addEventListener("click", function(){
-      localStorage.setItem(k, "1"); b.hidden=true;
-    });
+    if(!localStorage.getItem(k)){
+      b.hidden=false;
+      b.querySelector("button").addEventListener("click", function(){
+        localStorage.setItem(k, "1");
+        b.hidden=true;
+      });
+      window.addEventListener("scroll", function(){
+        b.hidden=true;
+      }, {once: true});
+    }
   })();
   // Formulario inline (FormSubmit AJAX)
   document.addEventListener("submit", function(e){
