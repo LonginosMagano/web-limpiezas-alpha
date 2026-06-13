@@ -12,7 +12,7 @@ DOMAIN = "https://limpiezadeincendiosalpha.es"
 BASE_PATH = ""
 PHONE = "681811301"
 PHONE_INTL = "34681811301"
-EMAIL = "contacto@limpiezasdeincendiosalpha.com"
+EMAIL = "aitormentaramirez@gmail.com"
 KEYWORD = "Limpieza Despues de Incendio"
 KEYWORD_SLUG = "limpieza-despues-de-incendio"
 
