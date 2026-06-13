@@ -76,7 +76,7 @@ from templates import TITLE, META, H1, PARRAFOS, COBERTURA_BLURB, FAQ_LOCAL_POOL
 from posts import POSTS, CATEGORY_LABEL
 
 ROOT = Path(__file__).parent.parent
-NOW = "2026-05-23"
+NOW = "2026-06-13"
 
 # ------------------------------------------------------------- helpers --
 
@@ -1569,7 +1569,17 @@ def render_sitemap() -> str:
     parts = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
-        prio = "1.0" if u == "/" else ("0.8" if "/limpieza-despues-de-incendio-" in u else "0.6")
+        if u == "/":
+            prio = "1.0"
+        elif "/limpieza-despues-de-incendio-" in u:
+            # Ciudades principales: 0.9, resto: 0.8
+            prio = "0.9" if any(c in u for c in ["-madrid/", "-barcelona/", "-valencia/"]) else "0.8"
+        elif "/blog/" in u:
+            # Posts: 0.7
+            prio = "0.7"
+        else:
+            # Secciones: 0.6
+            prio = "0.6"
         parts.append(
             f"<url><loc>{DOMAIN}{u}</loc><lastmod>{NOW}</lastmod>"
             f"<changefreq>weekly</changefreq><priority>{prio}</priority></url>"
