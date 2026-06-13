@@ -2237,9 +2237,10 @@ def main() -> None:
     write(ROOT / "robots.txt", render_robots())
     write(ROOT / "llms.txt", render_llms())
     write(ROOT / ".htaccess", render_htaccess())
+    write(ROOT / ".nojekyll", "")
 
     total = len(PAGES) + 1 + 1 + 1 + 1 + 7  # geo + home + servicio + ubicaciones + 404 + placeholders
-    print(f"Generadas {total} páginas HTML + sitemap + robots + llms + .htaccess")
+    print(f"Generadas {total} páginas HTML + sitemap + robots + llms + .htaccess + .nojekyll")
     print(f"  Geo pages: {len(PAGES)} (provincias={sum(1 for p in PAGES if p['kind']=='provincia')}, "
           f"municipios={sum(1 for p in PAGES if p['kind']=='municipio')}, "
           f"barrios={sum(1 for p in PAGES if p['kind']=='barrio')})")
