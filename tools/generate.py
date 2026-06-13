@@ -274,8 +274,8 @@ def head_block(title: str, description: str, canonical: str,
 <link rel="icon" type="image/x-icon" href="{favicon}">{preload_lcp}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap" media="print" onload="this.media='all'; this.onload=null;">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap"></noscript>
 <link rel="preload" as="style" href="{css}">
 <link rel="stylesheet" href="{css}">
 <script type="application/ld+json">{jsonld}</script>
