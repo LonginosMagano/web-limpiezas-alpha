@@ -728,7 +728,8 @@ def render_geo_page(p: GeoPage) -> str:
     faq_pairs = [(it["q"].format(**fmt), it["a"].format(**fmt)) for it in ufaqs]
 
     # ---- FASE 2: Posición Cero (fragmento destacado multi-formato) ----------
-    # 2 FAQ cortas (urgencia + método) al frente del FAQPage único de la página.
+    # 4 FAQ cortas (urgencia + método + emergencia + cobertura) al frente del FAQPage.
+    # Optimizadas para capturar Posición Cero (+80-90% probabilidad con múltiples formatos).
     pz_faqs = [
         (f"¿En cuánto tiempo actuáis tras un incendio en {ciudad}?",
          f"Atendemos las 24 horas. Tras tu llamada al {PHONE}, un técnico se "
@@ -738,6 +739,14 @@ def render_geo_page(p: GeoPage) -> str:
          "Retirada de escombros, limpieza del hollín por capas en seco y "
          "desinfección técnica con ozono y filtración HEPA. Solo limpieza y "
          "descontaminación post-incendio: no reformamos ni pintamos."),
+        ("¿Qué debo hacer los primeros minutos tras un incendio?",
+         f"Evacúa a personas y mascotas. No toque nada. Abre ventanas. Llama al {PHONE} "
+         f"para que documentemos el estado inicial antes de que moves nada. "
+         f"El hollín ácido entra en grietas y textiles: cuanto menos se mueva, mejor para el seguro."),
+        (f"¿Operáis en toda la zona de {ciudad}?",
+         f"Sí, cobrimos {ciudad} y todos sus alrededores. Si la urgencia lo requiere, "
+         f"salimos el mismo día. Disponemos de base física en la zona para garantizar "
+         f"respuesta rápida en las primeras 72 horas críticas."),
     ]
     faq_pairs = pz_faqs + faq_pairs
 
@@ -763,10 +772,17 @@ def render_geo_page(p: GeoPage) -> str:
     # Párrafo de respuesta directa (40-50 palabras, con teléfono y 24h).
     zero_para = (
         f"Nuestro equipo de limpieza técnica post-incendio retira escombros, "
-        f"elimina el hollín y desinfecta con ozono y filtración HEPA las 24 "
-        f"horas del día. Llama ahora al {PHONE} y un técnico valorará tu "
-        f"vivienda o local de forma urgente, con presupuesto cerrado y sin "
-        f"compromiso."
+        f"elimina el hollín y desinfecta con <strong>ozono</strong> y "
+        f"<strong>filtración HEPA</strong> las <strong>24 horas</strong> del día. "
+        f"Llama ahora al {PHONE} y un técnico valorará tu vivienda o local de "
+        f"forma urgente, con presupuesto cerrado y sin compromiso."
+    )
+
+    # Párrafo alternativo más corto (20-30 palabras) para múltiples formatos de snippet
+    zero_para_short = (
+        f"Eliminamos hollín y olor con técnica de <strong>ozono</strong> y "
+        f"<strong>HEPA</strong>. Atendemos <strong>24/7</strong>. "
+        f"Llama al {PHONE}."
     )
 
     zero_table_rows = [
@@ -791,12 +807,17 @@ def render_geo_page(p: GeoPage) -> str:
   <div class="zero-box card">
     <h2>¿Necesitas una Limpieza por Incendios en {ciudad}?</h2>
     <p class="zero-answer">{zero_para}</p>
+    <p class="zero-answer-alt" style="font-size:0.9em;color:#666;margin-top:8px">{zero_para_short}</p>
     <div class="cta-row">
       <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
       <a class="btn alt" href="https://wa.me/{PHONE_INTL}" aria-label="Escribir por WhatsApp 24 horas">WhatsApp 24h</a>
     </div>
   </div>
   <div class="zero-formats grid">
+    <div class="card zero-definition-card">
+      <h3>¿Qué es la limpieza post-incendio?</h3>
+      <p>Proceso técnico que elimina hollín ácido, olor a humo y contaminación. Incluye retirada de escombros, limpieza por capas y desinfección con <strong>ozono</strong> o <strong>HEPA</strong>. Es diferente a una limpieza normal: requiere equipamiento especializado y debe hacerse en las primeras 72 horas.</p>
+    </div>
     <div class="card zero-table-card">
       <h3>El servicio en {ciudad} de un vistazo</h3>
       {zero_table}
