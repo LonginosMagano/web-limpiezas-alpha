@@ -103,6 +103,12 @@ def kw_variant_for(slug: str) -> str:
 # keyword (que siempre va delante).
 BRAND_SHORT = "Limpiezas Alpha"
 
+# Autor identificado (E-E-A-T): firma posts del blog y tiene perfil propio.
+AUTHOR = "Marta Magali"
+AUTHOR_ROLE = "Responsable Técnico"
+AUTHOR_SLUG = "/equipo/marta-magali/"
+AUTHOR_INITIALS = "MM"
+
 def clamp_title(t: str, max_len: int = 60) -> str:
     """Recorta un <title> a <=max_len sin cortar palabras ni dejar separadores."""
     t = " ".join(t.split()).strip()
@@ -340,6 +346,7 @@ def footer_html() -> str:
     <a href="/blog/">Blog</a><br>
     <a href="/galeria/">Galería</a><br>
     <a href="/testimonios/">Testimonios</a><br>
+    <a href="/equipo/">Equipo</a><br>
     <a href="/faq/">Preguntas frecuentes</a></p>
   </div>
   <div>
@@ -1560,6 +1567,7 @@ def render_404() -> str:
 def render_sitemap() -> str:
     urls = ["/", "/servicios/limpieza-tras-incendio/", "/ubicaciones/",
             "/blog/", "/galeria/", "/testimonios/", "/faq/",
+            "/equipo/", "/equipo/marta-magali/",
             "/aviso-legal/", "/privacidad/", "/cookies/"]
     for post in POSTS:
         urls.append(f"/blog/{post['slug']}/")
@@ -1720,7 +1728,8 @@ def article_ld(post: dict, url: str) -> dict:
         "@context": "https://schema.org", "@type": "Article",
         "headline": post["title"],
         "description": post["meta"],
-        "author": {"@type": "Organization", "name": BRAND},
+        "author": {"@type": "Person", "name": AUTHOR,
+                   "url": DOMAIN + AUTHOR_SLUG, "jobTitle": AUTHOR_ROLE},
         "publisher": {
             "@type": "Organization", "name": BRAND,
             "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.webp"},
@@ -1870,6 +1879,10 @@ def render_post(post: dict) -> str:
   <header class="post-head"><div class="wrap">
     <p class="eyebrow">{cat}</p>
     <h1>{post['title']}</h1>
+    <p class="post-byline" style="display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.9rem;color:#555;">
+      <span aria-hidden="true" style="display:inline-flex;width:34px;height:34px;border-radius:50%;background:#1a1a1a;color:#fff;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;">{AUTHOR_INITIALS}</span>
+      <span>Por <a href="{AUTHOR_SLUG}" style="font-weight:700;color:inherit;">{AUTHOR}</a> · {AUTHOR_ROLE} · Actualizado {NOW}</span>
+    </p>
   </div></header>
 
   <figure class="post-photo">
@@ -2161,6 +2174,86 @@ def render_galeria() -> str:
 
 
 # Placeholder pages (legales) — versión mínima
+def person_ld() -> dict:
+    return {
+        "@context": "https://schema.org", "@type": "Person",
+        "name": AUTHOR, "jobTitle": AUTHOR_ROLE,
+        "url": DOMAIN + AUTHOR_SLUG,
+        "worksFor": {"@type": "Organization", "name": BRAND, "url": DOMAIN + "/"},
+        "knowsAbout": [
+            "Eliminación de hollín tras incendio",
+            "Desodorización profesional por ozono e hidroxilos",
+            "Limpieza de conductos de ventilación tras incendio",
+            "Descontaminación de viviendas y locales",
+            "Documentación técnica para el seguro",
+        ],
+        "description": (f"{AUTHOR}, {AUTHOR_ROLE.lower()} de {BRAND}. Coordina las "
+                        "intervenciones de limpieza tras incendio y revisa los "
+                        "contenidos técnicos del sitio."),
+    }
+
+
+def render_autor() -> str:
+    path = AUTHOR_SLUG
+    title = f"{AUTHOR} · {AUTHOR_ROLE} | Alpha"
+    desc = (f"{AUTHOR}, {AUTHOR_ROLE.lower()} de {BRAND}: especialista en limpieza "
+            "tras incendio, desodorización y documentación para el seguro.")
+    head = head_block(title, desc, path, extra_jsonld=[
+        person_ld(),
+        breadcrumb_ld([("Inicio", "/"), ("Equipo", "/equipo/"), (AUTHOR, path)]),
+    ])
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <a href="/equipo/">Equipo</a> › <span>{AUTHOR}</span></div></nav>
+<main id="contenido" tabindex="-1">
+<section class="hero hero-local"><div class="wrap">
+  <p class="eyebrow">{AUTHOR_ROLE}</p>
+  <h1>{AUTHOR}</h1>
+  <p class="lead">{AUTHOR} es {AUTHOR_ROLE.lower()} de {BRAND}. Coordina al equipo en las intervenciones de limpieza tras incendio y revisa los contenidos técnicos del sitio.</p>
+</div></section>
+<section class="section"><div class="wrap article">
+  <h2>Áreas de especialización</h2>
+  <ul>
+    <li>Eliminación de hollín y residuos de combustión.</li>
+    <li>Desodorización profesional (ozono e hidroxilos).</li>
+    <li>Limpieza de conductos de ventilación tras incendio.</li>
+    <li>Descontaminación de viviendas, locales y naves.</li>
+    <li>Apoyo en la documentación técnica para el seguro.</li>
+  </ul>
+  <p class="cta-inline">¿Necesitas ayuda hoy? <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a></p>
+</div></section>
+</main>
+{footer_html()}"""
+    return head + body
+
+
+def render_equipo() -> str:
+    path = "/equipo/"
+    title = f"Equipo técnico | {BRAND}"
+    desc = (f"Equipo técnico de {BRAND}: especialistas en limpieza y "
+            "descontaminación profesional tras incendio en España.")
+    head = head_block(title, desc, path, extra_jsonld=[
+        organization_ld(),
+        breadcrumb_ld([("Inicio", "/"), ("Equipo", path)]),
+    ])
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Equipo</span></div></nav>
+<main id="contenido" tabindex="-1">
+<section class="hero hero-local"><div class="wrap">
+  <p class="eyebrow">Equipo</p>
+  <h1>Equipo técnico</h1>
+  <p class="lead">Detrás de {BRAND} hay un equipo técnico especializado en limpieza y descontaminación tras incendio. Estas son las personas que coordinan y firman nuestras intervenciones.</p>
+</div></section>
+<section class="section"><div class="wrap">
+  <a class="card" href="{AUTHOR_SLUG}" style="display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;">
+    <span aria-hidden="true" style="display:inline-flex;width:60px;height:60px;border-radius:50%;background:#1a1a1a;color:#fff;align-items:center;justify-content:center;font-weight:700;font-size:1.3rem;flex-shrink:0;">{AUTHOR_INITIALS}</span>
+    <span><strong style="font-size:1.1rem;">{AUTHOR}</strong><br><span style="color:#555;">{AUTHOR_ROLE} — coordina las intervenciones y revisa los contenidos técnicos.</span></span>
+  </a>
+</div></section>
+</main>
+{footer_html()}"""
+    return head + body
+
+
 def render_placeholder(title_short: str, h1: str, body_text: str, path: str) -> str:
     title = f"{title_short} | {BRAND}"
     desc = body_text[:155]
@@ -2228,6 +2321,8 @@ def main() -> None:
     write(ROOT / "galeria" / "index.html", render_galeria())
     write(ROOT / "testimonios" / "index.html", render_testimonios())
     write(ROOT / "faq" / "index.html", render_faq_global())
+    write(ROOT / "equipo" / "index.html", render_equipo())
+    write(ROOT / "equipo" / "marta-magali" / "index.html", render_autor())
     write(ROOT / "aviso-legal" / "index.html", render_placeholder(
         "Aviso Legal", "Aviso legal",
         "Datos del titular del sitio: PENDIENTE DE COMPLETAR (razón social, NIF, domicilio fiscal, registro mercantil). Avisa al equipo para rellenar antes de pasar a producción.",
