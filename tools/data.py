@@ -22,6 +22,15 @@ FORM_ACTION = f"https://formspree.io/f/{FORMSPREE_ID}" if FORMSPREE_ID else f"ht
 KEYWORD = "Limpieza Después de Incendio"
 KEYWORD_SLUG = "limpieza-despues-de-incendio"
 
+# --- Datos del titular para aviso legal / política de privacidad (LSSI/RGPD) ---
+TITULAR = BRAND
+NIF = ""  # DNI/NIF del titular. Obligatorio (LSSI art. 10). Rellenar para
+          # cumplimiento completo; mientras esté vacío no se muestra.
+DIRECCION = "Calle de Juan de Mena, 7, 3ª planta, 28014 Madrid"
+# Encargado del tratamiento que procesa el envío del formulario de contacto.
+PROVEEDOR_FORMULARIO = "Formspree, Inc. (formspree.io, EE. UU.)"
+PROVEEDOR_CORREO = "DreamHost, LLC"
+
 # Pool de keywords secundarias / sinónimos del núcleo
 KW_VARIANTS_NUCLEO = [
     "limpieza después de incendio",
