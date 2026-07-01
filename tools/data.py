@@ -17,7 +17,7 @@ EMAIL = "info@limpiezasdeincendios.com"
 # Pega aquí el ID que aparece en tu panel de Formspree. Si se deja vacío se usa
 # el endpoint antiguo por email, que Formspree ya descontinuó (los envíos NO
 # llegan). Rellenar para que el formulario de contacto funcione.
-FORMSPREE_ID = ""
+FORMSPREE_ID = "xlgwbzyq"
 FORM_ACTION = f"https://formspree.io/f/{FORMSPREE_ID}" if FORMSPREE_ID else f"https://formspree.io/{EMAIL}"
 KEYWORD = "Limpieza Después de Incendio"
 KEYWORD_SLUG = "limpieza-despues-de-incendio"
