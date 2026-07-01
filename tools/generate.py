@@ -528,16 +528,6 @@ def website_ld() -> dict:
         "name": BRAND, "url": DOMAIN + "/", "inLanguage": "es-ES",
     }
 
-def aggregate_rating_ld() -> dict:
-    return {
-        "@context": "https://schema.org", "@type": "LocalBusiness",
-        "name": BRAND, "url": DOMAIN + "/",
-        "aggregateRating": {
-            "@type": "AggregateRating", "ratingValue": "4.9",
-            "reviewCount": "47", "bestRating": "5", "worstRating": "1",
-        },
-    }
-
 # Datos de testimonios (ejemplo — marcar como tales hasta tener reales)
 TESTIMONIOS = [
     {"nombre": "María L.", "ciudad": "Madrid", "barrio": "Salamanca",
@@ -595,7 +585,7 @@ def form_block(origen: str) -> str:
   <h2 class="form-title">Pide tu valoración</h2>
   <p>Solo necesitamos 3 datos. Te llamamos en menos de 1 hora en horario laboral.</p>
   <form class="callback-form" action="{FORM_ACTION}" method="POST">
-    <input type="hidden" name="_subject" value="Aviso desde {origen} - Limpieza de Incendios Alpha">
+    <input type="hidden" name="_subject" value="🔥 Limpiezas de Incendios Alpha — nuevo aviso web (desde {origen})">
     <input type="hidden" name="_captcha" value="true">
     <input type="hidden" name="Origen" value="{DOMAIN}{origen}">
     <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -1122,7 +1112,6 @@ def render_home() -> str:
     desc = (f"{KEYWORD} con respuesta 24h: hollín, humo, olor a quemado y "
             f"documentación para el seguro. Llámanos al {PHONE} y te valoramos hoy.")
     jsonld = [organization_ld(), website_ld(), local_business_ld("España", "/"),
-              aggregate_rating_ld(),
               breadcrumb_ld([("Inicio", "/")])]
     head = head_block(title, desc, url, extra_jsonld=jsonld)
 
@@ -1992,33 +1981,12 @@ def render_testimonios() -> str:
     title = f"Testimonios de clientes | {BRAND}"
     desc = f"Testimonios de clientes tras nuestra intervención de {KEYWORD.lower()} en distintas ciudades de España."
     crumbs = [("Inicio", "/"), ("Testimonios", url)]
-    # Schema: AggregateRating + Review items (anclados al negocio)
+    # NOTA: no se emite JSON-LD de reseñas (aggregateRating/Review) porque los
+    # testimonios son de ejemplo, no reseñas reales verificables. Marcar reseñas
+    # ficticias como datos estructurados infringe las políticas de Google y puede
+    # acarrear una acción manual. Reintroducir solo con reseñas reales.
     avg = round(sum(t["rating"] for t in TESTIMONIOS) / len(TESTIMONIOS), 1)
-    review_ld = {
-        "@context": "https://schema.org", "@type": "LocalBusiness",
-        "name": BRAND, "url": DOMAIN + "/",
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": str(avg),
-            "reviewCount": str(len(TESTIMONIOS)),
-            "bestRating": "5", "worstRating": "1",
-        },
-        "review": [
-            {
-                "@type": "Review",
-                "author": {"@type": "Person", "name": t["nombre"]},
-                "reviewRating": {"@type": "Rating", "ratingValue": str(t["rating"]),
-                                  "bestRating": "5", "worstRating": "1"},
-                "reviewBody": t["texto"],
-                "itemReviewed": {"@type": "LocalBusiness", "name": BRAND,
-                                  "address": {"@type": "PostalAddress",
-                                              "addressLocality": t["ciudad"],
-                                              "addressCountry": "ES"}},
-            }
-            for t in TESTIMONIOS
-        ],
-    }
-    jsonld = [organization_ld(), breadcrumb_ld(crumbs), review_ld]
+    jsonld = [organization_ld(), breadcrumb_ld(crumbs)]
     head = head_block(title, desc, url, extra_jsonld=jsonld)
 
     cards = []

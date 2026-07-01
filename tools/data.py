@@ -12,7 +12,7 @@ DOMAIN = "https://limpiezadeincendiosalpha.es"
 BASE_PATH = ""
 PHONE = "681811301"
 PHONE_INTL = "34681811301"
-EMAIL = "juanlarretazamarra@gmail.com"
+EMAIL = "info@limpiezasdeincendios.com"
 # ID del formulario de Formspree (formato nuevo: https://formspree.io/f/XXXX).
 # Pega aquí el ID que aparece en tu panel de Formspree. Si se deja vacío se usa
 # el endpoint antiguo por email, que Formspree ya descontinuó (los envíos NO
