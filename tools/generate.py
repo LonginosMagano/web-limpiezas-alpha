@@ -29,6 +29,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from data import (
     BRAND, DOMAIN, BASE_PATH, PHONE, PHONE_INTL, EMAIL, FORM_ACTION, KEYWORD, KEYWORD_SLUG,
+    TITULAR, NIF, DIRECCION, PROVEEDOR_FORMULARIO, PROVEEDOR_CORREO,
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
     INTERVENCIONES, HERO_POOL, ASEGURADORAS, ALT_SCENES, DELEGACIONES,
@@ -368,7 +369,7 @@ def footer_html() -> str:
   </div>
 </div></footer>
 <div id="cookies" class="cookie-banner" hidden>
-  <p>Usamos cookies técnicas y de medición. <a href="/cookies/">Más info</a>.</p>
+  <p>Usamos solo cookies técnicas necesarias para el funcionamiento del sitio. <a href="/cookies/">Más info</a>.</p>
   <button type="button">Aceptar</button>
 </div>
 <script>
@@ -2206,6 +2207,138 @@ def render_placeholder(title_short: str, h1: str, body_text: str, path: str) -> 
     return head + body
 
 
+def render_legal(title_short: str, h1: str, body_html: str, path: str) -> str:
+    """Página legal con contenido estructurado (aviso legal, privacidad, cookies)."""
+    # Descripción SEO a partir del primer párrafo de texto plano.
+    plain = re.sub(r"<[^>]+>", " ", body_html)
+    desc = re.sub(r"\s+", " ", plain).strip()[:155]
+    title = f"{title_short} | {BRAND}"
+    head = head_block(title, desc, path,
+                      extra_jsonld=[organization_ld(),
+                                    breadcrumb_ld([("Inicio", "/"), (title_short, path)])])
+    body = f"""{header_html()}
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>{title_short}</span></div></nav>
+<main id="contenido" tabindex="-1">
+<section class="hero hero-local"><div class="wrap">
+  <p class="eyebrow">{title_short}</p>
+  <h1>{h1}</h1>
+</div></section>
+<section class="section"><div class="wrap article" style="max-width:820px">
+{body_html}
+</div></section>
+</main>
+{footer_html()}"""
+    return head + body
+
+
+def _titular_ficha() -> str:
+    """Ficha del titular reutilizable en aviso legal y privacidad."""
+    nif = f"<li><strong>NIF/DNI:</strong> {NIF}</li>" if NIF else ""
+    return (f"<ul>"
+            f"<li><strong>Titular:</strong> {TITULAR}</li>"
+            f"{nif}"
+            f"<li><strong>Domicilio:</strong> {DIRECCION}</li>"
+            f"<li><strong>Teléfono:</strong> {PHONE}</li>"
+            f'<li><strong>Correo electrónico:</strong> <a href="mailto:{EMAIL}">{EMAIL}</a></li>'
+            f'<li><strong>Sitio web:</strong> {DOMAIN}</li>'
+            f"</ul>")
+
+
+LEGAL_UPDATED = "1 de julio de 2026"
+
+
+def aviso_legal_html() -> str:
+    return f"""<p>En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la
+Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se facilitan los
+datos identificativos del titular de este sitio web:</p>
+{_titular_ficha()}
+<h2>Objeto</h2>
+<p>{TITULAR} presta servicios de limpieza y descontaminación tras incendio
+(retirada de hollín, humo y olores) y apoyo en la documentación para el seguro.
+Este sitio web tiene carácter informativo y de contacto comercial.</p>
+<h2>Condiciones de uso</h2>
+<p>El acceso y uso de este sitio atribuye la condición de usuario e implica la
+aceptación de las presentes condiciones. El usuario se compromete a hacer un uso
+lícito del sitio y a no emplearlo para actividades contrarias a la ley, la buena
+fe o el orden público.</p>
+<h2>Propiedad intelectual e industrial</h2>
+<p>Los contenidos de este sitio (textos, fotografías, logotipos y diseño) son
+titularidad de {TITULAR} o se utilizan con autorización, y están protegidos por
+la normativa de propiedad intelectual e industrial. Queda prohibida su
+reproducción, distribución o transformación sin autorización expresa.</p>
+<h2>Responsabilidad</h2>
+<p>{TITULAR} no se responsabiliza de los daños derivados del uso indebido del
+sitio ni de las interrupciones ajenas a su control. La información publicada
+puede actualizarse o modificarse sin previo aviso.</p>
+<h2>Legislación aplicable</h2>
+<p>Las presentes condiciones se rigen por la legislación española. Para cualquier
+controversia, las partes se someten a los juzgados y tribunales del domicilio del
+titular, salvo que la normativa de consumo disponga otro fuero.</p>
+<p class="small">Última actualización: {LEGAL_UPDATED}.</p>"""
+
+
+def privacidad_html() -> str:
+    return f"""<p>Esta Política de Privacidad regula el tratamiento de los datos
+personales que nos facilitas a través de este sitio web, conforme al Reglamento
+(UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018 (LOPDGDD).</p>
+<h2>Responsable del tratamiento</h2>
+{_titular_ficha()}
+<h2>¿Qué datos tratamos y con qué finalidad?</h2>
+<p>A través del formulario de contacto recogemos tu <strong>nombre, teléfono y
+población</strong>, con la única finalidad de <strong>devolverte la llamada,
+atender tu solicitud y elaborar un presupuesto</strong> del servicio de limpieza
+tras incendio. No tomamos decisiones automatizadas ni elaboramos perfiles.</p>
+<h2>Base jurídica</h2>
+<p>La base legal es tu <strong>consentimiento</strong> (art. 6.1.a RGPD), que
+otorgas marcando la casilla de aceptación del formulario, y la aplicación de
+medidas precontractuales a petición tuya (art. 6.1.b RGPD).</p>
+<h2>Plazo de conservación</h2>
+<p>Conservaremos tus datos durante el tiempo necesario para gestionar tu solicitud
+y, posteriormente, durante los plazos legalmente exigibles. Cuando dejen de ser
+necesarios, se suprimirán.</p>
+<h2>Destinatarios y encargados del tratamiento</h2>
+<p>No cedemos tus datos a terceros con fines comerciales. Para el funcionamiento
+del formulario y del correo intervienen los siguientes proveedores, que actúan
+como encargados del tratamiento:</p>
+<ul>
+<li><strong>{PROVEEDOR_FORMULARIO}</strong>: procesa el envío del formulario de
+contacto. Puede implicar una transferencia internacional de datos a EE. UU.,
+amparada en las garantías adecuadas previstas por el RGPD (cláusulas
+contractuales tipo).</li>
+<li><strong>{PROVEEDOR_CORREO}</strong>: proveedor del correo electrónico donde
+recibimos tu solicitud.</li>
+</ul>
+<h2>Tus derechos</h2>
+<p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición,
+limitación del tratamiento y portabilidad escribiendo a
+<a href="mailto:{EMAIL}">{EMAIL}</a>, indicando el derecho que deseas ejercer.
+Si consideras que el tratamiento no se ajusta a la normativa, puedes reclamar ante
+la Agencia Española de Protección de Datos (<a href="https://www.aepd.es"
+rel="noopener" target="_blank">www.aepd.es</a>).</p>
+<p class="small">Última actualización: {LEGAL_UPDATED}.</p>"""
+
+
+def cookies_html() -> str:
+    return f"""<p>Este sitio web utiliza únicamente cookies y almacenamiento
+técnicos, necesarios para su funcionamiento. No usamos cookies de publicidad,
+analítica ni de perfilado, por lo que no se requiere consentimiento para su uso
+(art. 22.2 LSSI).</p>
+<h2>¿Qué utilizamos?</h2>
+<ul>
+<li><strong>Almacenamiento técnico propio</strong> (<code>localStorage</code>,
+clave <code>lda_cookies_v1</code>): recuerda que ya has visto el aviso de cookies
+para no volver a mostrártelo. No contiene datos personales.</li>
+<li><strong>Fuentes tipográficas de Google Fonts</strong>: para mostrar las
+tipografías, tu navegador se conecta a servidores de Google, que pueden registrar
+tu dirección IP. No se instalan cookies por este motivo.</li>
+</ul>
+<h2>Gestión de cookies</h2>
+<p>Puedes bloquear o eliminar el almacenamiento local desde la configuración de tu
+navegador. Al tratarse de almacenamiento técnico, deshabilitarlo puede afectar a
+pequeñas preferencias de visualización, pero no impide el uso del sitio.</p>
+<p class="small">Última actualización: {LEGAL_UPDATED}.</p>"""
+
+
 # ----------------------------------------------------------- main --
 
 def clean_old() -> None:
@@ -2249,18 +2382,12 @@ def main() -> None:
     write(ROOT / "faq" / "index.html", render_faq_global())
     write(ROOT / "equipo" / "index.html", render_equipo())
     write(ROOT / "equipo" / "marta-magali" / "index.html", render_autor())
-    write(ROOT / "aviso-legal" / "index.html", render_placeholder(
-        "Aviso Legal", "Aviso legal",
-        "Datos del titular del sitio: PENDIENTE DE COMPLETAR (razón social, NIF, domicilio fiscal, registro mercantil). Avisa al equipo para rellenar antes de pasar a producción.",
-        "/aviso-legal/"))
-    write(ROOT / "privacidad" / "index.html", render_placeholder(
-        "Política de Privacidad", "Política de privacidad",
-        "Tratamos los datos del formulario (Nombre, Teléfono, Población) con la única finalidad de devolverte la llamada. No los compartimos con terceros. Datos del responsable: PENDIENTE.",
-        "/privacidad/"))
-    write(ROOT / "cookies" / "index.html", render_placeholder(
-        "Política de Cookies", "Política de cookies",
-        "Este sitio usa cookies técnicas y de medición anónima. Puedes aceptar o rechazar en el banner. No se utilizan cookies publicitarias ni de perfilado.",
-        "/cookies/"))
+    write(ROOT / "aviso-legal" / "index.html", render_legal(
+        "Aviso Legal", "Aviso legal", aviso_legal_html(), "/aviso-legal/"))
+    write(ROOT / "privacidad" / "index.html", render_legal(
+        "Política de Privacidad", "Política de privacidad", privacidad_html(), "/privacidad/"))
+    write(ROOT / "cookies" / "index.html", render_legal(
+        "Política de Cookies", "Política de cookies", cookies_html(), "/cookies/"))
 
     # Técnicos
     write(ROOT / "sitemap.xml", render_sitemap())
