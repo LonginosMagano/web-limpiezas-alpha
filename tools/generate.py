@@ -28,7 +28,7 @@ def urlsafe(p: str) -> str:
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from data import (
-    BRAND, DOMAIN, BASE_PATH, PHONE, PHONE_INTL, EMAIL, KEYWORD, KEYWORD_SLUG,
+    BRAND, DOMAIN, BASE_PATH, PHONE, PHONE_INTL, EMAIL, FORM_ACTION, KEYWORD, KEYWORD_SLUG,
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
     INTERVENCIONES, HERO_POOL, ASEGURADORAS, ALT_SCENES, DELEGACIONES,
@@ -77,6 +77,18 @@ from posts import POSTS, CATEGORY_LABEL
 
 ROOT = Path(__file__).parent.parent
 NOW = "2026-06-13"
+
+def _asset_ver(rel: str) -> str:
+    """Hash corto del asset para cache-busting (?v=). GitHub Pages no respeta
+    el Cache-Control de .htaccess, así que versionamos la URL para forzar la
+    recarga cuando el archivo cambia."""
+    try:
+        data = (ROOT / rel).read_bytes()
+        return hashlib.md5(data).hexdigest()[:8]
+    except OSError:
+        return ""
+
+CSS_VER = _asset_ver("assets/styles.css")
 
 # ------------------------------------------------------------- helpers --
 
@@ -245,7 +257,7 @@ def head_block(title: str, description: str, canonical: str,
                extra_jsonld: list | None = None,
                preload_image: str | None = None) -> str:
     """`<head>` común: meta, OG, Twitter, favicon, CSS preload, JSON-LD."""
-    css = "/assets/styles.css"
+    css = f"/assets/styles.css?v={CSS_VER}" if CSS_VER else "/assets/styles.css"
     favicon = "/assets/favicon.ico"
     # Longitud SEO: title 30-60, meta description 120-160.
     title = clamp_title(title)
@@ -282,7 +294,6 @@ def head_block(title: str, description: str, canonical: str,
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap" media="print" onload="this.media='all'; this.onload=null;">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Oswald:wght@500;700&display=swap"></noscript>
-<link rel="preload" as="style" href="{css}">
 <link rel="stylesheet" href="{css}">
 <script type="application/ld+json">{jsonld}</script>
 </head>"""
@@ -312,7 +323,7 @@ def footer_html() -> str:
     return f"""<div class="floating-contact">
   <a class="btn" href="tel:{PHONE}" aria-label="Llamar">📞 Llamar</a>
   <a class="btn alt" href="https://wa.me/{PHONE_INTL}" aria-label="WhatsApp">
-    <img src="/assets/wa.svg" alt="WhatsApp" width="22" height="22" loading="lazy"> WhatsApp
+    <img src="/assets/wa.svg" alt="" width="22" height="22" loading="lazy" aria-hidden="true"> WhatsApp
   </a>
 </div>
 <div class="sticky-cta-mobile" role="region" aria-label="Contacto rápido">
@@ -527,54 +538,6 @@ def aggregate_rating_ld() -> dict:
         },
     }
 
-def hero_svg_for(slug: str, ciudad: str) -> str:
-    """SVG estilizado para usar como hero LCP de cada landing.
-    Se escribe en /assets/landings/limpieza-despues-de-incendio-{slug}.svg
-    para tener nombre de archivo descriptivo con keyword + ciudad."""
-    initial = (ciudad or "?")[0].upper()
-    # Variación cromática suave por hash para no clonar visualmente
-    hue = h(slug) % 60  # 0..59 → naranjas/rojos
-    accent = f"hsl({10 + hue % 30}, 88%, 52%)"
-    text = ciudad.upper()[:18]
-    return f'''<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img"
- aria-label="{KEYWORD} en {ciudad}">
-  <title>{KEYWORD} en {ciudad}</title>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b0f14"/>
-      <stop offset="1" stop-color="#1b222b"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="78%" cy="22%" r="55%">
-      <stop offset="0" stop-color="{accent}" stop-opacity=".55"/>
-      <stop offset="1" stop-color="{accent}" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="800" height="450" fill="url(#bg)"/>
-  <rect width="800" height="450" fill="url(#glow)"/>
-  <g transform="translate(60,80)">
-    <text x="0" y="0" fill="{accent}" font-family="Oswald, Arial" font-weight="700"
-      font-size="20" letter-spacing="4">{ciudad.upper()[:20]}</text>
-    <text x="0" y="58" fill="#f7f7f4" font-family="Oswald, Arial" font-weight="700"
-      font-size="46">LIMPIEZA TRAS</text>
-    <text x="0" y="108" fill="#f7f7f4" font-family="Oswald, Arial" font-weight="700"
-      font-size="46">INCENDIO</text>
-    <text x="0" y="170" fill="#cbd0d4" font-family="Archivo, Arial"
-      font-size="18">Hollín · Humo · Olor · Seguro</text>
-    <rect x="0" y="200" width="160" height="42" fill="{accent}" rx="3"/>
-    <text x="14" y="228" fill="#170b00" font-family="Archivo, Arial"
-      font-weight="900" font-size="16">RESPUESTA 24H</text>
-  </g>
-  <!-- llama estilizada -->
-  <g transform="translate(560,90)" opacity=".9">
-    <path d="M80 30 C 60 80 30 90 50 150 C 60 180 100 200 110 170 C 120 200 160 180 170 150 C 190 90 160 80 140 30 C 130 60 110 60 110 30 C 100 60 90 60 80 30 Z"
-      fill="{accent}"/>
-    <path d="M95 80 C 85 110 80 130 95 150 C 110 170 130 160 125 130 C 115 110 115 100 95 80 Z"
-      fill="#ffd9b3" opacity=".7"/>
-  </g>
-</svg>'''
-
-
 # Datos de testimonios (ejemplo — marcar como tales hasta tener reales)
 TESTIMONIOS = [
     {"nombre": "María L.", "ciudad": "Madrid", "barrio": "Salamanca",
@@ -629,20 +592,22 @@ def form_block(origen: str) -> str:
     """Formulario inline: Nombre, Teléfono, Población. Origen oculto."""
     return f"""<aside class="card form-card">
   <p class="eyebrow">Nosotros te llamamos</p>
-  <h3>Pide tu valoración</h3>
+  <h2 class="form-title">Pide tu valoración</h2>
   <p>Solo necesitamos 3 datos. Te llamamos en menos de 1 hora en horario laboral.</p>
-  <form class="callback-form" action="https://formspree.io/{EMAIL}" method="POST">
+  <form class="callback-form" action="{FORM_ACTION}" method="POST">
     <input type="hidden" name="_subject" value="Aviso desde {origen} - Limpieza de Incendios Alpha">
-    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_captcha" value="true">
     <input type="hidden" name="Origen" value="{DOMAIN}{origen}">
-    <label>Nombre</label>
-    <input name="name" placeholder="Tu nombre" required>
-    <label>Teléfono</label>
-    <input name="phone" type="tel" placeholder="600 000 000" required>
-    <label>Población</label>
-    <input name="ciudad" placeholder="Ej. {pick(['Madrid','Valencia','Sevilla','Barcelona','Murcia'], origen)}" required>
+    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label for="cf-name">Nombre</label>
+    <input id="cf-name" name="name" placeholder="Tu nombre" required>
+    <label for="cf-phone">Teléfono</label>
+    <input id="cf-phone" name="phone" type="tel" placeholder="600 000 000" required>
+    <label for="cf-ciudad">Población</label>
+    <input id="cf-ciudad" name="ciudad" placeholder="Ej. {pick(['Madrid','Valencia','Sevilla','Barcelona','Murcia'], origen)}" required>
+    <label class="form-consent"><input type="checkbox" name="consent" value="si" required> He leído y acepto la <a href="/privacidad/">política de privacidad</a>.</label>
     <button class="btn" type="submit">Te llamamos</button>
-    <p class="form-ok" style="display:none;color:#0a7">Recibido. Te llamamos en breve.</p>
+    <p class="form-ok" style="display:none;color:#087a52">Recibido. Te llamamos en breve.</p>
     <p class="form-err" style="display:none;color:#b00">No se ha podido enviar. Llámanos al {PHONE}.</p>
   </form>
 </aside>"""
@@ -746,11 +711,11 @@ def render_geo_page(p: GeoPage) -> str:
          "desinfección técnica con ozono y filtración HEPA. Solo limpieza y "
          "descontaminación post-incendio: no reformamos ni pintamos."),
         ("¿Qué debo hacer los primeros minutos tras un incendio?",
-         f"Evacúa a personas y mascotas. No toque nada. Abre ventanas. Llama al {PHONE} "
-         f"para que documentemos el estado inicial antes de que moves nada. "
+         f"Evacúa a personas y mascotas. No toques nada. Abre ventanas. Llama al {PHONE} "
+         f"para que documentemos el estado inicial antes de que muevas nada. "
          f"El hollín ácido entra en grietas y textiles: cuanto menos se mueva, mejor para el seguro."),
         (f"¿Operáis en toda la zona de {ciudad}?",
-         f"Sí, cobrimos {ciudad} y todos sus alrededores. Si la urgencia lo requiere, "
+         f"Sí, cubrimos {ciudad} y todos sus alrededores. Si la urgencia lo requiere, "
          f"salimos el mismo día. Disponemos de base física en la zona para garantizar "
          f"respuesta rápida en las primeras 72 horas críticas."),
     ]
@@ -1204,7 +1169,7 @@ def render_home() -> str:
       <p class="eyebrow">Operativos 24/7 · 365 días</p>
       <h1>{KEYWORD}: hollín, humo y olor fuera</h1>
       <p class="lead">Tras un incendio, lo último que necesita es lidiar con bayetas, ambientadores y peritos. Subimos a su casa o local, miramos en serio lo que ha pasado y empezamos a trabajar. La memoria para el seguro la entregamos nosotros. Usted descansa.</p>
-      <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="Operario de Limpiezas de Incendios Alpha retirando hollín de una pared tras un incendio doméstico" width="800" height="450" loading="eager">
+      <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="Operario de Limpiezas de Incendios Alpha retirando hollín de una pared tras un incendio doméstico" width="800" height="450" loading="eager" fetchpriority="high">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
         <a class="btn alt" href="https://wa.me/{PHONE_INTL}">WhatsApp</a>
@@ -2297,13 +2262,6 @@ def main() -> None:
     # Servicio madre
     write(ROOT / "servicios" / "limpieza-tras-incendio" / "index.html",
           render_servicio_madre())
-    # SVG hero por landing (nombre de archivo descriptivo con keyword+ciudad)
-    landings_dir = ROOT / "assets" / "landings"
-    landings_dir.mkdir(parents=True, exist_ok=True)
-    for p in PAGES:
-        svg_path = landings_dir / f"{KEYWORD_SLUG}-{p['slug']}.svg"
-        svg_path.write_text(hero_svg_for(p["slug"], p["name"]), encoding="utf-8")
-
     # Geo landings
     for p in PAGES:
         slug = p["slug"]
