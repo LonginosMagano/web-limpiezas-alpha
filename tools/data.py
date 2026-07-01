@@ -12,8 +12,14 @@ DOMAIN = "https://limpiezadeincendiosalpha.es"
 BASE_PATH = ""
 PHONE = "681811301"
 PHONE_INTL = "34681811301"
-EMAIL = "juanlarretazamarra@gmail.com"
-KEYWORD = "Limpieza Despues de Incendio"
+EMAIL = "info@limpiezasdeincendios.com"
+# ID del formulario de Formspree (formato nuevo: https://formspree.io/f/XXXX).
+# Pega aquí el ID que aparece en tu panel de Formspree. Si se deja vacío se usa
+# el endpoint antiguo por email, que Formspree ya descontinuó (los envíos NO
+# llegan). Rellenar para que el formulario de contacto funcione.
+FORMSPREE_ID = ""
+FORM_ACTION = f"https://formspree.io/f/{FORMSPREE_ID}" if FORMSPREE_ID else f"https://formspree.io/{EMAIL}"
+KEYWORD = "Limpieza Después de Incendio"
 KEYWORD_SLUG = "limpieza-despues-de-incendio"
 
 # Pool de keywords secundarias / sinónimos del núcleo
@@ -253,7 +259,7 @@ LOCAL_NOTES = {
     "Zaragoza": {
         "tipo": "bloques de los 70 en barrios como Delicias y vivienda nueva en Valdespartera",
         "rasgo": "fuerte presencia de polígonos industriales y naves logísticas",
-        "riesgo": "incendios eléctricos en cuadros de cuadros antiguos y olor persistente por la humedad del Ebro",
+        "riesgo": "incendios eléctricos en cuadros eléctricos antiguos y olor persistente por la humedad del Ebro",
     },
     "Murcia": {
         "tipo": "viviendas unifamiliares en pedanías y bloques en el centro",

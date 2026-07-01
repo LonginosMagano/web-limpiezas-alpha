@@ -18,8 +18,9 @@ ROOT = Path(__file__).parent.parent
 HTMLS = sorted(glob.glob(str(ROOT / "**" / "*.html"), recursive=True))
 HTMLS = [h for h in HTMLS if "/tools/" not in h]
 
-KEYWORD = "Limpieza Despues de Incendio"
-DOMAIN = "https://limpiezadeincendiosalpha.es"
+# Keyword y dominio se importan de data.py para no desincronizarse con el generador.
+sys.path.insert(0, str(Path(__file__).parent))
+from data import KEYWORD, DOMAIN  # noqa: E402
 BASE_PATH = ""
 
 errors, warnings, oks = [], [], []

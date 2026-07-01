@@ -308,3 +308,9 @@ body.alpha{--bg:#0b0f14;--ink:#f7f7f4;--muted:#cbd0d4;--card:#131a22;--accent:#f
 .zero-steps li{margin-bottom:10px;color:var(--muted);line-height:1.6}
 .zero-steps li strong{color:var(--ink)}
 @media(max-width:760px){.zero-formats{grid-template-columns:1fr}}
+
+/* Formulario de contacto: título lateral (no debe heredar el h2 gigante) y consentimiento RGPD */
+.form-card .form-title{font-family:var(--display);font-size:clamp(20px,2vw,27px);line-height:1.05;letter-spacing:-.02em;margin:0}
+.form-card label.form-consent{display:flex;align-items:flex-start;gap:8px;font-weight:600;font-size:14px;margin:12px 0 4px;line-height:1.4}
+.form-card .form-consent input{width:auto;margin-top:3px;flex:0 0 auto}
+.form-consent a{text-decoration:underline}

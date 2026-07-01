@@ -17,6 +17,9 @@ from PIL import Image
 
 ROOT = Path(__file__).parent.parent
 ASSETS = ROOT / "assets"
+# Los originales grandes viven fuera de /assets/ para NO publicarse en el sitio
+# (GitHub Pages sirve todo el repo). El .webp optimizado sí se escribe en /assets/.
+SOURCES = ROOT / "source-images"
 
 # Lista explícita de imágenes a optimizar (las que se usan como contenido
 # en INTERVENCIONES, HERO_POOL y otras fotos grandes). NO incluye el logo
@@ -43,7 +46,8 @@ MAX_SIDE = 1600
 QUALITY = 82
 
 def convert_one(path: Path) -> tuple[int, int]:
-    out = path.with_suffix(".webp")
+    # El origen vive en source-images/; el .webp se escribe en assets/.
+    out = ASSETS / (path.stem + ".webp")
     if out.exists() and out.stat().st_mtime > path.stat().st_mtime:
         return path.stat().st_size, out.stat().st_size
     img = Image.open(path).convert("RGB")
@@ -59,7 +63,7 @@ def main() -> None:
     print(f"Optimizando {len(PHOTOS)} fotos a WebP (max {MAX_SIDE}px, q={QUALITY})…\n")
     total_before = total_after = 0
     for name in PHOTOS:
-        src = ASSETS / name
+        src = SOURCES / name
         if not src.exists():
             print(f"  ⚠ no existe: {name}")
             continue

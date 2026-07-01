@@ -44,7 +44,7 @@ jobs:
           publish_dir: .
           publish_branch: gh-pages
           # No publicar fuentes ni configuración del workflow
-          exclude_assets: 'tools,.github,.gitignore,README.md'
+          exclude_assets: 'tools,.github,.gitignore,README.md,source-images,SEO-PLAYBOOK.md'
           commit_message: 'Deploy ${{ github.sha }}'
           keep_files: false
           force_orphan: false
