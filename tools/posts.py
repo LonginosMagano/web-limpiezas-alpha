@@ -168,7 +168,7 @@ POSTS = [
             ("¿Quién paga si lo cubre el seguro?",
              "Tú adelantas o pagamos contra la aseguradora, según la póliza. Lo dejamos claro antes."),
         ],
-        "related": ["seguro-cubre-limpieza-incendio", "documentacion-perito-seguros"],
+        "related": ["seguro-cubre-limpieza-incendio", "documentacion-perito-seguros", "limpieza-despues-incendio-suelo-porcelanico-mostoles"],
     },
     {
         "slug": "limpiar-vivienda-quemada-por-donde-empezar",
@@ -666,7 +666,7 @@ POSTS = [
             ("¿Tengo que estar yo presente durante la retirada?",
              "No. Trabajamos con llaves y te enviamos el inventario firmado al cierre."),
         ],
-        "related": ["limpiar-vivienda-quemada-por-donde-empezar", "que-hacer-despues-de-un-incendio"],
+        "related": ["limpiar-vivienda-quemada-por-donde-empezar", "que-hacer-despues-de-un-incendio", "limpieza-despues-incendio-suelo-porcelanico-mostoles"],
     },
     {
         "slug": "como-evitar-que-hollin-se-fije",
@@ -696,6 +696,138 @@ POSTS = [
         ],
         "related": ["limpieza-hollin-paredes", "que-hacer-despues-de-un-incendio"],
     },
+    {'slug': 'limpieza-despues-incendio-suelo-porcelanico-mostoles',
+     'title': 'Limpieza después de incendio: el hollín del suelo que empeora mientras esperas',
+     'meta': 'Suelo porcelánico con hollín tras incendio eléctrico en Móstoles: cómo Alpha lo recuperó '
+             'con monodisco. Recibe orientación paso a paso.',
+     'category': 'ciudad',
+     'city': 'Móstoles',
+     'quick_answer': 'En una limpieza después de incendio, protege el pavimento desde el primer '
+                     'momento: el hollín queda en la superficie, entra en las juntas y cada pisada '
+                     'puede extenderlo. En esta vivienda de Móstoles, el porcelánico necesitó '
+                     'monodisco para retirar la contaminación sin empujarla más.',
+     'sections': [{'h2': 'El reloj empieza cuando el hollín toca las juntas',
+                   'paragraphs': ['<img '
+                                  'src="/assets/limpieza-despues-incendio-suelo-porcelanico-mostoles.webp" '
+                                  'width="960" height="1280" alt="Monodisco limpiando hollín en suelo '
+                                  'porcelánico de una vivienda en Móstoles tras incendio eléctrico" '
+                                  'loading="lazy">',
+                                  'Tras un incendio de cuadro eléctrico, mucha gente mira primero la '
+                                  'pared quemada, el cuadro afectado o el olor que queda en la '
+                                  'vivienda. Pero en un suelo porcelánico, la parte más delicada puede '
+                                  'estar justo debajo de los pies: las juntas que han recibido hollín, '
+                                  'agua de arrastre y suciedad fina.',
+                                  'En esta vivienda de Móstoles, el pavimento era porcelánico de gran '
+                                  'formato. La superficie admitía recuperación, pero el problema no '
+                                  'era solo “limpiar lo negro”. El hollín había quedado sobre el suelo '
+                                  'y en las líneas de junta, donde se fija de otra manera y donde un '
+                                  'fregado doméstico suele mover la suciedad sin retirarla de verdad.',
+                                  'Por eso conviene actuar con orden. Si se pisa, se friega o se '
+                                  'arrastra el hollín, la suciedad puede pasar de una zona concreta a '
+                                  'juntas, bordes y recorridos de paso. La <a '
+                                  'href="/servicios/limpieza-tras-incendio/">limpieza tras '
+                                  'incendio</a> empieza por entender esa diferencia.']},
+                  {'h2': '¿Qué se pierde mientras se espera en un suelo porcelánico?',
+                   'paragraphs': ['Se pierde control. El hollín no se queda educadamente en la zona '
+                                  'donde cayó; viaja con el calzado, con el agua, con los trapos y con '
+                                  'cada intento de “hacer algo” antes de saber por dónde empezar. En '
+                                  'una vivienda, ese impulso es humano: abrir ventanas, pasar una '
+                                  'fregona, apartar restos, recuperar paso.',
+                                  'El problema es que el porcelánico engaña. Como parece resistente, '
+                                  'parece que todo admite fuerza. Pero el acabado puede quedar velado '
+                                  'si se trabaja mal, y la junta puede oscurecerse más cuanto más se '
+                                  'empuja la suciedad hacia ella. Lo que parecía una mancha '
+                                  'superficial termina pareciendo parte del suelo.',
+                                  'En este caso, la señal estaba en el contraste: piezas recuperables, '
+                                  'juntas cargadas y un rastro de hollín que pedía una intervención '
+                                  'mecánica, no una limpieza improvisada. La espera, si la zona se '
+                                  'sigue usando, facilita que el hollín se reparta por más '
+                                  'superficie.']},
+                  {'h2': 'La monodisco no se usa para dar brillo: se usa para retirar hollín de forma '
+                         'uniforme',
+                   'paragraphs': ['La máquina rotativa no se usa para aparentar más intervención, sino '
+                                  'para trabajar el suelo de forma constante y controlada. Se usa '
+                                  'porque el suelo necesitaba una acción uniforme, controlada y '
+                                  'repetible sobre una superficie contaminada por hollín. En un '
+                                  'incendio pequeño de origen eléctrico, la suciedad puede parecer '
+                                  'limitada, pero su comportamiento sobre el pavimento es muy distinto '
+                                  'al polvo corriente.',
+                                  'La limpieza mecánica con monodisco ayuda a levantar la carga '
+                                  'adherida sin depender de pasadas irregulares a mano. En un suelo '
+                                  'porcelánico de vivienda, eso marca la diferencia entre aclarar una '
+                                  'zona y recuperar el conjunto. El objetivo es que no queden cercos, '
+                                  'sombras ni líneas oscuras que hagan parecer sucio el suelo.',
+                                  'Para quien vive allí, el cambio práctico es claro: el suelo vuelve '
+                                  'a poder usarse sin arrastrar hollín por la vivienda. No hablamos de '
+                                  'una reforma ni de sustituir piezas; hablamos de limpiar con método '
+                                  'lo que todavía podía recuperarse.']},
+                  {'h2': '¿Por qué las juntas cuentan más que la baldosa?',
+                   'paragraphs': ['La baldosa porcelánica suele resistir mejor la agresión '
+                                  'superficial. La junta, en cambio, tiene otra textura y otra forma '
+                                  'de retener residuos. Ahí se nota si una limpieza después de '
+                                  'incendio está pensada para el resultado o solo para que “parezca '
+                                  'menos negro” durante un rato.',
+                                  'En Móstoles, el objetivo no era dejar una zona aceptable desde '
+                                  'lejos. Era recuperar el suelo al 100%, incluyendo esas líneas donde '
+                                  'el hollín delata cualquier atajo. Cuando la junta queda grisácea o '
+                                  'irregular, el ojo lo lee como suciedad aunque la baldosa ya esté '
+                                  'mucho más clara.',
+                                  'Por eso conviene mirar el suelo en conjunto: piezas, juntas, bordes '
+                                  'y zonas de paso. Un porcelánico recuperado no debe obligarte a '
+                                  'explicar dónde estuvo el incendio cada vez que entra alguien. Debe '
+                                  'volver a formar parte de la vivienda sin reclamar atención.',
+                                  'Hay preocupación, olor, llamadas pendientes y ganas de recuperar '
+                                  'normalidad. El error no es sentir prisa ni miedo. El error es '
+                                  'convertir esa prisa en pruebas sobre el suelo: frotar una junta, '
+                                  'mezclar productos al azar o arrastrar hollín hacia habitaciones '
+                                  'limpias.',
+                                  'Si estás en una situación parecida, lo más sensato es acotar el '
+                                  'paso, evitar pisar la zona afectada y pedir orientación antes de '
+                                  'intervenir. En Alpha lo planteamos así porque una decisión pequeña '
+                                  'puede ahorrar mucho esfuerzo posterior, sobre todo cuando el daño '
+                                  'está en pavimentos y juntas.',
+                                  'Para casos locales, la página de <a '
+                                  'href="/limpieza-despues-de-incendio-mostoles/">limpieza después de '
+                                  'incendio en Móstoles</a> reúne el enfoque de intervención en la '
+                                  'zona. Y si dudas sobre qué hacer antes de llamar, la sección de <a '
+                                  'href="/faq/">preguntas frecuentes</a> te ayuda a separar lo urgente '
+                                  'de lo que puede esperar.']},
+                  {'h2': 'Cuando el suelo queda limpio, la vivienda vuelve a ser transitable',
+                   'paragraphs': ['Un incendio de cuadro eléctrico deja una interrupción muy concreta: '
+                                  'de repente, una parte de la casa ya no se reconoce. El suelo '
+                                  'oscurecido refuerza esa sensación porque está en todas las rutas de '
+                                  'paso. Lo ves al entrar, al rodear la zona dañada y al intentar '
+                                  'imaginar la vivienda limpia otra vez.',
+                                  'En este trabajo, la zona tratada quedó recuperada al 100%: el '
+                                  'hollín salió del pavimento y las juntas volvieron a verse limpias '
+                                  'dentro del conjunto.',
+                                  'La decisión útil es no improvisar sobre el suelo afectado y pedir '
+                                  'una valoración antes de fregar, mezclar productos o extender el '
+                                  'hollín. Si necesitas una limpieza después de incendio en una '
+                                  'vivienda, llama al 681811301 o solicita <strong>Recibir orientación '
+                                  'paso a paso</strong>. Primero ordenamos la situación; después se '
+                                  'decide cómo recuperar el suelo sin empeorarlo.']}],
+     'howto_steps': [],
+     'faq': [('¿Puedo fregar un suelo porcelánico con hollín después de un incendio?',
+              'Puedes retirar paso y evitar que se pise la zona, pero fregar sin orientación puede '
+              'arrastrar hollín a las juntas y extenderlo. Si el suelo está contaminado por humo o '
+              'hollín, conviene valorar antes qué parte necesita limpieza mecánica profesional.'),
+             ('¿La limpieza con monodisco sirve para porcelánico tras un incendio?',
+              'Sí, cuando el diagnóstico lo permite. En este caso se utilizó limpieza mecánica con '
+              'monodisco sobre suelo porcelánico porque había hollín en superficie y juntas. La clave '
+              'es ajustar la intervención al material y al tipo de residuo, no usar fuerza sin '
+              'criterio.'),
+             ('¿Se pueden recuperar las juntas manchadas por hollín?',
+              'Depende del estado de la junta y de cuánto residuo haya retenido, pero no hay que '
+              'darlas por perdidas de entrada. En la vivienda de Móstoles, el trabajo permitió '
+              'recuperar el suelo al 100%, incluyendo la lectura limpia del conjunto.'),
+             ('¿Qué hago antes de pedir una limpieza después de incendio?',
+              'Evita pisar la zona afectada, no mezcles productos y no extiendas agua o hollín hacia '
+              'otras estancias. Haz fotos generales si necesitas recordar el estado inicial y pide '
+              'orientación profesional antes de tocar suelos, juntas o paredes afectadas.')],
+     'related': ['cuanto-cuesta-limpieza-tras-incendio',
+                 'necesito-vaciar-piso-tras-incendio',
+                 'como-eliminar-olor-humo']}
 ]
 
 CATEGORY_LABEL = {

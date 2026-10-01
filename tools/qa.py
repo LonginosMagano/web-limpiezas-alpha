@@ -16,7 +16,7 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).parent.parent
 HTMLS = sorted(glob.glob(str(ROOT / "**" / "*.html"), recursive=True))
-HTMLS = [h for h in HTMLS if "/tools/" not in h]
+HTMLS = [h for h in HTMLS if Path(h).relative_to(ROOT).parts[0] != "tools"]
 
 # Keyword y dominio se importan de data.py para no desincronizarse con el generador.
 sys.path.insert(0, str(Path(__file__).parent))
@@ -31,7 +31,7 @@ def ok(msg): oks.append(msg)
 # --- Indexar contenido ---------------------------------------------------
 pages = []
 for fp in HTMLS:
-    rel = fp.replace(str(ROOT), "")
+    rel = "/" + Path(fp).relative_to(ROOT).as_posix()
     html = Path(fp).read_text(encoding="utf-8")
     m_title = re.search(r"<title>(.*?)</title>", html, re.S)
     m_desc = re.search(r'name="description"\s+content="(.*?)"', html, re.S)
@@ -216,7 +216,7 @@ else: ok("Sin menciones a 'reformamos/restauramos/reparamos'")
 # --- 10. Enlaces internos rotos ------------------------------------------
 existing = set()
 for fp in HTMLS:
-    rel = fp.replace(str(ROOT), "")
+    rel = "/" + Path(fp).relative_to(ROOT).as_posix()
     existing.add(rel)
     if rel.endswith("/index.html"):
         existing.add(rel[:-len("index.html")])
