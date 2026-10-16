@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import random
 import re
 import shutil
 import unicodedata
@@ -256,8 +257,10 @@ for p in PAGES:
 def head_block(title: str, description: str, canonical: str,
                og_image: str = "/assets/hero.jpg",
                extra_jsonld: list | None = None,
-               preload_image: str | None = None) -> str:
+               preload_image: str | None = None,
+               noindex: bool = False) -> str:
     """`<head>` común: meta, OG, Twitter, favicon, CSS preload, JSON-LD."""
+    robots = '\n<meta name="robots" content="noindex,follow">' if noindex else ""
     css = f"/assets/styles.css?v={CSS_VER}" if CSS_VER else "/assets/styles.css"
     favicon = "/assets/favicon.ico"
     # Longitud SEO: title 30-60, meta description 120-160.
@@ -278,7 +281,7 @@ def head_block(title: str, description: str, canonical: str,
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{description}">
-<link rel="canonical" href="{canonical_abs}">
+<link rel="canonical" href="{canonical_abs}">{robots}
 <meta name="theme-color" content="#0b0f14">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{title}">
@@ -313,7 +316,6 @@ def header_html(active: str = "") -> str:
     <a href="/servicios/limpieza-tras-incendio/">Servicio</a>
     <a href="/ubicaciones/">Ubicaciones</a>
     <a href="/blog/">Blog</a>
-    <a href="/testimonios/">Testimonios</a>
     <a href="/faq/">FAQ</a>
     <a class="btn nav-cta" href="tel:{PHONE}">Llamar {PHONE}</a>
   </nav>
@@ -357,7 +359,6 @@ def footer_html() -> str:
     <a href="/ubicaciones/">Ubicaciones</a><br>
     <a href="/blog/">Blog</a><br>
     <a href="/galeria/">Galería</a><br>
-    <a href="/testimonios/">Testimonios</a><br>
     <a href="/equipo/">Equipo</a><br>
     <a href="/faq/">Preguntas frecuentes</a></p>
   </div>
@@ -530,6 +531,9 @@ def website_ld() -> dict:
     }
 
 # Datos de testimonios (ejemplo — marcar como tales hasta tener reales)
+# Poner a True solo cuando TESTIMONIOS contenga reseñas reales con consentimiento.
+TESTIMONIOS_PUBLICOS = False
+
 TESTIMONIOS = [
     {"nombre": "María L.", "ciudad": "Madrid", "barrio": "Salamanca",
      "rating": 5, "texto": "Se quemó la cocina y olía a humo en todas las habitaciones. Llegaron al día siguiente, en 4 días estaba todo limpio y el olor desapareció. La memoria que entregaron al seguro la aceptaron sin pegas."},
@@ -669,7 +673,9 @@ def render_geo_page(p: GeoPage) -> str:
         "riesgo": notes.get("riesgo", "incendios de cocina y eléctricos en pisos urbanos"),
     }
     parr_fmt = dict(fmt, **local)
-    chosen = [PARRAFOS[(h(slug) + i * 3) % len(PARRAFOS)] for i in range(7)]
+    # Muestreo determinista sin repetición (antes: paso 3 sobre un pool de 12
+    # => 3 de los 7 párrafos salían duplicados en todas las landings).
+    chosen = random.Random(h(slug)).sample(PARRAFOS, 7)
     body_html = "\n".join(f"<p>{para.format(**parr_fmt)}</p>" for para in chosen)
 
     # ---- cobertura ----
@@ -1085,7 +1091,7 @@ def render_geo_page(p: GeoPage) -> str:
 <section class="section faqs"><div class="wrap">
   <h2>La gente también pregunta — {ciudad}</h2>
   {faq_html}
-  <p class="faq-more"><a href="/faq/">Ver todas las preguntas frecuentes →</a> · <a href="/testimonios/">Ver reseñas de clientes →</a> · <a href="/blog/">Ir al blog completo →</a></p>
+  <p class="faq-more"><a href="/faq/">Ver todas las preguntas frecuentes →</a> · <a href="/galeria/">Ver trabajos reales →</a> · <a href="/blog/">Ir al blog completo →</a></p>
 </div></section>
 
 {tambien_html}
@@ -1228,7 +1234,7 @@ def render_home() -> str:
     <a class="card guia-card" href="/blog/cuanto-cuesta-limpieza-tras-incendio/"><span class="eyebrow">Guía</span><h3>Cuánto cuesta una limpieza tras incendio</h3><span class="ver-mas">Leer →</span></a>
     <a class="card guia-card" href="/blog/seguro-cubre-limpieza-incendio/"><span class="eyebrow">Seguros</span><h3>¿La limpieza tras incendio la cubre el seguro?</h3><span class="ver-mas">Leer →</span></a>
   </div>
-  <p style="margin-top:18px"><a class="btn alt" href="/blog/">Ver las 21 guías del blog →</a></p>
+  <p style="margin-top:18px"><a class="btn alt" href="/blog/">Ver las {len(POSTS)} guías del blog →</a></p>
 </div></section>
 
 <section class="section video-teaser"><div class="wrap">
@@ -1242,13 +1248,6 @@ def render_home() -> str:
     <span class="play-icon" aria-hidden="true">▶</span>
     <span class="video-duration">0:50</span>
   </a>
-</div></section>
-
-<section class="section"><div class="wrap" style="text-align:center">
-  <p class="eyebrow">Reseñas reales</p>
-  <h2>Lo que dicen nuestros clientes</h2>
-  <p>Valoración media 4.9/5 sobre intervenciones en vivienda, local y comunidad.</p>
-  <p><a class="btn alt" href="/testimonios/">Ver testimonios →</a></p>
 </div></section>
 
 </main>
@@ -1345,7 +1344,7 @@ def render_servicio_madre() -> str:
     <a class="card guia-card" href="/blog/cuanto-cuesta-limpieza-tras-incendio/"><span class="eyebrow">Guía</span><h3>Cuánto cuesta</h3><span class="ver-mas">Leer →</span></a>
     <a class="card guia-card" href="/blog/documentacion-perito-seguros/"><span class="eyebrow">Seguros</span><h3>Qué pide el perito tras un incendio</h3><span class="ver-mas">Leer →</span></a>
   </div>
-  <p><a href="/faq/">Ver FAQ completa →</a> · <a href="/testimonios/">Ver testimonios →</a> · <a href="/galeria/">Galería de intervenciones →</a></p>
+  <p><a href="/faq/">Ver FAQ completa →</a> · <a href="/galeria/">Galería de intervenciones →</a></p>
 </div></section>
 
 </main>
@@ -1521,7 +1520,7 @@ def render_404() -> str:
 
 def render_sitemap() -> str:
     urls = ["/", "/servicios/limpieza-tras-incendio/", "/ubicaciones/",
-            "/blog/", "/galeria/", "/testimonios/", "/faq/",
+            "/blog/", "/galeria/", "/faq/",
             "/equipo/", "/equipo/marta-magali/",
             "/aviso-legal/", "/privacidad/", "/cookies/"]
     for post in POSTS:
@@ -1978,39 +1977,45 @@ def render_faq_global() -> str:
 
 
 def render_testimonios() -> str:
+    """Página de opiniones. Mientras no haya reseñas reales con consentimiento,
+    se publica SIN testimonios de ejemplo, sin nota media y con noindex: una
+    página que se declara "de ejemplo" daña la confianza y Google la muestra
+    literalmente en los resultados. Para reactivarla: rellenar TESTIMONIOS con
+    reseñas reales, poner TESTIMONIOS_PUBLICOS = True y quitar el noindex."""
     url = "/testimonios/"
-    title = f"Testimonios de clientes | {BRAND}"
-    desc = f"Testimonios de clientes tras nuestra intervención de {KEYWORD.lower()} en distintas ciudades de España."
-    crumbs = [("Inicio", "/"), ("Testimonios", url)]
-    # NOTA: no se emite JSON-LD de reseñas (aggregateRating/Review) porque los
-    # testimonios son de ejemplo, no reseñas reales verificables. Marcar reseñas
-    # ficticias como datos estructurados infringe las políticas de Google y puede
-    # acarrear una acción manual. Reintroducir solo con reseñas reales.
-    avg = round(sum(t["rating"] for t in TESTIMONIOS) / len(TESTIMONIOS), 1)
+    title = f"Opiniones de clientes | {BRAND}"
+    desc = (f"Opiniones de clientes tras nuestra intervención de {KEYWORD.lower()}. "
+            f"Pide referencias verificadas de trabajos en tu zona al {PHONE}.")
+    crumbs = [("Inicio", "/"), ("Opiniones", url)]
     jsonld = [organization_ld(), breadcrumb_ld(crumbs)]
-    head = head_block(title, desc, url, extra_jsonld=jsonld)
-
     cards = []
-    for t in TESTIMONIOS:
-        stars = "★" * t["rating"] + "☆" * (5 - t["rating"])
-        cards.append(
-            f'<blockquote class="card review-card">'
-            f'<p class="stars" aria-label="{t["rating"]} de 5">{stars}</p>'
-            f'<p>«{t["texto"]}»</p>'
-            f'<footer>— {t["nombre"]}, {t["barrio"]} ({t["ciudad"]})</footer>'
-            f'</blockquote>'
-        )
+    if TESTIMONIOS_PUBLICOS:
+        for t in TESTIMONIOS:
+            stars = "★" * t["rating"] + "☆" * (5 - t["rating"])
+            cards.append(
+                f'<blockquote class="card review-card">'
+                f'<p class="stars" aria-label="{t["rating"]} de 5">{stars}</p>'
+                f'<p>«{t["texto"]}»</p>'
+                f'<footer>— {t["nombre"]}, {t["barrio"]} ({t["ciudad"]})</footer>'
+                f'</blockquote>'
+            )
+    head = head_block(title, desc, url, extra_jsonld=jsonld,
+                      noindex=not TESTIMONIOS_PUBLICOS)
+    reviews_html = (f'<div class="grid review-grid">{"".join(cards)}</div>' if cards else
+                    f"""<p>Estamos recopilando opiniones de clientes que han autorizado su publicación.
+  Mientras tanto, si quiere hablar con alguien a quien ya hayamos limpiado la vivienda o el local
+  tras un incendio, llámenos al <a href="tel:{PHONE}">{PHONE}</a> y le ponemos en contacto con una
+  referencia de su zona. También puede ver <a href="/galeria/">fotos reales de trabajos antes y después</a>.</p>""")
     body = f"""{header_html()}
-<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Testimonios</span></div></nav>
+<nav class="crumbs"><div class="wrap"><a href="/">Inicio</a> › <span>Opiniones</span></div></nav>
 <main id="contenido" tabindex="-1">
 <section class="hero hero-local"><div class="wrap">
-  <p class="eyebrow">Reseñas</p>
+  <p class="eyebrow">Opiniones</p>
   <h1>Lo que dicen nuestros clientes</h1>
-  <p class="lead">Valoración media {avg}/5 sobre {len(TESTIMONIOS)} reseñas (ejemplo, sustituiremos por reales conforme los clientes autoricen publicarlas).</p>
+  <p class="lead">Referencias verificables de intervenciones reales en vivienda, local y comunidad.</p>
 </div></section>
 <section class="section"><div class="wrap">
-  <div class="grid review-grid">{"".join(cards)}</div>
-  <p class="small">* Testimonios de ejemplo basados en perfiles reales hasta tener consentimiento explícito de publicación. Pide referencias verificadas al {PHONE}.</p>
+  {reviews_html}
 </div></section>
 
 <section class="section guias-blog"><div class="wrap">
@@ -2021,7 +2026,7 @@ def render_testimonios() -> str:
     <a class="card guia-card" href="/blog/seguro-cubre-limpieza-incendio/"><span class="eyebrow">Seguros</span><h3>¿La limpieza la cubre el seguro?</h3><span class="ver-mas">Leer →</span></a>
     <a class="card guia-card" href="/galeria/"><span class="eyebrow">Galería</span><h3>Trabajos reales antes/después</h3><span class="ver-mas">Ver →</span></a>
   </div>
-  <p><a href="/blog/">Ver las 21 guías del blog →</a> · <a href="/faq/">FAQ completa →</a> · <a href="/ubicaciones/">Cobertura por ciudad →</a></p>
+  <p><a href="/blog/">Ver las {len(POSTS)} guías del blog →</a> · <a href="/faq/">FAQ completa →</a> · <a href="/ubicaciones/">Cobertura por ciudad →</a></p>
 </div></section>
 
 <section class="section cta-band"><div class="wrap" style="text-align:center">
