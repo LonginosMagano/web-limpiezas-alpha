@@ -21,6 +21,15 @@ EMAIL = "info@limpiezadeincendiosalpha.es"
 # llegan). Rellenar para que el formulario de contacto funcione.
 FORMSPREE_ID = "xlgwbzyq"
 FORM_ACTION = f"https://formspree.io/f/{FORMSPREE_ID}" if FORMSPREE_ID else f"https://formspree.io/{EMAIL}"
+# Horario de atención. Debe coincidir SIEMPRE con la ficha de Google Business
+# (schema, llms.txt y texto visible salen de aquí).
+HORARIO = [
+    (["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "07:00", "22:00"),
+    (["Saturday", "Sunday"], "08:00", "16:00"),
+]
+HORARIO_TEXTO = "L–V 7:00–22:00 · S–D 8:00–16:00"
+HORARIO_FRASE = "de 7:00 a 22:00 de lunes a viernes y de 8:00 a 16:00 los fines de semana"
+
 KEYWORD = "Limpieza Después de Incendio"
 KEYWORD_SLUG = "limpieza-despues-de-incendio"
 

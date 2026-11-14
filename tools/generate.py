@@ -34,6 +34,7 @@ from data import (
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
     INTERVENCIONES, HERO_POOL, ASEGURADORAS, ALT_SCENES, DELEGACIONES,
+    HORARIO, HORARIO_TEXTO, HORARIO_FRASE,
 )
 
 
@@ -159,7 +160,7 @@ def fit_meta(desc: str, seed: str = "", min_len: int = 120, max_len: int = 160) 
     if not seed:
         seed = desc
     tails = [
-        " Atención urgente las 24 horas, 365 días.",
+        " Atención urgente dentro del horario y presupuesto gratis.",
         " Respuesta en menos de 1 hora y trato directo.",
         " Te valoramos hoy mismo y sin compromiso.",
         " Hollín, humo y olor bajo control en horas.",
@@ -306,7 +307,7 @@ def header_html(active: str = "") -> str:
     """Cabecera (sticky), logo con ruta relativa al raíz."""
     return f"""<body class="alpha">
 <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
-<div class="top-alert"><div class="wrap"><span>Operativos 24/7 · Servicio profesional 365 días</span><a href="tel:{PHONE}">Urgencias y valoración: {PHONE}</a></div></div>
+<div class="top-alert"><div class="wrap"><span>Horario: {HORARIO_TEXTO}</span><a href="tel:{PHONE}">Urgencias y valoración: {PHONE}</a></div></div>
 <header class="main-nav"><div class="wrap">
   <a class="brand-row" href="/"><img class="logo-img" src="/assets/logo.webp" alt="{BRAND}" width="140" height="70" loading="eager"><span class="logo-text">{BRAND}</span></a>
   <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
@@ -350,7 +351,7 @@ def footer_html() -> str:
   <div>
     <h3>Contacto</h3>
     <p><a href="tel:{PHONE}">{PHONE}</a><br>
-    <a href="https://wa.me/{PHONE_INTL}">WhatsApp 24h</a><br>
+    <a href="https://wa.me/{PHONE_INTL}">WhatsApp</a><br>
     <a href="mailto:{EMAIL}">{EMAIL}</a></p>
   </div>
   <div>
@@ -469,12 +470,9 @@ def local_business_ld(ciudad: str, url: str) -> dict:
         "areaServed": ciudad,
         "address": address,
         "openingHoursSpecification": [
-            {"@type": "OpeningHoursSpecification",
-             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-             "opens": "07:00", "closes": "22:00"},
-            {"@type": "OpeningHoursSpecification",
-             "dayOfWeek": ["Saturday", "Sunday"],
-             "opens": "08:00", "closes": "16:00"},
+            {"@type": "OpeningHoursSpecification", "dayOfWeek": days,
+             "opens": opens, "closes": closes}
+            for days, opens, closes in HORARIO
         ],
     }
     if deleg and deleg.get("lat") and deleg.get("lon"):
@@ -700,7 +698,7 @@ def render_geo_page(p: GeoPage) -> str:
     # Optimizadas para capturar Posición Cero (+80-90% probabilidad con múltiples formatos).
     pz_faqs = [
         (f"¿En cuánto tiempo actuáis tras un incendio en {ciudad}?",
-         f"Atendemos las 24 horas. Tras tu llamada al {PHONE}, un técnico se "
+         f"Atendemos {HORARIO_FRASE}. Tras tu llamada al {PHONE}, un técnico se "
          f"desplaza el mismo día: las primeras 72 horas son críticas para que "
          f"el hollín ácido no se fije en paredes ni textiles."),
         ("¿Qué método de limpieza técnica usáis?",
@@ -741,7 +739,7 @@ def render_geo_page(p: GeoPage) -> str:
     zero_para = (
         f"Nuestro equipo de limpieza técnica post-incendio retira escombros, "
         f"elimina el hollín y desinfecta con <strong>ozono</strong> y "
-        f"<strong>filtración HEPA</strong> las <strong>24 horas</strong> del día. "
+        f"<strong>filtración HEPA</strong>, {HORARIO_FRASE}. "
         f"Llama ahora al {PHONE} y un técnico valorará tu vivienda o local de "
         f"forma urgente, con presupuesto cerrado y sin compromiso."
     )
@@ -749,12 +747,12 @@ def render_geo_page(p: GeoPage) -> str:
     # Párrafo alternativo más corto (20-30 palabras) para múltiples formatos de snippet
     zero_para_short = (
         f"Eliminamos hollín y olor con técnica de <strong>ozono</strong> y "
-        f"<strong>HEPA</strong>. Atendemos <strong>24/7</strong>. "
+        f"<strong>HEPA</strong>. Horario: <strong>{HORARIO_TEXTO}</strong>. "
         f"Llama al {PHONE}."
     )
 
     zero_table_rows = [
-        ("Disponibilidad", "24 horas, 365 días al año"),
+        ("Horario", HORARIO_TEXTO),
         ("Tiempo de respuesta", "Menos de 1 hora"),
         ("Servicio", "Retirada de escombros, hollín y desinfección HEPA/ozono"),
         ("Cobertura", f"{ciudad} y alrededores"),
@@ -778,7 +776,7 @@ def render_geo_page(p: GeoPage) -> str:
     <p class="zero-answer-alt" style="font-size:0.9em;color:#666;margin-top:8px">{zero_para_short}</p>
     <div class="cta-row">
       <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
-      <a class="btn alt" href="https://wa.me/{PHONE_INTL}" aria-label="Escribir por WhatsApp 24 horas">WhatsApp 24h</a>
+      <a class="btn alt" href="https://wa.me/{PHONE_INTL}" aria-label="Escribir por WhatsApp">WhatsApp</a>
     </div>
   </div>
   <div class="zero-formats grid">
@@ -1162,7 +1160,7 @@ def render_home() -> str:
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <p class="eyebrow">Operativos 24/7 · 365 días</p>
+      <p class="eyebrow">Horario: {HORARIO_TEXTO}</p>
       <h1>{KEYWORD}: hollín, humo y olor fuera</h1>
       <p class="lead">Tras un incendio, lo último que necesita es lidiar con bayetas, ambientadores y peritos. Subimos a su casa o local, miramos en serio lo que ha pasado y empezamos a trabajar. La memoria para el seguro la entregamos nosotros. Usted descansa.</p>
       <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="Operario de Limpiezas de Incendios Alpha retirando hollín de una pared tras un incendio doméstico" width="800" height="450" loading="eager" fetchpriority="high">
@@ -1589,7 +1587,7 @@ def render_llms() -> str:
         f"- Teléfono: {PHONE}",
         f"- WhatsApp: https://wa.me/{PHONE_INTL}",
         f"- Email: {EMAIL}",
-        "- Horario: L-V 07:00-22:00, S-D 08:00-16:00",
+        f"- Horario: {HORARIO_TEXTO}",
         "",
         "## Servicio",
         f"- [{KEYWORD}]({DOMAIN}/servicios/limpieza-tras-incendio/): qué incluye, qué no incluye, cómo trabajamos.",
