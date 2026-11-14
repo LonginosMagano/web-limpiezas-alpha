@@ -1,4 +1,10 @@
-# Progreso del plan SEO (ver AUDITORIA-SEO-2026-10.md)
+# Progreso del plan SEO (ver AUDITORIA-SEO-2026-10.md y AUDITORIA-SEO-2026-11.md)
+
+> **14-11-2026:** la rama de la semana 1 sigue sin fusionar en `main` y las 4 tareas
+> programadas (23-10, 10-11, 12-11, 13-11) hicieron el trabajo pero no pudieron hacer
+> push (sesiones nuevas sin el repo autorizado). Ese trabajo se perdió. Las tareas se
+> han vuelto a crear dentro de la sesión con acceso al repo y empujan a esta rama.
+> **Nada llega a producción hasta fusionar `ccr-2de84e1f-7jiujz` en `main`.**
 
 Las tareas programadas leen y actualizan este fichero. Marcar con [x] lo hecho.
 
@@ -9,6 +15,8 @@ Las tareas programadas leen y actualizan este fichero. Marcar con [x] lo hecho.
 - [x] /testimonios/ sin reseñas de ejemplo, con noindex, fuera de nav/sitemap; bloque "4.9/5" fuera de la home
 
 ## Pendiente manual (lo tiene que hacer una persona)
+- [ ] **Fusionar `ccr-2de84e1f-7jiujz` en `main`** (sin esto no se despliega nada)
+- [ ] **Decidir un dominio por marca** (ver auditoría v2 §2): 301 de limpiezadeincendiomadrid.com a esta web o diferenciación real
 - [ ] NIF en `tools/data.py` (`NIF = ""`)
 - [ ] Crear/verificar Google Business Profile (Madrid, C/ Juan de Mena 7) y pedir reseñas reales
 - [ ] GitHub → Settings → Pages → "Enforce HTTPS" activado
@@ -16,7 +24,7 @@ Las tareas programadas leen y actualizan este fichero. Marcar con [x] lo hecho.
 - [ ] Decidir qué hacer con limpiezadeincendiomadrid.com (301 a esta web o diferenciar)
 - [ ] Reseñas reales con consentimiento → `TESTIMONIOS_PUBLICOS = True`
 
-## Semana 2 (tarea programada "SEO · semana 2")
+## Semana 2 (tarea programada "SEO · semana 2", reprogramada al 16-11 en esta sesión)
 - [ ] Fechas reales por post (`published`/`updated` en posts.py) y `lastmod` desde git
 - [ ] Títulos/H1 con keyword natural ("limpieza tras incendio en X", "empresa 24h")
 - [ ] Home: quiénes somos, lista completa de provincias, casos reales
