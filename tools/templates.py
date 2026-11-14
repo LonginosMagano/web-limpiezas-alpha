@@ -169,6 +169,102 @@ PARRAFOS = [
     "olor residual, volvemos sin cobrar. No por marketing. Porque tras un "
     "incendio uno ya ha tenido bastante para que encima discutamos por una "
     "segunda visita.",
+
+    "Antes de encender una sola máquina hacemos una cosa que parece menor: "
+    "abrir ventanas en cruz y medir. Medimos partículas en suspensión y "
+    "humedad en cada habitación de la vivienda en {ciudad}, y anotamos el "
+    "resultado en la memoria. No es postureo técnico. Es lo que nos dice si "
+    "el hollín sigue flotando y se va a volver a posar en lo que acabemos de "
+    "limpiar. Si está en el aire, primero se filtra; si ya está en la pared, "
+    "primero se aspira en seco. El orden lo decide el medidor, no la prisa.",
+
+    "Las comunidades de vecinos son un caso aparte. Un incendio en un cuarto "
+    "piso deja hollín en la caja de escalera hasta el portal, en los buzones "
+    "y en el ascensor, y la factura la paga el seguro de la comunidad, no el "
+    "del vecino. En {ciudad} tratamos con el administrador de fincas desde la "
+    "primera visita: él recibe el presupuesto por zonas comunes, el "
+    "propietario el suyo por la vivienda, y ninguno de los dos tiene que "
+    "pelearse por qué parte le toca a quién. Dos partes, dos memorias.",
+
+    "El hollín es conductor. Esa frase la repetimos en cada cuadro eléctrico "
+    "que vemos ennegrecido. Un enchufe que parece solo sucio puede tener "
+    "carbón dentro, y conectar la luz sin limpiarlo es la forma más rápida de "
+    "tener un segundo incendio. Por eso en viviendas de {ciudad} con fuego "
+    "eléctrico pedimos que no se restablezca el suministro hasta que hayamos "
+    "limpiado mecanismos y cajas de registro, y lo dejamos por escrito en la "
+    "memoria para que el perito lo vea.",
+
+    "Hay cosas que no se limpian: se tiran. Colchones empapados por los "
+    "bomberos, un sofá con la espuma chamuscada, alimentos abiertos en una "
+    "cocina llena de humo. Lo decimos claro desde la primera visita porque "
+    "nadie quiere pagar por limpiar algo que al mes volverá a oler. Lo que "
+    "retiramos se fotografía, se pesa y se inventaria pieza a pieza para que "
+    "el seguro lo reponga. En {ciudad} gestionamos también el contenedor y la "
+    "retirada, para que usted no tenga que buscar quién se lo lleva.",
+
+    "El plazo que damos es el plazo que cumplimos, y lo decimos con una "
+    "cifra, no con un \"depende\". Una cocina de tamaño normal en {ciudad} "
+    "suele estar lista en dos o tres días de trabajo. Un piso completo con "
+    "humo en todas las estancias, entre cinco y diez. Si al desmontar aparece "
+    "algo que no se veía (hollín detrás de un armario empotrado, un falso "
+    "techo lleno), se lo contamos ese mismo día y ajustamos el plazo antes de "
+    "seguir, no al final.",
+
+    "Trabajamos con esponja química en seco antes de que cualquier líquido "
+    "toque la pared. Es una esponja de caucho vulcanizado que arranca el "
+    "hollín por adherencia, sin arrastrarlo. Después, y solo después, viene "
+    "el desengrasante alcalino, y por último el aclarado. Si en una vivienda "
+    "de {ciudad} nos encontramos gotelé o pintura al temple, el proceso "
+    "cambia: esas superficies no admiten agua y hay que ir pasada a pasada en "
+    "seco. Por eso preguntamos qué pintura tiene antes de dar un precio.",
+
+    "Un olor que vuelve a los diez días no es mala suerte: es hollín que se "
+    "quedó en un sitio que nadie abrió. Dentro del extractor de la campana. "
+    "En los conductos de la calefacción. En el hueco del tambor de la "
+    "persiana. Por eso en {ciudad} desmontamos lo que haga falta en la "
+    "primera visita y no damos la limpieza por cerrada hasta pasar el medidor "
+    "por esos huecos. Cuesta una hora más. Ahorra una segunda intervención "
+    "entera.",
+
+    "La ozonización no es echar un aparato en la habitación y marcharse. El "
+    "ozono en concentración alta degrada gomas, textiles y hasta algunas "
+    "pinturas, así que lo dosificamos por metros cúbicos y por tiempo, con la "
+    "estancia precintada y sin nadie dentro. Después se ventila hasta que el "
+    "medidor marca cero. En viviendas de {ciudad} con mascotas o niños lo "
+    "planificamos para una tarde en la que la familia esté fuera, y avisamos "
+    "al vecino de al lado por si nota olor a tormenta.",
+
+    "Cuando el incendio ha sido en un piso alquilado, al propietario le "
+    "preocupa una cosa: cuánto tarda en poder volver a alquilarlo. Y al "
+    "inquilino, otra: qué parte le pueden reclamar. Lo tratamos por separado. "
+    "Al propietario le damos fecha de entrega y la memoria para su seguro; al "
+    "inquilino, el inventario de lo suyo que se recupera y lo que no. En "
+    "{ciudad} hemos visto muchos pisos de alquiler con {riesgo}, y casi "
+    "siempre el conflicto viene de no haber documentado al principio.",
+
+    "La ropa y los textiles se tratan fuera de la vivienda, en un proceso de "
+    "lavado con tensioactivos específicos y secado controlado que no fija el "
+    "olor. Lo que mucha gente no sabe es que la tintorería convencional "
+    "trabaja en seco con percloroetileno, y eso sella el humo dentro de la "
+    "fibra para siempre. Por eso recogemos las prendas inventariadas, las "
+    "etiquetamos por habitación y las devolvemos en {ciudad} con la lista de "
+    "lo que ha vuelto limpio y lo que no ha tenido remedio.",
+
+    "Muchos avisos nos llegan desde el propio perito del seguro, que ya ha "
+    "visto el piso y sabe que una limpieza mal hecha le dará más problemas "
+    "que una bien hecha. Trabajar con peritos nos ha enseñado qué necesitan "
+    "en la memoria: fotos con fecha y estancia, superficie en metros de cada "
+    "pared tratada, producto usado y horas por fase. En {ciudad} esa memoria "
+    "la tiene el perito antes de que terminemos, para que la valoración no se "
+    "retrase por nuestra parte.",
+
+    "Hay algo que nos piden a menudo y a lo que decimos que no: pintar encima "
+    "para que no se vea. La pintura sobre hollín se despega en semanas y el "
+    "olor sigue debajo. Si una pared en {ciudad} está tan dañada que no "
+    "admite limpieza, lo decimos, lo fotografiamos y lo dejamos en la memoria "
+    "como superficie a reponer, para que lo haga un pintor cuando nosotros "
+    "hayamos terminado. Primero se descontamina, luego se decora. Al revés no "
+    "funciona nunca.",
 ]
 
 # Snippets para "Zonas de cobertura específica" — rotan también.
