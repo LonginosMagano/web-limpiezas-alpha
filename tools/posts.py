@@ -835,3 +835,16 @@ CATEGORY_LABEL = {
     "seguros": "Seguros",
     "ciudad": "Por ciudad",
 }
+
+# Fechas reales por post (ISO). `published` = cuándo se publicó; `updated` =
+# última revisión de contenido. Al ampliar o corregir un post, poner aquí su
+# `updated` con la fecha del día. Los 21 posts iniciales salieron el
+# 2026-05-23 (commit "6 posts long-tail"); el de Móstoles el 2026-10-01.
+POST_DATES = {
+    "limpieza-despues-incendio-suelo-porcelanico-mostoles": ("2026-10-01", "2026-10-01"),
+}
+_DEFAULT_DATES = ("2026-05-23", "2026-05-23")
+for _p in POSTS:
+    _pub, _upd = POST_DATES.get(_p["slug"], _DEFAULT_DATES)
+    _p.setdefault("published", _pub)
+    _p.setdefault("updated", _upd)

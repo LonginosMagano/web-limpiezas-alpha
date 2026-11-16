@@ -24,10 +24,10 @@ Las tareas programadas leen y actualizan este fichero. Marcar con [x] lo hecho.
 - [ ] Decidir qué hacer con limpiezadeincendiomadrid.com (301 a esta web o diferenciar)
 - [ ] Reseñas reales con consentimiento → `TESTIMONIOS_PUBLICOS = True`
 
-## Semana 2 (tarea programada "SEO · semana 2", reprogramada al 16-11 en esta sesión)
-- [ ] Fechas reales por post (`published`/`updated` en posts.py) y `lastmod` desde git
-- [ ] Títulos/H1 con keyword natural ("limpieza tras incendio en X", "empresa 24h")
-- [ ] Home: quiénes somos, lista completa de provincias, casos reales
+## Semana 2 (hecho el 16-11-2026, rama ccr-2de84e1f-7jiujz)
+- [x] Fechas reales por post (`POST_DATES` en posts.py: 21 iniciales 2026-05-23, Móstoles 2026-10-01); `lastmod` del sitemap = fecha del último commit del fichero, o la de hoy si cambió al regenerar (CI con `fetch-depth: 0`). Al ampliar un post, poner su `updated` en `POST_DATES`.
+- [x] Títulos/H1/meta/intro con la keyword natural rotada por slug (`KW_NATURAL`: "limpieza tras incendio", "limpieza de incendios", "limpieza después de incendio"); títulos de 47-60 caracteres; `qa.py` acepta las variantes.
+- [x] Home: bloque "Quiénes somos" (sede, 10 delegaciones enlazadas, responsable técnica, RC), 3 casos reales (Móstoles con fecha + Madrid + Barcelona) y las 34 provincias enlazadas por comunidad.
 
 ## Landings principales (tarea semanal, 2 por semana)
 - [ ] Madrid

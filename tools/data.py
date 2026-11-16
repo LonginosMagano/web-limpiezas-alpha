@@ -31,6 +31,10 @@ HORARIO_TEXTO = "L–V 7:00–22:00 · S–D 8:00–16:00"
 HORARIO_FRASE = "de 7:00 a 22:00 de lunes a viernes y de 8:00 a 16:00 los fines de semana"
 
 KEYWORD = "Limpieza Después de Incendio"
+# Formas naturales de la keyword para title, H1, meta e intro (en frase, sin
+# mayúsculas de título). qa.py acepta cualquiera de ellas.
+KW_NATURAL = ["limpieza tras incendio", "limpieza de incendios",
+              "limpieza después de incendio"]
 KEYWORD_SLUG = "limpieza-despues-de-incendio"
 
 # --- Datos del titular para aviso legal / política de privacidad (LSSI/RGPD) ---
