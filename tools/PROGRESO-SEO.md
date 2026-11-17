@@ -30,8 +30,9 @@ Las tareas programadas leen y actualizan este fichero. Marcar con [x] lo hecho.
 - [x] Home: bloque "Quiénes somos" (sede, 10 delegaciones enlazadas, responsable técnica, RC), 3 casos reales (Móstoles con fecha + Madrid + Barcelona) y las 34 provincias enlazadas por comunidad.
 
 ## Landings principales (tarea semanal, 2 por semana)
-- [ ] Madrid
-- [ ] Barcelona
+Mecanismo: `tools/contenido_local/<slug>.py` con `CONTENIDO` (title, h1, meta, intro, cuerpo, zonas, zonas_lista, faq). Ver el `__init__.py` de la carpeta.
+- [x] Madrid (17-11-2026)
+- [x] Barcelona (17-11-2026)
 - [ ] Valencia
 - [ ] Sevilla
 - [ ] Málaga

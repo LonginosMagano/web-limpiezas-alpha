@@ -79,6 +79,7 @@ def with_base(html: str) -> str:
     return html
 from templates import TITLE, META, H1, PARRAFOS, COBERTURA_BLURB, FAQ_LOCAL_POOL
 from posts import POSTS, CATEGORY_LABEL
+from contenido_local import load_local
 
 ROOT = Path(__file__).parent.parent
 TODAY = date.today().isoformat()
@@ -740,6 +741,34 @@ def render_geo_page(p: GeoPage) -> str:
             seen.add(it["q"]); ufaqs.append(it)
     faq_pairs = [(it["q"].format(**fmt), it["a"].format(**fmt)) for it in ufaqs]
 
+    # ---- contenido local escrito a mano (tools/contenido_local/<slug>.py) ----
+    # Sustituye intro, cuerpo, zonas y FAQ rotados por texto propio de la ciudad.
+    manual = load_local(slug)
+    zonas_lista_html = ""
+    if manual:
+        if manual.get("title"):
+            title = fit_title(manual["title"], slug)
+        if manual.get("h1"):
+            h1 = manual["h1"]
+        if manual.get("meta"):
+            desc = fit_meta(manual["meta"], seed=slug)
+        if manual.get("intro"):
+            intro = manual["intro"]
+        partes = []
+        for sub, paras in manual["cuerpo"]:
+            if sub:
+                partes.append(f"<h3>{sub}</h3>")
+            partes.extend(f"<p>{x}</p>" for x in paras)
+        body_html = "\n".join(partes)
+        if manual.get("zonas"):
+            cobertura = manual["zonas"]
+        if manual.get("zonas_lista"):
+            zonas_lista_html = "<ul class=\"zonas-lista\">" + "".join(
+                f"<li><strong>{z}:</strong> {t}</li>" for z, t in manual["zonas_lista"]
+            ) + "</ul>"
+        if manual.get("faq"):
+            faq_pairs = list(manual["faq"])
+
     # ---- FASE 2: Posición Cero (fragmento destacado multi-formato) ----------
     # 4 FAQ cortas (urgencia + método + emergencia + cobertura) al frente del FAQPage.
     # Optimizadas para capturar Posición Cero (+80-90% probabilidad con múltiples formatos).
@@ -979,7 +1008,9 @@ def render_geo_page(p: GeoPage) -> str:
         f"En {ciudad} llamamos a {BRAND}, vinieron al día siguiente y a la semana ya "
         f"podíamos volver a casa.\""
     )
-    testimonio_html = f"""<section class="section testimonio"><div class="wrap">
+    # Sin testimonios de ejemplo: reactivar solo con reseñas reales y consentimiento.
+    testimonio_html = ""
+    _testimonio_html_ejemplo = f"""<section class="section testimonio"><div class="wrap">
       <p class="eyebrow">Cliente (ejemplo)</p>
       <blockquote class="card">
         <p>{testimonio}</p>
@@ -1119,10 +1150,8 @@ def render_geo_page(p: GeoPage) -> str:
       {body_html}
       <h2>Zonas de cobertura en {ciudad}</h2>
       <p>{cobertura}</p>
-      <p>{KW_SECUNDARIAS[h(slug) % len(KW_SECUNDARIAS)].capitalize()},
-      {KW_SECUNDARIAS[(h(slug)+3) % len(KW_SECUNDARIAS)]} o
-      {KW_SECUNDARIAS[(h(slug)+7) % len(KW_SECUNDARIAS)]}: cualquier
-      escenario lo cubrimos con el mismo proceso técnico.</p>
+      {zonas_lista_html}
+      {"" if manual else f"<p>{KW_SECUNDARIAS[h(slug) % len(KW_SECUNDARIAS)].capitalize()}, {KW_SECUNDARIAS[(h(slug)+3) % len(KW_SECUNDARIAS)]} o {KW_SECUNDARIAS[(h(slug)+7) % len(KW_SECUNDARIAS)]}: cualquier escenario lo cubrimos con el mismo proceso técnico.</p>"}
       {contextual}
     </article>
     {sidebar_html}
