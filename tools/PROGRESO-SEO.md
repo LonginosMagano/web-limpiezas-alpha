@@ -43,7 +43,7 @@ Mecanismo: `tools/contenido_local/<slug>.py` con `CONTENIDO` (title, h1, meta, i
 - [ ] Toledo
 
 ## Blog: ampliar a 1.200+ palabras (tarea semanal, 1 por semana)
-- [ ] cuanto-cuesta-limpieza-tras-incendio
+- [x] cuanto-cuesta-limpieza-tras-incendio (19-11-2026, ~1.600 palabras, 2 tablas, 5 pasos, 6 FAQ)
 - [ ] seguro-cubre-limpieza-incendio
 - [ ] seguro-no-cubre-limpieza-incendio
 - [ ] que-hacer-despues-de-un-incendio

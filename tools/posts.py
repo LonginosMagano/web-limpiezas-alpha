@@ -133,11 +133,7 @@ POSTS = [
      'meta': 'Cuánto cuesta una limpieza tras incendio: rangos de precio por cocina, piso, chalet y '
              'local, qué incluye un presupuesto serio, qué lo encarece y cómo lo paga el seguro.',
      'category': 'general',
-     'quick_answer': 'Una limpieza tras incendio cuesta, de forma orientativa, entre 800 y 1.500 euros '
-                     'para una cocina con hollín localizado, entre 2.500 y 8.000 para un piso completo '
-                     'con olor en todas las estancias y desde 3.000 para un local. El precio real sale '
-                     'tras la visita técnica, que es gratuita, y en la mayoría de pólizas de hogar lo '
-                     'cubre el seguro.',
+     'quick_answer': 'Una limpieza tras incendio cuesta, orientativamente, entre 800 y 1.500 euros para una cocina con hollín localizado, entre 2.500 y 8.000 para un piso completo con olor en todas las estancias y desde 3.000 para un local. El precio real sale tras la visita técnica gratuita, y en la mayoría de pólizas de hogar lo cubre el seguro.',
      'sections': [{'h2': 'Rangos orientativos por tipo de siniestro',
                    'paragraphs': ['Estos son los rangos que manejamos al valorar una vivienda o un '
                                   'local. Son orientativos: el precio cerrado lo damos por escrito '
