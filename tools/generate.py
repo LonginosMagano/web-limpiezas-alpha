@@ -17,7 +17,9 @@ import os
 import random
 import re
 import shutil
+import subprocess
 import unicodedata
+from datetime import date
 from pathlib import Path
 from urllib.parse import quote
 
@@ -34,7 +36,7 @@ from data import (
     KW_VARIANTS_NUCLEO, KW_SECUNDARIAS,
     CCAA, MUNICIPIOS, BARRIOS_MADRID, SLUG_ALIAS, LOCAL_NOTES,
     INTERVENCIONES, HERO_POOL, ASEGURADORAS, ALT_SCENES, DELEGACIONES,
-    HORARIO, HORARIO_TEXTO, HORARIO_FRASE,
+    HORARIO, HORARIO_TEXTO, HORARIO_FRASE, KW_NATURAL,
 )
 
 
@@ -77,9 +79,51 @@ def with_base(html: str) -> str:
     return html
 from templates import TITLE, META, H1, PARRAFOS, COBERTURA_BLURB, FAQ_LOCAL_POOL
 from posts import POSTS, CATEGORY_LABEL
+from contenido_local import load_local
 
 ROOT = Path(__file__).parent.parent
-NOW = "2026-06-13"
+TODAY = date.today().isoformat()
+
+# Seguimiento de qué ficheros cambian al regenerar (para el lastmod real).
+_CHANGED: dict[str, bool] = {}
+
+def _git(*args: str) -> str | None:
+    try:
+        out = subprocess.run(["git", *args], cwd=ROOT, capture_output=True,
+                             text=True, timeout=15)
+        return out.stdout if out.returncode == 0 else None
+    except Exception:
+        return None
+
+def git_head_content(rel: str) -> str | None:
+    return _git("show", f"HEAD:{rel}")
+
+def git_lastmod(rel: str) -> str | None:
+    out = _git("log", "-1", "--format=%cs", "--", rel)
+    d = (out or "").strip()
+    return d if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d) else None
+
+def lastmod_for(rel: str) -> str:
+    """lastmod real de una URL: hoy si el fichero ha cambiado respecto a lo
+    commiteado; si no, la fecha del último commit que lo tocó. En CI el
+    checkout necesita historial completo (fetch-depth: 0)."""
+    if _CHANGED.get(rel, True):
+        return TODAY
+    return git_lastmod(rel) or TODAY
+
+MESES_ES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+            "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+
+def fecha_es(iso: str) -> str:
+    y, m, d = iso.split("-")
+    return f"{int(d)} de {MESES_ES[int(m) - 1]} de {y}"
+
+def cap(t: str) -> str:
+    return t[:1].upper() + t[1:]
+
+def kw_natural_for(slug: str) -> str:
+    """Forma natural de la keyword, rotada por slug (siempre en minúsculas)."""
+    return KW_NATURAL[h("kwn-" + slug) % len(KW_NATURAL)]
 
 def _asset_ver(rel: str) -> str:
     """Hash corto del asset para cache-busting (?v=). GitHub Pages no respeta
@@ -145,12 +189,12 @@ def fit_title(base: str, slug: str = "", min_len: int = 30, max_len: int = 60) -
 
 def geo_title(ciudad: str, slug: str) -> str:
     """Title de landing local 30-60 chars, con keyword + ciudad + marca."""
-    base = f"{KEYWORD} en {ciudad}"
-    quals = ["", ": 24h", ": hollín y humo", ": urgente",
-             ": humo y olor", ": empresa local"]
+    base = f"{cap(kw_natural_for(slug))} en {ciudad}"
+    quals = ["", ": hollín y humo", ": urgente", ": empresa local",
+             ": humo y olor", ": presupuesto gratis", " · empresa 24h"]
     q = quals[h("tq-" + slug) % len(quals)]
     t = fit_title(base + q, slug)
-    if KEYWORD.lower() not in t.lower():  # seguridad si el recorte comió la kw
+    if not any(k in t.lower() for k in KW_NATURAL):  # seguridad si el recorte comió la kw
         t = fit_title(base, slug)
     return t
 
@@ -181,6 +225,9 @@ def write(path: Path, content: str) -> None:
     # Aplicar prefijo de BASE_PATH a enlaces internos en archivos HTML.
     if path.suffix == ".html":
         content = with_base(content)
+    rel = path.relative_to(ROOT).as_posix()
+    head = git_head_content(rel)
+    _CHANGED[rel] = (head is None) or (head != content)
     path.write_text(content, encoding="utf-8")
 
 # Diccionarios de provincia/ccaa para cada municipio y barrio
@@ -631,8 +678,9 @@ def render_geo_page(p: GeoPage) -> str:
     else:
         hero_photo = pool_libre[h("hero-" + slug) % len(pool_libre)] if pool_libre else HERO_POOL[h("hero-" + slug) % len(HERO_POOL)]
 
-    fmt = dict(keyword=KEYWORD, kw_var=kw_var, ciudad=ciudad,
-               provincia=provincia, brand=BRAND, phone=PHONE)
+    kwn = kw_natural_for(slug)
+    fmt = dict(keyword=KEYWORD, kw=cap(kwn), kw_low=kwn, kw_var=kw_var,
+               ciudad=ciudad, provincia=provincia, brand=BRAND, phone=PHONE)
 
     title = geo_title(ciudad, slug)
     desc = fit_meta(meta_t.format(**fmt), seed=slug)
@@ -642,22 +690,22 @@ def render_geo_page(p: GeoPage) -> str:
     # Rotamos 6 leads narrativos por hash(slug) para que ninguna landing
     # repita el mismo arranque que su vecina.
     INTRO_LEADS = [
-        (f"{KEYWORD} en {ciudad}: limpiamos el hollín, retiramos el humo y "
+        (f"{cap(kwn)} en {ciudad}: limpiamos el hollín, retiramos el humo y "
          f"borramos el olor a quemado en viviendas y locales de {ciudad}. "
          f"Si llama hoy, esa misma tarde podemos estar allí mirando."),
-        (f"{KEYWORD} en {ciudad}. Quitamos el hollín de paredes, techos y "
+        (f"{cap(kwn)} en {ciudad}. Quitamos el hollín de paredes, techos y "
          f"muebles, tratamos el olor a humo en cada estancia y le ahorramos "
          f"el papeleo del seguro. Vamos al día siguiente, sin promesas raras."),
-        (f"{KEYWORD} en {ciudad}: pisos, locales, naves. Las primeras 72 "
+        (f"{cap(kwn)} en {ciudad}: pisos, locales, naves. Las primeras 72 "
          f"horas son las que mandan. Subimos, valoramos sin compromiso y le "
          f"damos presupuesto cerrado antes de tocar nada."),
-        (f"{KEYWORD} en {ciudad} y los pueblos de alrededor. No reformamos. "
+        (f"{cap(kwn)} en {ciudad} y los pueblos de alrededor. No reformamos. "
          f"No pintamos. Solo limpiamos y descontaminamos tras incendio. Eso, "
          f"sí, lo hacemos bien y por escrito para que el seguro lo cobre."),
-        (f"{KEYWORD} en {ciudad}: el equipo que mira es el mismo que limpia "
+        (f"{cap(kwn)} en {ciudad}: el equipo que mira es el mismo que limpia "
          f"y el mismo que firma la memoria final. Sin subcontratas, sin "
          f"intermediarios, sin teléfono escacharrado. Llámenos."),
-        (f"{KEYWORD} en {ciudad}. Hollín, humo y olor a quemado se quitan "
+        (f"{cap(kwn)} en {ciudad}. Hollín, humo y olor a quemado se quitan "
          f"con paciencia y método, no con un trapo y un ambientador. Por "
          f"eso, antes de tocar la pared, llámenos y véngale a echar un ojo."),
     ]
@@ -692,6 +740,34 @@ def render_geo_page(p: GeoPage) -> str:
         if it["q"] not in seen:
             seen.add(it["q"]); ufaqs.append(it)
     faq_pairs = [(it["q"].format(**fmt), it["a"].format(**fmt)) for it in ufaqs]
+
+    # ---- contenido local escrito a mano (tools/contenido_local/<slug>.py) ----
+    # Sustituye intro, cuerpo, zonas y FAQ rotados por texto propio de la ciudad.
+    manual = load_local(slug)
+    zonas_lista_html = ""
+    if manual:
+        if manual.get("title"):
+            title = fit_title(manual["title"], slug)
+        if manual.get("h1"):
+            h1 = manual["h1"]
+        if manual.get("meta"):
+            desc = fit_meta(manual["meta"], seed=slug)
+        if manual.get("intro"):
+            intro = manual["intro"]
+        partes = []
+        for sub, paras in manual["cuerpo"]:
+            if sub:
+                partes.append(f"<h3>{sub}</h3>")
+            partes.extend(f"<p>{x}</p>" for x in paras)
+        body_html = "\n".join(partes)
+        if manual.get("zonas"):
+            cobertura = manual["zonas"]
+        if manual.get("zonas_lista"):
+            zonas_lista_html = "<ul class=\"zonas-lista\">" + "".join(
+                f"<li><strong>{z}:</strong> {t}</li>" for z, t in manual["zonas_lista"]
+            ) + "</ul>"
+        if manual.get("faq"):
+            faq_pairs = list(manual["faq"])
 
     # ---- FASE 2: Posición Cero (fragmento destacado multi-formato) ----------
     # 4 FAQ cortas (urgencia + método + emergencia + cobertura) al frente del FAQPage.
@@ -932,7 +1008,9 @@ def render_geo_page(p: GeoPage) -> str:
         f"En {ciudad} llamamos a {BRAND}, vinieron al día siguiente y a la semana ya "
         f"podíamos volver a casa.\""
     )
-    testimonio_html = f"""<section class="section testimonio"><div class="wrap">
+    # Sin testimonios de ejemplo: reactivar solo con reseñas reales y consentimiento.
+    testimonio_html = ""
+    _testimonio_html_ejemplo = f"""<section class="section testimonio"><div class="wrap">
       <p class="eyebrow">Cliente (ejemplo)</p>
       <blockquote class="card">
         <p>{testimonio}</p>
@@ -1051,7 +1129,7 @@ def render_geo_page(p: GeoPage) -> str:
       <h1>{h1}</h1>
       <p class="lead">{intro}</p>
       <img class="hero-img" src="/{urlsafe(hero_photo)}"
-        alt="{KEYWORD} en {ciudad}: {ALT_SCENES[h('alt-' + slug) % len(ALT_SCENES)].lower()} ({kw_var}, {provincia})"
+        alt="{cap(kwn)} en {ciudad}: {ALT_SCENES[h('alt-' + slug) % len(ALT_SCENES)].lower()} ({kw_var}, {provincia})"
         width="800" height="450" loading="eager" fetchpriority="high">
       <div class="cta-row">
         <a class="btn" href="tel:{PHONE}">Llamar {PHONE}</a>
@@ -1072,10 +1150,8 @@ def render_geo_page(p: GeoPage) -> str:
       {body_html}
       <h2>Zonas de cobertura en {ciudad}</h2>
       <p>{cobertura}</p>
-      <p>{KW_SECUNDARIAS[h(slug) % len(KW_SECUNDARIAS)].capitalize()},
-      {KW_SECUNDARIAS[(h(slug)+3) % len(KW_SECUNDARIAS)]} o
-      {KW_SECUNDARIAS[(h(slug)+7) % len(KW_SECUNDARIAS)]}: cualquier
-      escenario lo cubrimos con el mismo proceso técnico.</p>
+      {zonas_lista_html}
+      {"" if manual else f"<p>{KW_SECUNDARIAS[h(slug) % len(KW_SECUNDARIAS)].capitalize()}, {KW_SECUNDARIAS[(h(slug)+3) % len(KW_SECUNDARIAS)]} o {KW_SECUNDARIAS[(h(slug)+7) % len(KW_SECUNDARIAS)]}: cualquier escenario lo cubrimos con el mismo proceso técnico.</p>"}
       {contextual}
     </article>
     {sidebar_html}
@@ -1113,8 +1189,8 @@ def render_geo_page(p: GeoPage) -> str:
 
 def render_home() -> str:
     url = "/"
-    title = f"{KEYWORD} 24h | {BRAND_SHORT}"
-    desc = (f"{KEYWORD} con respuesta 24h: hollín, humo, olor a quemado y "
+    title = f"Limpieza tras incendio: empresa urgente | {BRAND_SHORT}"
+    desc = (f"Limpieza tras incendio con respuesta en 24h: hollín, humo, olor a quemado y "
             f"documentación para el seguro. Llámanos al {PHONE} y te valoramos hoy.")
     jsonld = [organization_ld(), website_ld(), local_business_ld("España", "/"),
               breadcrumb_ld([("Inicio", "/")])]
@@ -1155,13 +1231,53 @@ def render_home() -> str:
         if pg:
             dest_html += f'<a class="chip chip-on" href="{pg["url"]}">→ {d}</a>'
 
+    # Quiénes somos: delegaciones reales de data.py, enlazadas a su landing
+    deleg_parts = []
+    for ciudad_d, info in DELEGACIONES.items():
+        pg = next((x for x in PAGES if x["kind"] == "provincia" and x["name"] == ciudad_d), None)
+        label = f"{ciudad_d} ({info['distrito']})" if info.get("distrito") else ciudad_d
+        deleg_parts.append(f'<a href="{pg["url"]}">{label}</a>' if pg else label)
+    deleg_html = ", ".join(deleg_parts[:-1]) + " y " + deleg_parts[-1] if len(deleg_parts) > 1 else "".join(deleg_parts)
+
+    # Casos reales: el post de Móstoles (con fecha) + dos pares antes/después de la galería
+    casos = []
+    post_mostoles = next((p for p in POSTS if p["slug"] == "limpieza-despues-incendio-suelo-porcelanico-mostoles"), None)
+    if post_mostoles:
+        casos.append((
+            f"/blog/{post_mostoles['slug']}/",
+            "assets/limpieza-despues-incendio-suelo-porcelanico-mostoles.webp",
+            f"Móstoles · {fecha_es(post_mostoles['published'])}",
+            post_mostoles["title"],
+        ))
+    for ciudad_c in ["Madrid", "Barcelona"]:
+        if ciudad_c in INTERVENCIONES:
+            casos.append((
+                "/galeria/",
+                INTERVENCIONES[ciudad_c][1],
+                f"{ciudad_c} · antes/después",
+                f"Intervención en {ciudad_c}: cocina y salón tras incendio doméstico. Limpieza de hollín, ozonización y entrega para el seguro.",
+            ))
+    casos_html = "".join(
+        f'    <a class="card guia-card" href="{href}"><img src="/{urlsafe(img)}" alt="Limpieza tras incendio: {eyebrow}" width="800" height="450" loading="lazy" style="width:100%;height:auto;border-radius:8px;margin-bottom:10px"><span class="eyebrow">{eyebrow}</span><h3>{titulo}</h3><span class="ver-mas">Ver →</span></a>\n'
+        for href, img, eyebrow, titulo in casos
+    )
+
+    # Lista completa de provincias por comunidad autónoma
+    prov_html = ""
+    for ccaa_name, _ccaa_slug, _provs in CCAA:
+        provs = [x for x in PAGES if x["kind"] == "provincia" and x["ccaa"] == ccaa_name]
+        if not provs:
+            continue
+        chips = "".join(f'<a class="chip" href="{x["url"]}">{x["name"]}</a>' for x in provs)
+        prov_html += f'  <p class="small" style="margin:12px 0 0"><strong>{ccaa_name}</strong></p>\n  <div class="chips">{chips}</div>\n'
+
     body = f"""{header_html()}
 <main id="contenido" tabindex="-1">
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Horario: {HORARIO_TEXTO}</p>
-      <h1>{KEYWORD}: hollín, humo y olor fuera</h1>
+      <h1>Limpieza tras incendio: hollín, humo y olor fuera</h1>
       <p class="lead">Tras un incendio, lo último que necesita es lidiar con bayetas, ambientadores y peritos. Subimos a su casa o local, miramos en serio lo que ha pasado y empezamos a trabajar. La memoria para el seguro la entregamos nosotros. Usted descansa.</p>
       <img class="hero-img" src="/{urlsafe(HERO_POOL[0])}" alt="Operario de Limpiezas de Incendios Alpha retirando hollín de una pared tras un incendio doméstico" width="800" height="450" loading="eager" fetchpriority="high">
       <div class="cta-row">
@@ -1211,10 +1327,29 @@ def render_home() -> str:
   </figure>
 </div></section>
 
+<section class="section quienes-somos"><div class="wrap">
+  <p class="eyebrow">Quiénes somos</p>
+  <h2>Una empresa de limpieza de incendios con sede en Madrid y equipos en {len(DELEGACIONES)} ciudades</h2>
+  <p>{BRAND} limpia y descontamina viviendas, comunidades de vecinos, locales y naves después de un incendio. No reformamos ni pintamos: retiramos el hollín, tratamos el olor a humo y entregamos la memoria fotográfica que pide el perito del seguro. La sede está en {DIRECCION} y atendemos {HORARIO_FRASE}.</p>
+  <ul class="quienes-list">
+    <li><strong>Responsable técnica:</strong> <a href="{AUTHOR_SLUG}">{AUTHOR}</a>, {AUTHOR_ROLE.lower()}. Coordina las intervenciones y revisa los contenidos técnicos de esta web. <a href="/equipo/">Ver el equipo →</a></li>
+    <li><strong>Delegaciones:</strong> {deleg_html}.</li>
+    <li><strong>Seguro de responsabilidad civil profesional</strong> y documentación en el formato que pide cada aseguradora.</li>
+    <li><strong>Visita técnica gratuita</strong> y presupuesto cerrado antes de empezar. Si en las 48 horas siguientes a la entrega queda olor, volvemos sin cobrar.</li>
+  </ul>
+</div></section>
+<section class="section casos-reales"><div class="wrap">
+  <p class="eyebrow">Trabajos reales</p>
+  <h2>Tres intervenciones recientes</h2>
+  <div class="grid guias-grid">
+{casos_html}  </div>
+  <p><a class="btn alt" href="/galeria/">Ver la galería completa antes/después</a></p>
+</div></section>
 <section class="section"><div class="wrap">
   <h2>Provincias destacadas donde operamos</h2>
   <div class="chips">{dest_html}</div>
-  <p><a class="btn alt" href="/ubicaciones/">Ver todas las ubicaciones</a></p>
+  <h3 style="margin-top:22px">Todas las provincias, por comunidad autónoma</h3>
+{prov_html}  <p><a class="btn alt" href="/ubicaciones/">Ver todas las ubicaciones, municipios y distritos</a></p>
 </div></section>
 
 <section class="section faqs"><div class="wrap">
@@ -1255,7 +1390,7 @@ def render_home() -> str:
 
 def render_servicio_madre() -> str:
     url = "/servicios/limpieza-tras-incendio/"
-    title = f"{KEYWORD}: servicio 24h | Alpha"
+    title = "Limpieza tras incendio: qué incluye el servicio | Alpha"
     desc = (f"Servicio profesional de {KEYWORD.lower()}: hollín, humo, olor, "
             f"cocina, vivienda y documentación para el seguro. Atención al {PHONE}.")
     crumbs = [("Inicio", "/"), ("Servicio", url)]
@@ -1516,6 +1651,13 @@ def render_404() -> str:
 
 # ----------------------------------------------------------- sitemap --
 
+def _lastmod_url(u: str) -> str:
+    post = next((p for p in POSTS if u == f"/blog/{p['slug']}/"), None)
+    if post:
+        return post["updated"]
+    rel = "index.html" if u == "/" else u.strip("/") + "/index.html"
+    return lastmod_for(rel)
+
 def render_sitemap() -> str:
     urls = ["/", "/servicios/limpieza-tras-incendio/", "/ubicaciones/",
             "/blog/", "/galeria/", "/faq/",
@@ -1541,7 +1683,7 @@ def render_sitemap() -> str:
             # Secciones: 0.6
             prio = "0.6"
         parts.append(
-            f"<url><loc>{DOMAIN}{u}</loc><lastmod>{NOW}</lastmod>"
+            f"<url><loc>{DOMAIN}{u}</loc><lastmod>{_lastmod_url(u)}</lastmod>"
             f"<changefreq>weekly</changefreq><priority>{prio}</priority></url>"
         )
     parts.append("</urlset>")
@@ -1686,7 +1828,7 @@ def article_ld(post: dict, url: str) -> dict:
             "@type": "Organization", "name": BRAND,
             "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.webp"},
         },
-        "datePublished": NOW, "dateModified": NOW,
+        "datePublished": post["published"], "dateModified": post["updated"],
         "mainEntityOfPage": DOMAIN + url,
         "inLanguage": "es-ES",
     }
@@ -1833,7 +1975,7 @@ def render_post(post: dict) -> str:
     <h1>{post['title']}</h1>
     <p class="post-byline" style="display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.9rem;color:#555;">
       <span aria-hidden="true" style="display:inline-flex;width:34px;height:34px;border-radius:50%;background:#1a1a1a;color:#fff;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;">{AUTHOR_INITIALS}</span>
-      <span>Por <a href="{AUTHOR_SLUG}" style="font-weight:700;color:inherit;">{AUTHOR}</a> · {AUTHOR_ROLE} · Actualizado {NOW}</span>
+      <span>Por <a href="{AUTHOR_SLUG}" style="font-weight:700;color:inherit;">{AUTHOR}</a> · {AUTHOR_ROLE} · Publicado el {fecha_es(post["published"])} · Actualizado el {fecha_es(post["updated"])}</span>
     </p>
   </div></header>
 
@@ -1904,7 +2046,8 @@ def render_blog_index() -> str:
             "name": f"Blog de {BRAND}", "url": DOMAIN + url,
             "blogPost": [
                 {"@type": "BlogPosting", "headline": p["title"],
-                 "url": DOMAIN + f"/blog/{p['slug']}/", "datePublished": NOW}
+                 "url": DOMAIN + f"/blog/{p['slug']}/", "datePublished": p["published"],
+                 "dateModified": p["updated"]}
                 for p in POSTS
             ],
         },

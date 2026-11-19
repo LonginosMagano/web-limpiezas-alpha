@@ -127,49 +127,236 @@ POSTS = [
         ],
         "related": ["como-eliminar-olor-humo", "que-hacer-despues-de-un-incendio"],
     },
-    {
-        "slug": "cuanto-cuesta-limpieza-tras-incendio",
-        "title": "Cuánto cuesta una limpieza tras incendio en una vivienda",
-        "meta": "Cuánto cuesta una limpieza tras incendio: rangos de precio por tipo (cocina, piso, local), qué incluye un presupuesto serio y cómo lo cubre el seguro.",
-        "category": "general",
-        "quick_answer": "Una limpieza tras incendio cuesta entre 800 y 3.000 euros para una cocina, entre 2.500 y 8.000 para un piso completo y entre 5.000 y 30.000 para un local o nave, según superficie y tipo de hollín. En la mayoría de pólizas de hogar el coste lo cubre el seguro con la memoria que entrega la empresa.",
-        "sections": [
-            {"h2": "Qué hace variar el precio",
-             "list_items": [
-                "Superficie afectada y nivel de hollín.",
-                "Tipo de combustión: cocina (grasa) vs eléctrica (carbón seco) vs sintéticos (pegajoso).",
-                "Necesidad o no de retirar textiles y mobiliario para tratamiento aparte.",
-                "Número de estancias que necesitan ozonización.",
-                "Si hace falta limpieza de fachada o trasteros además de la vivienda.",
-             ]},
-            {"h2": "Rangos orientativos (vivienda)",
-             "table": [
-                ("Tipo", "Rango habitual", "Plazo"),
-                ("Cocina pequeña con hollín local", "800 – 1.500 €", "1-2 días"),
-                ("Cocina con propagación a salón", "1.500 – 3.000 €", "2-3 días"),
-                ("Piso completo con hollín y olor", "2.500 – 8.000 €", "5-10 días"),
-                ("Vivienda grande / chalet", "6.000 – 15.000 €", "1-3 semanas"),
-                ("Local comercial pequeño", "3.000 – 8.000 €", "3-7 días"),
-                ("Nave industrial", "Desde 8.000 €", "Según superficie"),
-             ]},
-            {"h2": "Qué debe incluir un presupuesto serio",
-             "list_items": [
-                "Visita técnica gratuita previa.",
-                "Desglose por estancias y por concepto.",
-                "Memoria con fotos antes/después para el seguro incluida.",
-                "Tratamiento de olor (ozono/hidroxilo) incluido.",
-                "Garantía: si pasadas 48h hay olor residual, vuelta sin coste.",
-                "Plazo cerrado de ejecución.",
-             ]},
-        ],
-        "faq": [
-            ("¿Hay que pagar la visita técnica?",
-             "No. La visita y el presupuesto son gratis y sin compromiso."),
-            ("¿Quién paga si lo cubre el seguro?",
-             "Tú adelantas o pagamos contra la aseguradora, según la póliza. Lo dejamos claro antes."),
-        ],
-        "related": ["seguro-cubre-limpieza-incendio", "documentacion-perito-seguros", "limpieza-despues-incendio-suelo-porcelanico-mostoles"],
-    },
+    {'slug': 'cuanto-cuesta-limpieza-tras-incendio',
+     'title': 'Cuánto cuesta una limpieza tras incendio en 2026: precios por tipo de vivienda y qué '
+              'incluye',
+     'meta': 'Cuánto cuesta una limpieza tras incendio: rangos de precio por cocina, piso, chalet y '
+             'local, qué incluye un presupuesto serio, qué lo encarece y cómo lo paga el seguro.',
+     'category': 'general',
+     'quick_answer': 'Una limpieza tras incendio cuesta, orientativamente, entre 800 y 1.500 euros para una cocina con hollín localizado, entre 2.500 y 8.000 para un piso completo con olor en todas las estancias y desde 3.000 para un local. El precio real sale tras la visita técnica gratuita, y en la mayoría de pólizas de hogar lo cubre el seguro.',
+     'sections': [{'h2': 'Rangos orientativos por tipo de siniestro',
+                   'paragraphs': ['Estos son los rangos que manejamos al valorar una vivienda o un '
+                                  'local. Son orientativos: el precio cerrado lo damos por escrito '
+                                  'después de ver el daño, y no cambia salvo que al desmontar aparezca '
+                                  'algo que no se veía, y en ese caso se lo decimos antes de seguir.'],
+                   'table': [('Tipo de siniestro',
+                              'Rango habitual',
+                              'Plazo de trabajo',
+                              'Qué suele incluir'),
+                             ('Cocina pequeña con hollín localizado',
+                              '800 – 1.500 €',
+                              '1-2 días',
+                              'Campana, muebles altos, techo, azulejos y ozonización de la cocina'),
+                             ('Cocina con humo en salón y pasillo',
+                              '1.500 – 3.000 €',
+                              '2-3 días',
+                              'Lo anterior más paredes, techos y textiles del salón, ozonización por '
+                              'estancias'),
+                             ('Piso completo con hollín y olor',
+                              '2.500 – 8.000 €',
+                              '5-10 días',
+                              'Todas las estancias, armarios por dentro, conductos, textiles '
+                              'inventariados y memoria para el seguro'),
+                             ('Vivienda grande o chalet',
+                              '6.000 – 15.000 €',
+                              '1-3 semanas',
+                              'Varias plantas, escaleras, garaje y exteriores afectados'),
+                             ('Local comercial pequeño',
+                              '3.000 – 8.000 €',
+                              '3-7 días',
+                              'Sala, cocina o almacén, certificado de descontaminación para reabrir'),
+                             ('Nave industrial',
+                              'Desde 8.000 €',
+                              'Según superficie',
+                              'Trabajo en altura, maquinaria y turnos para no parar la producción')]},
+                  {'h2': 'Por qué en internet ves desde 500 hasta 4.000 euros por el mismo piso',
+                   'paragraphs': ['Si busca precios, verá dos mundos. Los portales de presupuestos '
+                                  'como Habitissimo publican medias de 5 a 7 euros por metro cuadrado '
+                                  'y ponen un piso de 90 metros en unos 500 euros. Las empresas '
+                                  'especializadas en descontaminación sitúan ese mismo piso entre '
+                                  '1.500 y 4.000 euros. No es que unos mientan: es que no hablan del '
+                                  'mismo trabajo.',
+                                  'Los 500 euros corresponden a una limpieza doméstica a fondo: '
+                                  'fregar, aspirar y ventilar. Eso elimina la suciedad visible, pero '
+                                  'no el hollín ácido que ya ha entrado en el yeso, ni el olor que se '
+                                  'ha quedado en los textiles y en los conductos. A las dos semanas la '
+                                  'casa vuelve a oler y la pared vuelve a manchar. Los 1.500 a 4.000 '
+                                  'euros corresponden a una limpieza técnica: esponja química en seco '
+                                  'capa a capa, desengrasado, ozonización dosificada por estancia, '
+                                  'textiles tratados fuera de la vivienda y una memoria fotográfica '
+                                  'que el perito acepta.',
+                                  'Nuestra recomendación es sencilla: pida siempre que le detallen qué '
+                                  'incluye el precio. Si la palabra ozono, hollín o memoria para el '
+                                  'seguro no aparece, está pagando una limpieza normal para un '
+                                  'problema que no lo es.']},
+                  {'h2': 'Qué hace variar el precio',
+                   'paragraphs': ['Ocho factores explican casi toda la diferencia entre un presupuesto '
+                                  'y otro:'],
+                   'list_items': ['<strong>Superficie afectada.</strong> No la de la vivienda, sino la '
+                                  'que ha tocado el humo. Una cocina cerrada con la puerta puesta es '
+                                  'un trabajo; una cocina abierta al salón es otro.',
+                                  '<strong>Tipo de hollín.</strong> El de aceite y grasa (cocina) es '
+                                  'viscoso y se desengrasa; el de un incendio eléctrico es seco y se '
+                                  'aspira; el de plásticos y sintéticos es pegajoso y es el que más '
+                                  'horas exige.',
+                                  '<strong>Tiempo transcurrido.</strong> Pasadas 72 horas el hollín '
+                                  'empieza a fijarse en el yeso y en la madera. Lo que el primer día '
+                                  'se limpia, a la semana hay que imprimar y pintar. Cuanto más tarde '
+                                  'nos llame, más superficie hay que reponer y más cuesta.',
+                                  '<strong>Textiles y mobiliario.</strong> Sofás, colchones, cortinas '
+                                  'y ropa se tratan fuera de la vivienda con un proceso específico. Es '
+                                  'una partida aparte y la más variable.',
+                                  '<strong>Número de estancias que hay que ozonizar.</strong> La '
+                                  'ozonización se dosifica por metros cúbicos y por tiempo; cada '
+                                  'estancia cerrada es una sesión.',
+                                  '<strong>Escombros y retirada.</strong> Muebles calcinados, '
+                                  'electrodomésticos y restos de obra necesitan contenedor y gestión '
+                                  'del residuo.',
+                                  '<strong>Acceso y altura.</strong> Un cuarto sin ascensor en una '
+                                  'finca antigua, techos de más de tres metros o una nave con cerchas '
+                                  'suponen más horas por metro.',
+                                  '<strong>Zonas comunes.</strong> Si el humo ha subido por la '
+                                  'escalera o el patio, el portal y los rellanos son un presupuesto '
+                                  'aparte, que va al seguro de la comunidad.']},
+                  {'h2': 'Por metros, por horas o por estancias: cómo se calcula de verdad',
+                   'paragraphs': ['Hay tres formas de presupuestar. Por metro cuadrado es la más '
+                                  'habitual en los portales, y la menos fiable, porque el hollín no se '
+                                  'reparte por igual en toda la casa. Por horas de cuadrilla es como '
+                                  'calculan internamente la mayoría de empresas del sector: una '
+                                  'cuadrilla de dos técnicos con su equipo tiene un coste por hora '
+                                  'que, multiplicado por los días de trabajo, da el grueso del precio.',
+                                  'Nosotros presupuestamos por estancias y por conceptos. Cada '
+                                  'habitación lleva sus partidas: paredes y techos, suelo, '
+                                  'carpintería, textiles, ozonización. Así el propietario ve qué paga '
+                                  'y el perito del seguro ve qué valora, estancia por estancia, con '
+                                  'las fotos del antes al lado. Es el formato que menos discusiones '
+                                  'genera después.']},
+                  {'h2': 'Qué partidas aparecen en un presupuesto y cuáles deberían ir incluidas',
+                   'paragraphs': ['Esta es la lista de conceptos que debería ver en cualquier '
+                                  'presupuesto de limpieza tras incendio, y cómo los tratamos '
+                                  'nosotros:'],
+                   'table': [('Partida', 'Cómo se cobra en el mercado', 'En nuestro presupuesto'),
+                             ('Visita técnica y valoración',
+                              'A veces se cobra como desplazamiento',
+                              'Gratuita y sin compromiso'),
+                             ('Memoria fotográfica para el seguro',
+                              'Suele ir aparte o no existe',
+                              'Incluida, por estancias, con fotos antes y después'),
+                             ('Limpieza de hollín en paredes, techos y suelos',
+                              'Por m² o por horas',
+                              'Por estancia, con el método (seco, desengrasado, aclarado) detallado'),
+                             ('Ozonización o hidroxilo',
+                              'Aparte, por sesión (los portales citan 90-150 € por sesión)',
+                              'Incluida en cada estancia tratada'),
+                             ('Textiles, ropa y mobiliario tapizado',
+                              'Aparte, por pieza o por kilo',
+                              'Aparte, con inventario pieza a pieza y lo irrecuperable documentado'),
+                             ('Retirada de escombros y residuos',
+                              'Contenedor y gestión aparte',
+                              'Aparte, con el coste del contenedor indicado antes'),
+                             ('Zonas comunes (portal, escalera, patio)',
+                              'Mezclado con la vivienda',
+                              'Presupuesto separado para el seguro de la comunidad'),
+                             ('Garantía de olor',
+                              'Rara vez por escrito',
+                              'Si a las 48 horas de la entrega queda olor, volvemos sin coste')]},
+                  {'h2': 'Tres escenarios tipo, con números',
+                   'paragraphs': ['Son escenarios orientativos para que se haga una idea, no facturas '
+                                  'de trabajos concretos.',
+                                  '<strong>Sartén que prende en una cocina de 9 metros, puerta '
+                                  'cerrada.</strong> Hollín de grasa en campana, muebles altos, techo '
+                                  'y azulejos; olor en el pasillo. Dos técnicos, dos días, una sesión '
+                                  'de ozono en cocina y otra en pasillo. Entre 900 y 1.400 euros. El '
+                                  'seguro del hogar lo suele cubrir íntegro.',
+                                  '<strong>Incendio eléctrico en el salón de un piso de 80 metros, '
+                                  'humo en todas las habitaciones.</strong> Hollín seco en paredes y '
+                                  'techos de toda la vivienda, armarios por dentro, ropa y cortinas a '
+                                  'tratar fuera, cuadro eléctrico y mecanismos a limpiar antes de dar '
+                                  'la luz. Dos técnicos, seis a ocho días, ozonización de cinco '
+                                  'estancias. Entre 3.500 y 6.000 euros más la partida de textiles.',
+                                  '<strong>Fuego en la cocina de un restaurante de 120 '
+                                  'metros.</strong> Campana y conductos, techo de la cocina, sala con '
+                                  'olor, cámara y almacén. Turnos de noche para abrir la sala al '
+                                  'tercer día. Entre 4.000 y 8.000 euros, con certificado de '
+                                  'descontaminación.',
+                                  'Si quiere ver cómo se traduce esto en una ciudad concreta, en las '
+                                  'páginas de <a '
+                                  'href="/limpieza-despues-de-incendio-madrid/">Madrid</a>, <a '
+                                  'href="/limpieza-despues-de-incendio-barcelona/">Barcelona</a> y <a '
+                                  'href="/limpieza-despues-de-incendio-valencia/">Valencia</a> '
+                                  'explicamos qué cambia según el tipo de finca de cada zona.']},
+                  {'h2': 'Cuándo lo paga el seguro y cuánto adelanta usted',
+                   'paragraphs': ['En la mayoría de pólizas de hogar la limpieza tras incendio entra '
+                                  'dentro de la cobertura de incendio, siempre que haya parte, memoria '
+                                  'fotográfica y presupuesto desglosado. Si el humo ha afectado a la '
+                                  'escalera, el portal o el patio, eso lo cubre el seguro de la '
+                                  'comunidad de propietarios, no el suyo. Por eso entregamos dos '
+                                  'presupuestos cuando hace falta.',
+                                  'Lo que sí puede tener que asumir: la franquicia de su póliza, si la '
+                                  'tiene; los conceptos que el perito deje fuera; y, en algunas '
+                                  'compañías, el adelanto del importe hasta que la aseguradora paga. '
+                                  'Lo habitual es que trabajemos directamente con el perito y que '
+                                  'usted no adelante nada, pero lo dejamos claro antes de empezar, no '
+                                  'después. Tiene el detalle en <a '
+                                  'href="/blog/seguro-cubre-limpieza-incendio/">qué cubre el seguro en '
+                                  'una limpieza tras incendio</a> y en <a '
+                                  'href="/blog/documentacion-perito-seguros/">qué documentación pide '
+                                  'el perito</a>.']},
+                  {'h2': 'Errores que encarecen la limpieza',
+                   'list_items': ['<strong>Pasar un trapo húmedo por la pared.</strong> Fija el hollín '
+                                  'en el yeso y convierte una limpieza en una imprimación y pintura.',
+                                  '<strong>Pintar encima.</strong> El olor atraviesa la pintura en '
+                                  'días y hay que volver a empezar, ahora con dos capas que quitar.',
+                                  '<strong>Esperar más de 72 horas.</strong> Cada día que pasa hay más '
+                                  'superficie que ya no se recupera.',
+                                  '<strong>Tirar cosas sin fotografiarlas.</strong> Lo que no está '
+                                  'documentado el seguro no lo repone.',
+                                  '<strong>Llevar la ropa a una tintorería normal.</strong> El lavado '
+                                  'en seco convencional sella el olor a humo en la fibra.',
+                                  '<strong>Usar ambientadores o velas.</strong> Enmascaran el olor y '
+                                  'dificultan medir si el tratamiento ha funcionado.']}],
+     'howto_steps': [{'name': 'Llame antes de tocar nada',
+                      'text': 'Cuanto menos se mueva, mejor valora el seguro y menos cuesta limpiar. '
+                              'Haga fotos generales de cada estancia desde la puerta.'},
+                     {'name': 'Pida la visita técnica',
+                      'text': 'Debe ser gratuita. Que miren armarios por dentro, conductos, cuadro '
+                              'eléctrico y zonas comunes, no solo la habitación del fuego.'},
+                     {'name': 'Exija el desglose por estancias y conceptos',
+                      'text': 'Paredes, techos, suelo, textiles, ozonización, escombros y zonas '
+                              'comunes, cada uno con su importe. Un precio único por metro cuadrado no '
+                              'sirve para el perito.'},
+                     {'name': 'Compruebe qué va incluido',
+                      'text': 'Memoria fotográfica, tratamiento de olor y garantía por escrito. Si van '
+                              'aparte, súmelos antes de comparar.'},
+                     {'name': 'Compare el plazo, no solo el precio',
+                      'text': 'Un presupuesto más barato que tarda tres semanas le cuesta tres semanas '
+                              'fuera de casa o con el negocio cerrado.'}],
+     'faq': [('¿Hay que pagar la visita técnica o el presupuesto?',
+              'No. La visita y el presupuesto son gratuitos y sin compromiso. Si una empresa le cobra '
+              'el desplazamiento para valorar, pregunte si lo descuenta del trabajo.'),
+             ('¿Por qué mi presupuesto es más caro que la media por metro cuadrado que he visto en '
+              'internet?',
+              'Porque esa media corresponde a una limpieza doméstica, no a una descontaminación. El '
+              'hollín ácido, la ozonización por estancias, los textiles tratados fuera y la memoria '
+              'para el seguro no están en esos 5 o 7 euros por metro.'),
+             ('¿Quién paga si lo cubre el seguro?',
+              'Lo normal es que trabajemos directamente con el perito y que usted no adelante nada, '
+              'salvo la franquicia si su póliza la tiene. Lo dejamos por escrito antes de empezar.'),
+             ('¿Cuánto cuesta solo quitar el olor a humo?',
+              'Si el hollín ya está limpio, la ozonización por estancia es la partida más pequeña. '
+              'Pero el olor que vuelve suele venir de hollín que sigue en algún sitio: conductos, '
+              'extractor, tambor de la persiana. Por eso no vendemos el olor por separado sin revisar '
+              'primero.'),
+             ('¿La limpieza de la escalera va en mi presupuesto?',
+              'No. Portal, escalera, ascensor y patio son zonas comunes y las cubre el seguro de la '
+              'comunidad. Preparamos un presupuesto aparte para el administrador de fincas.'),
+             ('¿El precio puede subir una vez empezado el trabajo?',
+              'Solo si al desmontar aparece daño que no se veía, por ejemplo hollín detrás de un '
+              'armario empotrado o en un falso techo. Se lo decimos ese mismo día, con fotos, y usted '
+              'decide antes de que sigamos.')],
+     'related': ['seguro-cubre-limpieza-incendio',
+                 'documentacion-perito-seguros',
+                 'cuanto-tarda-limpiarse-casa-tras-incendio']},
     {
         "slug": "limpiar-vivienda-quemada-por-donde-empezar",
         "title": "Necesito limpiar una vivienda quemada: por dónde empezar",
@@ -835,3 +1022,17 @@ CATEGORY_LABEL = {
     "seguros": "Seguros",
     "ciudad": "Por ciudad",
 }
+
+# Fechas reales por post (ISO). `published` = cuándo se publicó; `updated` =
+# última revisión de contenido. Al ampliar o corregir un post, poner aquí su
+# `updated` con la fecha del día. Los 21 posts iniciales salieron el
+# 2026-05-23 (commit "6 posts long-tail"); el de Móstoles el 2026-10-01.
+POST_DATES = {
+    "cuanto-cuesta-limpieza-tras-incendio": ("2026-05-23", "2026-11-19"),
+    "limpieza-despues-incendio-suelo-porcelanico-mostoles": ("2026-10-01", "2026-10-01"),
+}
+_DEFAULT_DATES = ("2026-05-23", "2026-05-23")
+for _p in POSTS:
+    _pub, _upd = POST_DATES.get(_p["slug"], _DEFAULT_DATES)
+    _p.setdefault("published", _pub)
+    _p.setdefault("updated", _upd)
