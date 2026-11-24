@@ -33,8 +33,8 @@ Las tareas programadas leen y actualizan este fichero. Marcar con [x] lo hecho.
 Mecanismo: `tools/contenido_local/<slug>.py` con `CONTENIDO` (title, h1, meta, intro, cuerpo, zonas, zonas_lista, faq). Ver el `__init__.py` de la carpeta.
 - [x] Madrid (17-11-2026)
 - [x] Barcelona (17-11-2026)
-- [ ] Valencia
-- [ ] Sevilla
+- [x] Valencia (24-11-2026)
+- [x] Sevilla (24-11-2026)
 - [ ] Málaga
 - [ ] Zaragoza
 - [ ] Murcia
