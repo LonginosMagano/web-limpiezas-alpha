@@ -44,7 +44,7 @@ Mecanismo: `tools/contenido_local/<slug>.py` con `CONTENIDO` (title, h1, meta, i
 
 ## Blog: ampliar a 1.200+ palabras (tarea semanal, 1 por semana)
 - [x] cuanto-cuesta-limpieza-tras-incendio (19-11-2026, ~1.600 palabras, 2 tablas, 5 pasos, 6 FAQ)
-- [ ] seguro-cubre-limpieza-incendio
+- [x] seguro-cubre-limpieza-incendio (26-11-2026, ~1.500 palabras, 2 tablas, 6 pasos, 6 FAQ)
 - [ ] seguro-no-cubre-limpieza-incendio
 - [ ] que-hacer-despues-de-un-incendio
 - [ ] como-reclamar-seguro-incendio

@@ -421,38 +421,225 @@ POSTS = [
         "related": ["como-eliminar-olor-humo", "que-hacer-despues-de-un-incendio"],
     },
     # ---------------- CLÚSTER SEGUROS ----------------
-    {
-        "slug": "seguro-cubre-limpieza-incendio",
-        "title": "¿La limpieza tras incendio la cubre el seguro?",
-        "meta": "¿La limpieza tras incendio la cubre el seguro? Qué dicen las pólizas de hogar y comunidad y cómo presentar la documentación para que paguen sin trabas.",
-        "category": "seguros",
-        "quick_answer": "En la mayoría de pólizas de hogar y comunidad, la limpieza tras incendio está cubierta como parte de la garantía de daños por incendio, siempre que se presente memoria con fotos antes/después y desglose por estancias. La empresa de limpieza entrega esa documentación lista para el perito, lo que acelera el pago del seguro.",
-        "sections": [
-            {"h2": "Qué cubre la garantía de incendio",
-             "list_items": [
-                "Daños directos del fuego.",
-                "Daños del humo y el hollín.",
-                "Daños por el agua o productos de extinción.",
-                "Limpieza, desescombro y descontaminación post-incendio.",
-                "En algunas pólizas, alojamiento alternativo si la vivienda no es habitable.",
-             ]},
-            {"h2": "Qué pide el perito normalmente",
-             "list_items": [
-                "Parte abierto en menos de 7 días desde el siniestro (mejor 24h).",
-                "Fotos generales y de detalle de los daños.",
-                "Presupuesto desglosado de la limpieza.",
-                "Memoria final con fotos antes/después por estancia.",
-                "Inventario de bienes muebles afectados.",
-             ]},
-        ],
-        "faq": [
-            ("¿Y si el seguro pone problemas?",
-             "Lo más habitual es que pidan más documentación. Por eso entregamos memoria lista y fotos por estancia desde el inicio."),
-            ("¿Hay franquicia?",
-             "Depende de la póliza. Lo revisas con tu mediador antes de aceptar el presupuesto."),
-        ],
-        "related": ["documentacion-perito-seguros", "como-reclamar-seguro-incendio", "plazos-seguro-incendio"],
-    },
+    {'slug': 'seguro-cubre-limpieza-incendio',
+     'title': '¿La limpieza tras incendio la cubre el seguro? Guía 2026',
+     'meta': '¿La limpieza tras incendio la cubre el seguro? Qué incluye la garantía de incendio, '
+             'continente y contenido, hogar frente a comunidad, exclusiones, plazos legales y cómo '
+             'cobrar sin trabas.',
+     'category': 'seguros',
+     'quick_answer': 'Sí, en la mayoría de pólizas de hogar la limpieza tras incendio está cubierta '
+                     'dentro de la garantía de incendio: daños del fuego, del humo y del hollín, de la '
+                     'extinción, desescombro y descontaminación. Hace falta dar el parte en siete '
+                     'días, no tocar nada antes de documentar y entregar al perito una memoria con '
+                     'fotos y presupuesto por estancias.',
+     'sections': [{'h2': 'Qué cubre la garantía de incendio de una póliza de hogar',
+                   'paragraphs': ['La garantía de incendio es la base de cualquier seguro de hogar y '
+                                  'casi nunca es opcional. Lo que cambia de una compañía a otra son '
+                                  'los límites, las franquicias y la letra pequeña de humo y hollín. '
+                                  'Esto es lo que suele incluir y dónde mirarlo en su póliza:'],
+                   'table': [('Concepto', 'Cobertura habitual', 'Dónde mirarlo'),
+                             ('Daños directos del fuego',
+                              'Cubiertos hasta el capital de continente y contenido',
+                              'Garantía de incendio, capitales asegurados'),
+                             ('Daños por humo y hollín',
+                              'Cubiertos si son consecuencia de un incendio; algunas pólizas los '
+                              'limitan a humo accidental y repentino',
+                              'Garantía de incendio o de humo, límites por garantía'),
+                             ('Daños por la extinción (agua, espuma, polvo)',
+                              'Cubiertos como parte del siniestro',
+                              'Garantía de incendio'),
+                             ('Desescombro y limpieza',
+                              'Cubiertos, a veces con un límite propio (porcentaje del capital)',
+                              'Gastos de desescombro y salvamento'),
+                             ('Descontaminación y tratamiento del olor',
+                              'Cubiertos cuando forman parte del presupuesto de limpieza aceptado por '
+                              'el perito',
+                              'Garantía de incendio, presupuesto desglosado'),
+                             ('Reposición de muebles, ropa y electrodomésticos',
+                              'Cubiertos hasta el capital de contenido, a valor de nuevo o real según '
+                              'póliza',
+                              'Capital de contenido, valor de reposición'),
+                             ('Alojamiento alternativo',
+                              'En muchas pólizas, si la vivienda no es habitable, con límite de días o '
+                              'importe',
+                              'Inhabitabilidad de la vivienda'),
+                             ('Daños causados a vecinos',
+                              'Cubiertos por la responsabilidad civil de la póliza',
+                              'Responsabilidad civil familiar o del inmueble')]},
+                  {'h2': 'Continente y contenido: por qué importa en una limpieza',
+                   'paragraphs': ['La póliza reparte la vivienda en dos capitales. El '
+                                  '<strong>continente</strong> es lo que no se puede llevar: paredes, '
+                                  'techos, suelos, puertas, instalaciones fijas, cocina amueblada. El '
+                                  '<strong>contenido</strong> es todo lo demás: muebles, ropa, '
+                                  'electrodomésticos, cortinas, libros. Una limpieza tras incendio '
+                                  'toca los dos, y el perito valora cada partida contra su capital.',
+                                  'Esto tiene una consecuencia práctica: si su contenido está '
+                                  'asegurado por 20.000 euros y la ropa, los sofás y los colchones que '
+                                  'hay que tratar o reponer suman más, la compañía paga hasta el '
+                                  'límite. Y si el capital del continente es muy inferior al valor '
+                                  'real de la vivienda, puede aplicarse la regla proporcional de '
+                                  'infraseguro que recoge la Ley de Contrato de Seguro: la aseguradora '
+                                  'indemniza en la misma proporción en que estaba asegurado el bien. '
+                                  'Revise los capitales antes de que haga falta; después del incendio '
+                                  'ya no se pueden cambiar.',
+                                  'Por eso nuestra memoria separa siempre las partidas de continente '
+                                  '(paredes, techos, suelos, carpintería) de las de contenido '
+                                  '(textiles tratados, mobiliario recuperado, mobiliario irrecuperable '
+                                  'inventariado). Al perito le facilita el trabajo y al propietario le '
+                                  'evita que una partida se quede sin asignar.']},
+                  {'h2': 'Hogar o comunidad: quién paga cada parte',
+                   'paragraphs': ['Cuando el humo sale de la vivienda, entra en juego el seguro de la '
+                                  'comunidad de propietarios. La regla general es sencilla, pero '
+                                  'conviene tenerla clara antes de pedir presupuesto:'],
+                   'table': [('Elemento afectado', 'Qué póliza lo cubre'),
+                             ('Interior de la vivienda donde empezó el fuego',
+                              'Seguro de hogar del propietario (o del inquilino, según su póliza de '
+                              'contenido)'),
+                             ('Portal, escalera, rellanos, ascensor, patio de luces',
+                              'Seguro de la comunidad de propietarios'),
+                             ('Fachada, cubierta, bajantes y conductos comunes',
+                              'Seguro de la comunidad'),
+                             ('Vivienda de un vecino manchada por el humo',
+                              'Su propio seguro de hogar, que después puede repetir contra la '
+                              'responsabilidad civil del causante'),
+                             ('Garaje y trasteros comunitarios',
+                              'Seguro de la comunidad, salvo que el trastero esté asegurado como anexo '
+                              'de la vivienda')]},
+                  {'h2': 'Lo que puede quedar fuera',
+                   'paragraphs': ['La garantía de incendio es amplia, pero hay cinco situaciones en '
+                                  'las que el seguro recorta o deniega. Conviene conocerlas antes de '
+                                  'discutir con el perito:'],
+                   'list_items': ['<strong>Franquicia.</strong> Si su póliza la tiene, se descuenta de '
+                                  'la indemnización. No es un recorte de cobertura, pero sorprende si '
+                                  'no se sabía.',
+                                  '<strong>Límites de humo y hollín.</strong> Algunas compañías cubren '
+                                  'el humo solo cuando es accidental y repentino, con un sublímite, y '
+                                  'excluyen la acción continuada del humo (una chimenea que ahúma '
+                                  'durante meses). Un incendio es siempre repentino, pero el sublímite '
+                                  'puede ser bajo.',
+                                  '<strong>Dolo o culpa grave.</strong> La ley excluye el siniestro '
+                                  'causado de mala fe por el asegurado. Un descuido corriente, como '
+                                  'una sartén olvidada o una vela, no es culpa grave y está cubierto.',
+                                  '<strong>Vivienda desocupada.</strong> Muchas pólizas reducen o '
+                                  'excluyen coberturas si la vivienda lleva más de un número de días '
+                                  'seguidos sin habitar. Revise ese plazo si es segunda residencia.',
+                                  '<strong>Infraseguro y mejoras.</strong> Si los capitales son '
+                                  'inferiores al valor real, la indemnización se reduce en proporción. '
+                                  'Y el seguro repone lo que había, no una reforma mejor.']},
+                  {'h2': 'Plazos que marca la Ley de Contrato de Seguro',
+                   'paragraphs': ['Tres plazos conviene tener apuntados. El primero es suyo: el '
+                                  'artículo 16 de la Ley de Contrato de Seguro obliga a comunicar el '
+                                  'siniestro en un máximo de siete días desde que se conoce, salvo que '
+                                  'la póliza dé más. Si se pasa, la aseguradora puede reclamarle los '
+                                  'daños que ese retraso le haya causado; en la práctica, cuanto antes '
+                                  'abra el parte, antes viene el perito.',
+                                  'El segundo es de la compañía: según el artículo 18, debe pagar en '
+                                  'los cuarenta días siguientes a la declaración del siniestro, al '
+                                  'menos, el importe mínimo de lo que pueda deber, aunque la '
+                                  'valoración completa tarde más. Si se retrasa sin causa justificada, '
+                                  'el artículo 20 prevé intereses de demora.',
+                                  'El tercero es el de los peritos: si no hay acuerdo sobre el '
+                                  'importe, el artículo 38 permite que cada parte nombre un perito y, '
+                                  'si estos tampoco se ponen de acuerdo, un tercer perito. Es un '
+                                  'procedimiento que casi nunca hace falta cuando la memoria y el '
+                                  'presupuesto están bien hechos desde el principio, pero existe. Lo '
+                                  'explicamos con detalle en <a '
+                                  'href="/blog/como-reclamar-seguro-incendio/">cómo reclamar al seguro '
+                                  'tras un incendio</a> y en <a '
+                                  'href="/blog/plazos-seguro-incendio/">los plazos del seguro</a>.']},
+                  {'h2': 'Qué pide el perito y qué le entregamos nosotros',
+                   'paragraphs': ['El perito no decide si le gusta la empresa de limpieza: decide si '
+                                  'el daño está documentado y si el presupuesto es razonable para ese '
+                                  'daño. Por eso lo que más acelera el pago es la documentación, no la '
+                                  'insistencia. Esto es lo que le pide y lo que le entregamos:'],
+                   'list_items': ['<strong>Parte abierto</strong> con fecha, hora aproximada, origen '
+                                  'probable y estancias afectadas.',
+                                  '<strong>Fotos del estado inicial</strong>, generales y de detalle, '
+                                  'por estancia, antes de que nadie mueva nada. Las hacemos en la '
+                                  'primera visita.',
+                                  '<strong>Presupuesto desglosado</strong> por estancias y conceptos: '
+                                  'paredes y techos, suelos, carpintería, textiles, ozonización, '
+                                  'escombros. Separando continente y contenido.',
+                                  '<strong>Inventario</strong> de los bienes irrecuperables, con foto, '
+                                  'descripción y, si existe, factura o referencia.',
+                                  '<strong>Memoria final</strong> con fotos antes y después por '
+                                  'estancia, metros tratados, producto y horas por fase. Tiene el '
+                                  'detalle en <a href="/blog/documentacion-perito-seguros/">qué '
+                                  'documentación pide el perito</a>.']},
+                  {'h2': 'Errores que hacen que el seguro recorte',
+                   'list_items': ['<strong>Limpiar antes de que venga el perito o de hacer '
+                                  'fotos.</strong> Lo que ya no se ve no se indemniza.',
+                                  '<strong>Tirar muebles, ropa o electrodomésticos sin '
+                                  'fotografiarlos.</strong> Sin foto no hay partida de contenido.',
+                                  '<strong>Aceptar un presupuesto por metro cuadrado sin '
+                                  'desglose.</strong> El perito no puede asignarlo a continente y '
+                                  'contenido y lo recorta.',
+                                  '<strong>Firmar la conformidad con la primera valoración</strong> '
+                                  'sin comparar con el presupuesto de limpieza. Después es mucho más '
+                                  'difícil reabrir.',
+                                  '<strong>Dejar pasar los siete días</strong> para dar el parte, o '
+                                  'darlo sin mencionar el humo en las estancias donde no hubo fuego.',
+                                  '<strong>Mezclar zonas comunes y vivienda</strong> en un solo '
+                                  'presupuesto cuando son dos seguros distintos.']},
+                  {'h2': 'Cómo funciona en la práctica, ciudad a ciudad',
+                   'paragraphs': ['El proceso es el mismo en todas las comunidades donde trabajamos, pero el tipo de finca cambia '
+                                  'lo que el perito ve. En las fincas antiguas de <a '
+                                  'href="/limpieza-despues-de-incendio-madrid/">Madrid</a> y <a '
+                                  'href="/limpieza-despues-de-incendio-barcelona/">Barcelona</a> la '
+                                  'discusión suele estar en las molduras, la madera y los suelos '
+                                  'originales: ¿se limpian o se reponen? En los corrales y casas de '
+                                  'patio de <a '
+                                  'href="/limpieza-despues-de-incendio-sevilla/">Sevilla</a>, en qué '
+                                  'parte es comunidad y qué parte es vivienda. En las páginas de cada '
+                                  'ciudad explicamos cómo lo documentamos para que el perito tenga la '
+                                  'respuesta antes de preguntar.']}],
+     'howto_steps': [{'name': 'Abra el parte en 24 horas',
+                      'text': 'Por teléfono o por la app de la compañía. Indique estancias afectadas '
+                              'por fuego y por humo, aunque sean distintas. Tiene siete días por ley, '
+                              'pero cada día cuenta para el hollín.'},
+                     {'name': 'No toque nada y haga fotos',
+                      'text': 'Generales desde la puerta de cada estancia y de detalle de lo dañado. '
+                              'No limpie, no tire, no ventile con el aire acondicionado.'},
+                     {'name': 'Llame a la empresa de limpieza antes que al reformista',
+                      'text': 'La visita técnica es gratuita y documenta el estado inicial. El '
+                              'presupuesto desglosado es lo que el perito va a valorar.'},
+                     {'name': 'Pida dos presupuestos si hay zonas comunes',
+                      'text': 'Uno para su seguro (vivienda) y otro para el administrador de fincas '
+                              '(escalera, patio, ascensor).'},
+                     {'name': 'Entregue al perito la memoria y el inventario',
+                      'text': 'Con fotos antes y después, continente y contenido separados. Guarde '
+                              'copia de todo lo que envíe.'},
+                     {'name': 'Compare la valoración con el presupuesto antes de firmar',
+                      'text': 'Si hay diferencias, pida por escrito qué partidas recorta y por qué. '
+                              'Firmar la conformidad cierra la puerta.'}],
+     'faq': [('¿El seguro cubre la limpieza si el incendio fue culpa mía (una sartén, una vela)?',
+              'Sí. La ley solo excluye el siniestro causado de mala fe o por culpa grave del '
+              'asegurado. Un descuido doméstico es exactamente lo que el seguro de hogar está pensado '
+              'para cubrir.'),
+             ('Soy inquilino. ¿Quién paga?',
+              'El continente lo cubre el seguro del propietario; el contenido, el suyo si tiene póliza '
+              'de inquilino. Si no la tiene, su ropa y sus muebles quedan fuera salvo que el '
+              'propietario los tuviera asegurados. La limpieza de paredes y techos va con el seguro '
+              'del propietario.'),
+             ('¿Cubre el olor a humo en habitaciones donde no hubo fuego?',
+              'Sí, el humo y el hollín son consecuencia del incendio y forman parte del mismo '
+              'siniestro. Menciónelo en el parte y asegúrese de que el presupuesto incluye la '
+              'ozonización de esas estancias; si no aparece, el perito no la valorará.'),
+             ('¿Tengo que adelantar el dinero?',
+              'Depende de la compañía y de la póliza. Lo habitual es que trabajemos directamente con '
+              'el perito y que usted solo asuma la franquicia si la tiene. Lo dejamos por escrito '
+              'antes de empezar.'),
+             ('¿Y si el seguro dice que la limpieza no está cubierta?',
+              'Pida la denegación por escrito con el artículo de la póliza en que se apoya. Muchas '
+              'veces es un sublímite de humo o una partida mal asignada, no una exclusión real. En qué '
+              'hacer cuando el seguro no cubre la limpieza explicamos cómo reclamar.'),
+             ('¿Cuánto tarda el seguro en pagar?',
+              'Por ley debe abonar el importe mínimo en cuarenta días desde el parte. La valoración '
+              'completa suele resolverse en pocas semanas cuando la memoria y el presupuesto están '
+              'desglosados; cuando faltan fotos o inventario, se alarga meses.')],
+     'related': ['seguro-no-cubre-limpieza-incendio',
+                 'documentacion-perito-seguros',
+                 'seguro-hogar-vs-comunidad-incendio']},
     {
         "slug": "documentacion-perito-seguros",
         "title": "Qué documentación pide el perito de seguros tras un incendio",
@@ -1028,6 +1215,7 @@ CATEGORY_LABEL = {
 # `updated` con la fecha del día. Los 21 posts iniciales salieron el
 # 2026-05-23 (commit "6 posts long-tail"); el de Móstoles el 2026-10-01.
 POST_DATES = {
+    "seguro-cubre-limpieza-incendio": ("2026-05-23", "2026-11-26"),
     "cuanto-cuesta-limpieza-tras-incendio": ("2026-05-23", "2026-11-19"),
     "limpieza-despues-incendio-suelo-porcelanico-mostoles": ("2026-10-01", "2026-10-01"),
 }
