@@ -20,7 +20,13 @@ HTMLS = [h for h in HTMLS if Path(h).relative_to(ROOT).parts[0] != "tools"]
 
 # Keyword y dominio se importan de data.py para no desincronizarse con el generador.
 sys.path.insert(0, str(Path(__file__).parent))
-from data import KEYWORD, DOMAIN  # noqa: E402
+from data import KEYWORD, DOMAIN, KW_NATURAL  # noqa: E402
+
+def has_kw(text: str) -> bool:
+    """True si el texto contiene la keyword o una de sus formas naturales."""
+    t = (text or "").lower()
+    return KEYWORD.lower() in t or any(k in t for k in KW_NATURAL)
+
 BASE_PATH = ""
 
 errors, warnings, oks = [], [], []
@@ -74,10 +80,9 @@ else: ok("Cada página tiene exactamente 1 H1")
 
 # --- 3. Keyword en H1+title+intro de home y landing madre ---------------
 def check_keyword(p, label):
-    kw = KEYWORD.lower()
-    if kw not in p["title"].lower():
+    if not has_kw(p["title"]):
         err(f"[{label}] keyword no está en <title>: {p['path']}")
-    elif kw not in " ".join(p["h1"]).lower():
+    elif not has_kw(" ".join(p["h1"])):
         err(f"[{label}] keyword no está en H1: {p['path']}")
     else:
         ok(f"[{label}] keyword en H1+title")
@@ -93,9 +98,9 @@ geo = [p for p in pages if "/limpieza-despues-de-incendio-" in p["path"]]
 fails_intro = []
 fails_title = []
 for p in geo:
-    if KEYWORD.lower() not in p["title"].lower():
+    if not has_kw(p["title"]):
         fails_title.append(p["path"])
-    if KEYWORD.lower() not in p["intro"][:120].lower():
+    if not has_kw(p["intro"][:120]):
         fails_intro.append(p["path"])
 if fails_title: err(f"Geo sin keyword en title: {len(fails_title)} ({fails_title[:2]})")
 else: ok(f"Las {len(geo)} landings geo tienen keyword en <title>")
@@ -178,7 +183,7 @@ for p in geo:
     ok_alt = False
     for a in content_imgs:
         m = re.search(r'alt="([^"]+)"', a)
-        if m and KEYWORD.lower() in m.group(1).lower():
+        if m and has_kw(m.group(1)):
             ok_alt = True
             break
     if not ok_alt:
