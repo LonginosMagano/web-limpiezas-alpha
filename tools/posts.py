@@ -827,6 +827,167 @@ POSTS = [
               'orientación profesional antes de tocar suelos, juntas o paredes afectadas.')],
      'related': ['cuanto-cuesta-limpieza-tras-incendio',
                  'necesito-vaciar-piso-tras-incendio',
+                 'como-eliminar-olor-humo']},
+    {'slug': 'limpieza-despues-incendio-vigas-madera-murcia',
+     'title': 'Limpieza después de incendio: el reloj no sustituye la revisión de las vigas',
+     'meta': 'Limpieza después de incendio en vigas de madera: cómo ordenar las decisiones, '
+             'pedir una revisión clara y evitar actuar bajo presión en Murcia.',
+     'category': 'ciudad',
+     'city': 'Murcia',
+     'quick_answer': 'Después de un incendio, es comprensible querer recuperar cuanto antes la '
+                     'normalidad. Pero el reloj, por sí solo, no indica qué necesita cada superficie '
+                     'ni permite valorar unas vigas de madera. Antes de decidir sobre una limpieza, '
+                     'conviene aclarar el alcance, qué se ha observado y qué aspectos siguen '
+                     'pendientes de revisión.',
+     'sections': [{'h2': 'El plazo no sustituye la revisión de las vigas',
+                   'paragraphs': ['<img src="/assets/limpieza-despues-incendio-vigas-madera-murcia.webp" '
+                                  'width="583" height="777" '
+                                  'alt="Profesional en escalera trabaja con un paño junto a vigas de madera oscuras y un techo claro en una vivienda de Murcia." '
+                                  'loading="lazy">',
+                                  'En una intervención de limpieza, una fecha sin alcance definido dice '
+                                  'poco. Antes de estimar la duración, conviene nombrar qué elementos se '
+                                  'revisarán y si la propuesta cubre las vigas, la estancia completa u '
+                                  'otras superficies. No son el mismo encargo.',
+                                  'La fecha de visita, el momento de recibir una propuesta y la duración '
+                                  'de un trabajo son preguntas distintas. Si todavía no se han definido '
+                                  'las zonas que entran en la revisión, un plazo único no describe qué '
+                                  'ocurrirá en esa vivienda. Pide que separen esas fechas y expliquen '
+                                  'qué información falta para concretarlas.',
+                                  'La expresión <strong>limpieza después de incendio</strong> abarca '
+                                  'situaciones distintas. Sin una revisión del lugar y de las superficies, '
+                                  'no se puede concluir qué tareas hacen falta, qué límites existen o si '
+                                  'hay otros aspectos que deben valorarse antes. Tampoco es prudente '
+                                  'deducir el estado de la madera a partir de una impresión general.',
+                                  'Una secuencia sensata empieza por reunir información y separar lo '
+                                  'confirmado de lo que aún no se sabe. El paso siguiente es definir el '
+                                  'alcance de la revisión y, solo entonces, hablar de opciones. No hay '
+                                  'que convertir la rapidez en una prueba de calidad: cada decisión debe '
+                                  'responder a lo que se haya podido observar, no a una fecha supuesta.']},
+                  {'h2': 'Antes de contratar, pregunta qué incluye la revisión',
+                   'paragraphs': ['Pregunta qué zonas y elementos se valorarán, cuáles quedan fuera y '
+                                  'qué observaciones respaldan cada conclusión. En una casa con estructura '
+                                  'de madera, aclara si la propuesta revisa cada elemento por separado o '
+                                  'solo determinadas superficies.',
+                                  'La revisión no garantiza que un elemento se limpie o conserve, ni '
+                                  'implica que exista un daño. Sirve para separar lo observado de lo que '
+                                  'aún requiere valoración.',
+                                  'En una vivienda de Murcia con madera vista, la conversación sobre la '
+                                  'limpieza debe aclarar qué elementos se incluyen y qué observaciones la '
+                                  'sustentan. Saber que la estructura es de madera no permite anticipar '
+                                  'el acabado ni el resultado de un servicio; esa precisión ayuda a '
+                                  'evitar respuestas genéricas.',
+                                  'Cuando estos elementos están en altura, la propuesta también debería '
+                                  'precisar qué zonas se revisarán y si el acceso a algún punto queda '
+                                  'fuera del alcance inicial. La persona propietaria no necesita elegir '
+                                  'equipos ni técnicas; basta con que la valoración identifique límites '
+                                  'y explique qué información hace falta para concretar el siguiente paso.']},
+                  {'h2': 'Preguntas prudentes antes de decidir',
+                   'paragraphs': ['Antes de acordar el trabajo, pregunta qué elementos incluye la '
+                                  'revisión, qué observaciones están confirmadas y qué puntos siguen '
+                                  'pendientes. También pide que te expliquen los límites de la propuesta '
+                                  'con palabras claras.',
+                                  'Pregunta qué tareas se incluyen, qué información falta para valorar el '
+                                  'caso y cómo te comunicarán un cambio de alcance. No tomes una fecha de '
+                                  'respuesta como si confirmara por sí sola el estado de la madera.',
+                                  'Estas preguntas ordenan la conversación, no sustituyen una inspección. '
+                                  'Si una respuesta depende de una valoración pendiente, conviene dejarlo '
+                                  'claro antes de acordar el trabajo.']},
+                  {'h2': 'La madera requiere hablar con precisión',
+                   'paragraphs': ['Las vigas pueden llamar la atención tras un incendio, pero su '
+                                  'apariencia por sí sola no determina qué ocurrió ni qué tratamiento '
+                                  'correspondería. La conversación debe distinguir lo que se ha observado '
+                                  'de lo que aún requiere valoración. Sin ese contraste, no se puede '
+                                  'afirmar si existe hollín, quemadura, daño o un resultado concreto de '
+                                  'limpieza.',
+                                  'También conviene separar las vigas de los materiales que las rodean. '
+                                  'El techo claro, sus revestimientos y la madera pueden formar parte del '
+                                  'mismo espacio sin compartir estado ni necesidades. Si una propuesta '
+                                  'resume todas las superficies en una frase, es razonable preguntar qué '
+                                  'elementos se revisaron y cuáles no, para entender exactamente a qué '
+                                  'se refiere cada conclusión.',
+                                  'Por eso, una comunicación responsable evita etiquetar las vigas como '
+                                  'dañadas, limpias o recuperables sin una valoración fiable. También '
+                                  'distingue entre lo que alguien observa y lo que una revisión permite '
+                                  'sostener. Si se necesita una respuesta específica sobre un elemento, '
+                                  'la pregunta adecuada es qué evaluación permite responderla, no qué '
+                                  'conclusión cabe adivinar desde fuera.',
+                                  'La página de <a href="/servicios/limpieza-tras-incendio/">limpieza '
+                                  'tras incendio</a> puede servir para conocer el servicio y plantear '
+                                  'dudas sobre su alcance. La información general no reemplaza la '
+                                  'valoración de una vivienda concreta; sí puede ayudar a preparar una '
+                                  'conversación más clara.']},
+                  {'h2': 'El calendario se concreta después de acordar el alcance',
+                   'paragraphs': ['Preguntar por fechas es razonable, pero una fecha estimada debe '
+                                  'vincularse a una tarea concreta. La visita de valoración, la '
+                                  'preparación de una propuesta y la eventual intervención son momentos '
+                                  'distintos. Sin saber qué superficies entran en el trabajo, un plazo '
+                                  'único para las vigas no describe lo que va a ocurrir en una vivienda '
+                                  'concreta.',
+                                  'La respuesta puede indicar qué falta para fijar el siguiente paso, '
+                                  'sin adelantar una duración que no se ha confirmado. Así se organiza la '
+                                  'recuperación sin presentar el tiempo como garantía. Si cambian las '
+                                  'zonas incluidas o aparece una necesidad distinta, la propiedad debería '
+                                  'poder entender por qué se modifica el plan y qué parte de la propuesta '
+                                  'resulta afectada.',
+                                  'Una estimación temporal es más útil cuando identifica a qué tarea '
+                                  'corresponde y qué supuestos la acompañan. Pregunta si se refiere a la '
+                                  'valoración, a la preparación de una propuesta o al trabajo acordado. '
+                                  'Si esas etapas aparecen mezcladas, no podrás saber qué fecha está '
+                                  'confirmando la respuesta ni qué puede modificarla.',
+                                  'En una vivienda con varias superficies, el alcance puede cambiar si la '
+                                  'consulta inicial se amplía. Por eso, pide que cualquier ajuste se '
+                                  'explique antes de tomarlo como parte del mismo encargo. La comunicación '
+                                  'debe dejar claro qué elemento se incorpora, qué motivo se ha observado '
+                                  'y si la previsión temporal necesita revisarse.',
+                                  'La planificación también depende de decisiones que corresponden a la '
+                                  'propiedad, como confirmar qué áreas desea incluir en la consulta. No '
+                                  'hace falta fijar por adelantado una fecha para cada resultado. Primero '
+                                  'se aclara qué se revisará; después, quien presenta la propuesta puede '
+                                  'explicar qué plazo estima y a qué parte del servicio se refiere.',
+                                  'Si varias personas coordinan la recuperación, compartir una descripción '
+                                  'común del alcance evita confundir una visita con el inicio del trabajo. '
+                                  'Anota qué fecha se ha propuesto para cada etapa y qué información falta '
+                                  'para confirmarla. Así, el calendario sirve para organizarse, sin '
+                                  'atribuirle respuestas que solo puede dar una valoración de la vivienda.']},
+                  {'h2': 'Un orden de decisiones que evita la presión',
+                   'paragraphs': ['Primero, conviene identificar qué información está disponible y qué '
+                                  'preguntas siguen abiertas. Después, acordar qué revisión hace falta y '
+                                  'qué elementos incluye. Con esa base, ya se puede hablar de posibles '
+                                  'trabajos, límites y próximos pasos sin prometer resultados ni asignar '
+                                  'plazos que no estén confirmados.',
+                                  'Si la situación genera dudas, puede resultar útil repasar la página '
+                                  'de <a href="/limpieza-despues-de-incendio-murcia/">limpieza después de '
+                                  'incendio en Murcia</a> como orientación general. Para cuestiones sobre '
+                                  'el olor, está disponible <a href="/blog/como-eliminar-olor-humo/">la '
+                                  'información sobre el olor a humo</a>; cualquier decisión sobre una '
+                                  'vivienda concreta debe basarse en su valoración, no en una '
+                                  'recomendación genérica.',
+                                  'El reloj puede ayudar a organizar conversaciones y prioridades, pero '
+                                  'no reemplaza esa revisión ni determina qué resultado es posible. Pedir '
+                                  'que expliquen el alcance y reconozcan lo que todavía no saben permite '
+                                  'decidir con menos presión y con expectativas más realistas.',
+                                  'Para recibir orientación paso a paso, llama al '
+                                  '<a href="tel:681811301">681811301</a>.']}],
+     'howto_steps': [],
+     'faq': [('¿El tiempo transcurrido permite saber qué necesitan las vigas?',
+              'No por sí solo. Para valorar unas vigas concretas hace falta una revisión que explique '
+              'qué se ha observado y qué aspectos siguen sin confirmarse.'),
+             ('¿Se puede asegurar de antemano que las vigas se conservarán?',
+              'No con la información disponible. La posibilidad de conservarlas o limpiarlas no debe '
+              'afirmarse sin una valoración específica.'),
+             ('¿Qué conviene preguntar al solicitar una revisión?',
+              'Qué zonas y elementos incluye, qué observaciones están confirmadas, qué queda pendiente '
+              'y cuáles son los límites de la valoración propuesta.'),
+             ('¿Qué diferencia hay entre revisión e intervención?',
+              'La revisión recoge observaciones y ayuda a definir el alcance; la intervención es el '
+              'trabajo que, si se acuerda, responde a ese alcance. No conviene presentarlos como si '
+              'fueran la misma etapa.'),
+             ('¿Qué fechas conviene diferenciar al pedir una propuesta?',
+              'La visita de valoración, la entrega de la propuesta y el posible inicio del trabajo. '
+              'Pide que cada una se explique por separado; sin un alcance definido, no hay un '
+              'calendario aplicable a todas las viviendas.')],
+     'related': ['cuanto-cuesta-limpieza-tras-incendio',
+                 'limpieza-despues-incendio-suelo-porcelanico-mostoles',
                  'como-eliminar-olor-humo']}
 ]
 
